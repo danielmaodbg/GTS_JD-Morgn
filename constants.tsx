@@ -58,5 +58,5 @@ export const NEWS_ITEMS: NewsItem[] = [
 ];
 
 export const COUNTRIES = [
-  'China', 'Taiwan', 'Singapore', 'Hong Kong', 'USA', 'UK', 'Germany', 'Japan', 'South Korea', 'UAE', 'Saudi Arabia', 'Australia'
+  'China', 'Taiwan', 'Singapore', 'Hong Kong', 'Malaysia', 'Canada', 'Kazakhstan', 'USA', 'UK', 'Germany', 'Japan', 'South Korea', 'UAE', 'Saudi Arabia', 'Australia'
 ];

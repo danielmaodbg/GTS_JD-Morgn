@@ -45,7 +45,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onRegisterSuccess }) => {
           phone: formData.phone,
           country: formData.country,
           socialMedia: formData.social,
-          username: formData.email, // 確保數據一致性：username 預設為 email
+          username: formData.email,
           role: 'client'
         };
         await dataService.registerAndVerify(userData, formData.password);
@@ -54,8 +54,10 @@ const Login: React.FC<LoginProps> = ({ onLogin, onRegisterSuccess }) => {
       } catch (err: any) {
         setIsLoading(false);
         if (err.code === 'auth/email-already-in-use') {
-          // 依據用戶最新需求：僅顯示特定警示文字
+          // 滿足用戶需求：顯示特定警示語
           setErrorMsg("⚠️ 帳戶已存在：此郵箱已在驗證系統中。");
+          // 額外提示，幫助使用者解決 Ghost User 問題
+          console.warn("Auth Layer exists but Firestore might be missing. Suggest user to Login for auto-repair.");
         } else {
           setErrorMsg(`註冊失敗: ${err.message || '請確認資訊填寫正確'}`);
         }
@@ -68,9 +70,9 @@ const Login: React.FC<LoginProps> = ({ onLogin, onRegisterSuccess }) => {
       } catch (err: any) {
         setIsLoading(false);
         if (err.message === "EMAIL_NOT_VERIFIED") {
-          setErrorMsg("⚠️ 帳戶尚未激活：請先檢查您的電子郵件並點擊驗證連結。");
+          setErrorMsg("⚠️ 帳戶尚未激活：請先檢查您的電子郵件（包括垃圾信箱）並點擊驗證連結。");
         } else {
-          setErrorMsg("登入失敗：帳號或密碼錯誤，或該帳戶尚未授權。");
+          setErrorMsg("登入失敗：帳號或密碼錯誤，或該帳戶尚未獲得授權。");
         }
       }
     }
@@ -95,7 +97,6 @@ const Login: React.FC<LoginProps> = ({ onLogin, onRegisterSuccess }) => {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            
             <div className="col-span-full">
               <label className="block text-[10px] font-bold text-jd-gold uppercase tracking-widest mb-1.5">
                 {isRegister ? 'Email (Primary Verification)' : 'Email Address'}
@@ -178,6 +179,11 @@ const Login: React.FC<LoginProps> = ({ onLogin, onRegisterSuccess }) => {
           <button onClick={() => { setIsRegister(!isRegister); setErrorMsg(null); }} className="text-jd-gold hover:text-white text-base font-bold uppercase tracking-widest underline transition-colors">
             {isRegister ? '已有帳號？返回登入' : "還不是會員？立即申請"}
           </button>
+          {errorMsg?.includes('已在驗證系統中') && (
+            <p className="text-[10px] text-gray-500 mt-4 font-bold uppercase tracking-widest">
+              提示：若您曾註冊但資料已過期，請直接「登入」以修復您的檔案。
+            </p>
+          )}
         </div>
       </div>
     </div>

@@ -1,10 +1,8 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { initializeFirestore } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getStorage } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
-/**
- * 請將下方的 "YOUR_..." 替換為您在 Firebase Console 取得的真實金鑰
- */
 export const firebaseConfig = {
   apiKey: "AIzaSyAy0r8GVkq72hqSUHd2QGN-Kc5691FZv7Q",
   authDomain: "jd-morgan-global-trading-1.firebaseapp.com",
@@ -15,15 +13,10 @@ export const firebaseConfig = {
   measurementId: "G-0DZTKNM06G"
 };
 
-// 設為 true，系統將會切換到真實 Firebase 模式
 export const isConfigured = true;
-
-// 初始化實例
 export const app = initializeApp(firebaseConfig);
-
-// 修復連線問題：啟用 experimentalForceLongPolling 解決 10s Timeout 報錯
 export const db = initializeFirestore(app, {
   experimentalForceLongPolling: true,
 });
-
 export const auth = getAuth(app);
+export const storage = getStorage(app);

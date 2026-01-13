@@ -1,72 +1,77 @@
-import { db, auth, isConfigured, firebaseConfig } from './firebase';
+import { db, auth, isConfigured, firebaseConfig, storage } from './firebase';
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword, signInAnonymously as firebaseSignInAnonymously } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import { 
-  collection, 
-  addDoc, 
-  getDocs, 
-  doc, 
-  setDoc, 
-  getDoc, 
-  deleteDoc, 
-  updateDoc, 
-  query, 
-  orderBy, 
-  limit,
-  writeBatch,
-  where
+  collection, addDoc, getDocs, doc, setDoc, getDoc, deleteDoc, updateDoc, query, orderBy, limit, writeBatch, where
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 import { 
-  signInWithEmailAndPassword,
-  sendEmailVerification
+  ref, uploadBytesResumable, getDownloadURL, deleteObject
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+import { 
+  signInWithEmailAndPassword, sendEmailVerification
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import { INITIAL_APP_CONFIG, INITIAL_SUBMISSIONS, MOCK_USERS } from './constants';
-import { TradeSubmission, AppConfig, User, MemberType } from './types';
+import { TradeSubmission, AppConfig, User, MemberType, HeroSlide } from './types';
 
 const generateMemberId = (uid: string) => {
   return `JD-${uid.substring(0, 5).toUpperCase()}`;
 };
 
 export const dataService = {
-  async ensureDb() {
-    return isConfigured;
+  async ensureDb() { return isConfigured; },
+
+  // 確保使用者已獲得 Auth 身份
+  async ensureAuthenticated() {
+    if (!isConfigured) return;
+    if (!auth.currentUser) {
+      try {
+        await firebaseSignInAnonymously(auth);
+      } catch (e: any) {
+        if (e.code === 'auth/admin-restricted-operation') {
+          console.error("CRITICAL: Anonymous Auth is DISABLED in Firebase Console. Go to Auth -> Sign-in method -> Enable Anonymous.");
+        }
+        throw e;
+      }
+    }
   },
 
-  async initializeAdmin() {
-    if (!isConfigured) return "SANDBOX_MODE";
-    const adminEmail = "info@jdmorgan.ca";
-    const adminPass = "123456";
+  async signInAnonymously() {
+    if (!isConfigured) return;
     try {
-      let uid = "";
-      try {
-        const userCredential = await createUserWithEmailAndPassword(auth, adminEmail, adminPass);
-        uid = userCredential.user.uid;
-        await sendEmailVerification(userCredential.user);
-      } catch (authErr: any) {
-        if (authErr.code === 'auth/email-already-in-use') {
-          const loginRes = await signInWithEmailAndPassword(auth, adminEmail, adminPass);
-          uid = loginRes.user.uid;
-        } else {
-          throw authErr;
-        }
+      const cred = await firebaseSignInAnonymously(auth);
+      return cred.user;
+    } catch (e: any) {
+      if (e.code === 'auth/admin-restricted-operation') {
+        console.error("FATAL: Please enable 'Anonymous' sign-in provider in your Firebase project settings.");
       }
-      await setDoc(doc(db, "users", uid), {
-        uid: uid,
-        memberId: generateMemberId(uid), 
-        username: adminEmail,
-        email: adminEmail,
-        name: "JD Morgan Admin",
-        role: "admin",
-        memberType: MemberType.PROJECT_MANAGER,
-        country: "Canada",
-        createdAt: new Date().toISOString(),
-        isApproved: true
-      }, { merge: true });
-      return uid;
-    } catch (error) {
-      console.error("Admin initialization failed:", error);
-      throw error;
+      throw e;
     }
+  },
+
+  async uploadFile(file: File | Blob, path: string, onProgress?: (percent: number) => void): Promise<string> {
+    if (!isConfigured) return URL.createObjectURL(file);
+    
+    // 上傳前強制同步 Auth，這對 Storage 權限至關重要
+    await this.ensureAuthenticated();
+
+    return new Promise((resolve, reject) => {
+      const storageRef = ref(storage, path);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+
+      uploadTask.on('state_changed', 
+        (snapshot) => {
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          if (onProgress) onProgress(Math.round(progress));
+        }, 
+        (error) => {
+          reject(error);
+        }, 
+        async () => {
+          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+          resolve(downloadURL);
+        }
+      );
+    });
   },
 
   async getSettings(): Promise<AppConfig> {
@@ -77,27 +82,52 @@ export const dataService = {
     try {
       const docRef = doc(db, "settings", "app_config");
       const docSnap = await getDoc(docRef);
+      let baseConfig = INITIAL_APP_CONFIG;
       if (docSnap.exists()) {
-        const data = docSnap.data() as AppConfig;
-        return {
-          ...INITIAL_APP_CONFIG,
-          ...data,
-          heroSlides: Array.isArray(data.heroSlides) ? data.heroSlides : INITIAL_APP_CONFIG.heroSlides
-        };
+        baseConfig = { ...INITIAL_APP_CONFIG, ...docSnap.data() };
       }
-      return INITIAL_APP_CONFIG;
+      const slidesSnap = await getDocs(query(collection(db, "hero_slides"), orderBy("order", "asc")));
+      const heroSlides = slidesSnap.docs.map(doc => ({ ...doc.data(), id: doc.id } as HeroSlide));
+      if (heroSlides.length > 0) baseConfig.heroSlides = heroSlides;
+      return baseConfig;
     } catch (e) {
-      console.error("Fetch settings failed, using initial:", e);
       return INITIAL_APP_CONFIG;
     }
   },
 
   async saveSettings(config: AppConfig) {
-    if (!isConfigured) {
-      localStorage.setItem('jd_morgan_app_config', JSON.stringify(config));
-      return true;
+    if (!isConfigured) return true;
+    const batch = writeBatch(db);
+    const { heroSlides, ...baseConfig } = config;
+    batch.set(doc(db, "settings", "app_config"), baseConfig);
+    for (const slide of heroSlides) {
+      const slideRef = doc(db, "hero_slides", slide.id);
+      batch.set(slideRef, slide);
     }
-    await setDoc(doc(db, "settings", "app_config"), config);
+    await batch.commit();
+    return true;
+  },
+
+  async deleteHeroSlide(slideId: string) {
+    if (!isConfigured) return true;
+    await deleteDoc(doc(db, "hero_slides", slideId));
+    return true;
+  },
+
+  async submitTrade(data: any, file?: File, onProgress?: (p: number) => void) {
+    if (!isConfigured) return true;
+    let fileUrl = '';
+    if (file) {
+      const path = `submissions/${Date.now()}_${file.name}`;
+      fileUrl = await this.uploadFile(file, path, onProgress);
+    }
+    const { fileData, ...rest } = data;
+    await addDoc(collection(db, "submissions"), { 
+      ...rest, 
+      fileUrl, 
+      status: 'Pending', 
+      timestamp: new Date().toISOString() 
+    });
     return true;
   },
 
@@ -105,9 +135,7 @@ export const dataService = {
     if (!isConfigured) return true;
     const userCredential = await createUserWithEmailAndPassword(auth, userData.email, password);
     const user = userCredential.user;
-    try {
-      await sendEmailVerification(user);
-    } catch (e: any) {}
+    try { await sendEmailVerification(user); } catch (e) {}
     await setDoc(doc(db, "users", user.uid), {
       ...userData,
       uid: user.uid,
@@ -119,111 +147,24 @@ export const dataService = {
     return true;
   },
 
-  async adminCreateUser(userData: any, password: string) {
-    if (!isConfigured) return { ...userData, uid: 'mock_' + Date.now(), memberId: 'JD-MOCK' };
-    const tempAppName = "temp_creation_app_" + Date.now();
-    const tempApp = initializeApp(firebaseConfig, tempAppName);
-    const tempAuth = getAuth(tempApp);
-
-    try {
-      const userCredential = await createUserWithEmailAndPassword(tempAuth, userData.email, password);
-      const user = userCredential.user;
-      const userProfile = {
-        ...userData,
-        uid: user.uid,
-        memberId: generateMemberId(user.uid),
-        createdAt: new Date().toISOString(),
-        isApproved: true,
-        memberType: userData.memberType || MemberType.REGULAR
-      };
-      await setDoc(doc(db, "users", user.uid), userProfile);
-      return userProfile;
-    } finally {
-      await tempApp.delete();
-    }
-  },
-
-  async resendVerificationEmail() {
-    if (!isConfigured) return true;
-    const user = auth.currentUser;
-    if (!user) throw new Error("USER_NOT_LOGGED_IN");
-    await sendEmailVerification(user);
-    return true;
-  },
-
   async signIn(email: string, password: string): Promise<User> {
-    if (!isConfigured) {
-      const mock = MOCK_USERS.find(u => u.username.toLowerCase() === email.toLowerCase() || (u.email || '').toLowerCase() === email.toLowerCase());
-      if (mock && password === '123456') return mock;
-      throw new Error("INVALID_CREDENTIALS");
-    }
+    if (!isConfigured) return MOCK_USERS[0];
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
     const userDocRef = doc(db, "users", user.uid);
-    const userDoc = await getDoc(userDocRef);
-    if (!userDoc.exists()) throw new Error("USER_NOT_FOUND");
+    let userDoc = await getDoc(userDocRef);
     let userData = userDoc.data() as User;
-    if (user.emailVerified && !userData.isApproved) {
-      await updateDoc(userDocRef, { isApproved: true });
-      userData.isApproved = true;
-    }
-    if (!user.emailVerified && email !== "info@jdmorgan.ca" && !userData?.isApproved) {
-      throw new Error("EMAIL_NOT_VERIFIED");
-    }
     return { ...userData, uid: user.uid } as User;
   },
 
   async getAllUsers(): Promise<User[]> {
     if (!isConfigured) return MOCK_USERS;
     const querySnapshot = await getDocs(collection(db, "users"));
-    return querySnapshot.docs.map(doc => {
-      const data = doc.data();
-      return { ...data, uid: doc.id } as User;
-    });
-  },
-
-  async purgeUnverifiedUsers(onProgress?: (msg: string) => void, forceAll: boolean = false) {
-    if (!isConfigured) return true;
-    try {
-      if (onProgress) onProgress(forceAll ? "🛡️ [ACTION] 正在強制清理所有待驗證會員..." : "🧹 [AUTO] 正在執行自動過期會員數據維護 (限1小時)...");
-      
-      const querySnapshot = await getDocs(collection(db, "users"));
-      const batch = writeBatch(db);
-      const now = new Date().getTime();
-      const ONE_HOUR = 60 * 60 * 1000;
-      let count = 0;
-
-      querySnapshot.forEach((userDoc) => {
-        const data = userDoc.data();
-        const isAdmin = (data.email || '').toLowerCase() === "info@jdmorgan.ca";
-        
-        // 僅處理非管理員且未核准（待驗證）的用戶
-        if (!isAdmin && data.isApproved === false) {
-          const createdAt = data.createdAt ? new Date(data.createdAt).getTime() : 0;
-          const isExpired = (now - createdAt) > ONE_HOUR;
-
-          if (forceAll || isExpired) {
-            batch.delete(userDoc.ref);
-            count++;
-          }
-        }
-      });
-
-      if (count > 0) {
-        await batch.commit();
-        if (onProgress) onProgress(`✨ [SUCCESS] 已成功移除 ${count} 筆${forceAll ? '待驗證' : '已過期'}會員數據。`);
-      } else {
-        if (onProgress) onProgress("✅ [INFO] 沒有發現符合刪除條件的異常會員數據。");
-      }
-      return true;
-    } catch (err: any) {
-      if (onProgress) onProgress(`❌ [ERROR] 清理失敗: ${err.message}`);
-      throw err;
-    }
+    return querySnapshot.docs.map(doc => ({ ...doc.data(), uid: doc.id } as User));
   },
 
   async toggleUserApproval(userId: string, status: boolean) {
-    if (!isConfigured || !userId) return true;
+    if (!isConfigured) return true;
     await updateDoc(doc(db, "users", userId), { isApproved: status });
     return true;
   },
@@ -235,107 +176,44 @@ export const dataService = {
     return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as TradeSubmission));
   },
 
-  async submitTrade(data: any) {
-    if (!isConfigured) return true;
-    await addDoc(collection(db, "submissions"), {
-      ...data,
-      status: 'Pending',
-      timestamp: new Date().toISOString()
-    });
-    return true;
-  },
-
   async deleteUser(userId: string) {
-    if (!isConfigured || !userId) return true;
+    if (!isConfigured) return true;
     await deleteDoc(doc(db, "users", userId));
     return true;
   },
 
   async deleteSubmission(submissionId: string) {
-    if (!isConfigured || !submissionId) return true;
+    if (!isConfigured) return true;
     await deleteDoc(doc(db, "submissions", submissionId));
     return true;
   },
 
-  async purgeAllSubmissions(onProgress?: (msg: string) => void) {
-    if (!isConfigured) return true;
-    try {
-      if (onProgress) onProgress("🔍 [SCAN] 掃描全球節點交易存根...");
-      const snapshot = await getDocs(collection(db, "submissions"));
-      const batch = writeBatch(db);
-      let count = 0;
-      snapshot.docs.forEach(d => {
-        batch.delete(d.ref);
-        count++;
-      });
-      if (count > 0) {
-        if (onProgress) onProgress(`🧨 [PURGE] 發現 ${count} 筆意向數據，啟動批次物理銷毀...`);
-        await batch.commit();
-        if (onProgress) onProgress("✨ [SUCCESS] 交易申請數據已重置為零。");
-      } else {
-        if (onProgress) onProgress("✅ [INFO] 節點本已處於純淨狀態，無須清理。");
-      }
-      return true;
-    } catch (err: any) {
-      if (onProgress) onProgress(`❌ [ERROR] 清理失敗: ${err.message}`);
-      throw err;
-    }
-  },
-
-  async purgeDiagnostics(onProgress?: (msg: string) => void) {
-    if (!isConfigured) return true;
-    const snapshot = await getDocs(collection(db, "diagnostics"));
-    const batch = writeBatch(db);
-    snapshot.docs.forEach(d => batch.delete(d.ref));
-    await batch.commit();
-    return true;
-  },
-
-  async purgeNonAdminUsers(onProgress?: (msg: string) => void) {
-    if (!isConfigured) return true;
-    const adminEmail = "info@jdmorgan.ca".toLowerCase().trim();
-    try {
-      if (onProgress) onProgress("🔍 [SCAN] 正在拉取雲端會員全量清冊...");
-      const allUsers = await this.getAllUsers();
-      const batch = writeBatch(db);
-      let deleteCount = 0;
-
-      allUsers.forEach(user => {
-        const uEmail = (user.email || user.username || '').toLowerCase().trim();
-        if (uEmail !== adminEmail) {
-          const docRef = doc(db, "users", user.uid!);
-          batch.delete(docRef);
-          deleteCount++;
-        }
-      });
-
-      if (deleteCount > 0) {
-        if (onProgress) onProgress(`🧨 [PURGE] 識別到 ${deleteCount} 名非管理員會員，啟動批次移除...`);
-        await batch.commit();
-        if (onProgress) onProgress("✨ [SUCCESS] 會員矩陣重置成功，非管理員檔案已全數移除。");
-      } else {
-        if (onProgress) onProgress("✅ [INFO] 目前無任何非管理員會員紀錄。");
-      }
-      return true;
-    } catch (err: any) {
-      if (onProgress) onProgress(`❌ [ERROR] 會員重置失敗: ${err.message}`);
-      throw err;
-    }
-  },
-
   async updateUserRole(userId: string, newRole: MemberType) {
-    if (!isConfigured || !userId) return true;
+    if (!isConfigured) return true;
     await updateDoc(doc(db, "users", userId), { memberType: newRole });
     return true;
   },
 
   async runDiagnostic() {
-    if (!isConfigured) return "SANDBOX-DIAG-" + Date.now();
+    if (!isConfigured) return "SANDBOX";
     const docRef = await addDoc(collection(db, "diagnostics"), {
       testTime: new Date().toISOString(),
-      platform: "JD Morgan Terminal V2",
       status: "HEALTHY"
     });
     return docRef.id;
+  },
+
+  async adminCreateUser(userData: any, password: string) {
+    const userProfile = { ...userData, uid: 'admin_' + Date.now(), memberId: generateMemberId('admin'), createdAt: new Date().toISOString(), isApproved: true };
+    await setDoc(doc(db, "users", userProfile.uid), userProfile);
+    return userProfile;
+  },
+
+  async resendVerificationEmail() {
+    if (!isConfigured) return true;
+    const user = auth.currentUser;
+    if (!user) throw new Error("USER_NOT_LOGGED_IN");
+    await sendEmailVerification(user);
+    return true;
   }
 };

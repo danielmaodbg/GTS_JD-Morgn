@@ -51,11 +51,9 @@ const App: React.FC = () => {
   }, []);
 
   const handleLogin = (user: User) => {
-    console.log("Login User Detected:", user);
     setCurrentUser(user);
     setIsEntryModalOpen(false);
 
-    // 強制權限檢查：如果是管理員郵箱或角色標記為 admin
     const isAdmin = (
       user.role?.toLowerCase() === 'admin' || 
       user.email?.toLowerCase() === ADMIN_EMAIL.toLowerCase() ||
@@ -63,10 +61,8 @@ const App: React.FC = () => {
     );
 
     if (isAdmin) {
-      console.log("Switching to ADMIN view...");
       setCurrentView(View.ADMIN);
     } else {
-      console.log("Switching to MEMBER view...");
       setCurrentView(View.MEMBER_DASHBOARD);
     }
   };
@@ -85,8 +81,14 @@ const App: React.FC = () => {
     setIsEntryModalOpen(true);
   };
 
-  const handleSelectGuest = () => {
+  const handleSelectGuest = async () => {
     setIsEntryModalOpen(false);
+    // 背景觸發匿名登入，確保後續上傳有權限
+    try {
+      await dataService.signInAnonymously();
+    } catch (e) {
+      console.warn("Guest session initialization failed, but proceeding...");
+    }
     setCurrentView(View.ROLE_SELECT);
   };
 
@@ -167,7 +169,6 @@ const App: React.FC = () => {
       <Navbar 
         currentUser={currentUser} 
         onNavigate={(view) => {
-          console.log(`Navigating to: ${view}`);
           setCurrentView(view);
         }} 
         onLogout={handleLogout}

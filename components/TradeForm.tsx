@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { TradeConfig, User } from '../types';
 import { COUNTRIES } from '../constants';
@@ -13,8 +12,9 @@ interface TradeFormProps {
 }
 
 const TradeForm: React.FC<TradeFormProps> = ({ role, config, currentUser, onBack, onSuccess }) => {
-  const [loading, setLoading] = useState(false);
-  const [fileProcessing, setFileProcessing] = useState(false);
+  const [uploadStatus, setUploadStatus] = useState<'idle' | 'uploading' | 'syncing' | 'success'>('idle');
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [formData, setFormData] = useState({
     commodity: '',
     quantity: '',
@@ -26,64 +26,121 @@ const TradeForm: React.FC<TradeFormProps> = ({ role, config, currentUser, onBack
     socialType: 'WeChat',
     socialAccount: currentUser?.socialMedia || '',
     fileName: '',
-    fileData: '' 
   });
   
   const isBuyer = role === 'buyer';
-  const MAX_FILE_SIZE = 500 * 1024; // 縮減至 500KB
+  const MAX_FILE_SIZE = 100 * 1024 * 1024; 
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     if (file.size > MAX_FILE_SIZE) {
-      alert('附件過大！系統限制為 500K 以內。');
+      alert(`❌ 文件過大：系統上限為 100MB。`);
       e.target.value = '';
       return;
     }
-    setFileProcessing(true);
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const base64 = event.target?.result as string;
-      setFormData(prev => ({ ...prev, fileName: file.name, fileData: base64 }));
-      setFileProcessing(false);
-    };
-    reader.readAsDataURL(file);
+    setSelectedFile(file);
+    setFormData(prev => ({ ...prev, fileName: file.name }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    if (!formData.commodity) { alert("請選擇商品品名"); return; }
+    
+    // 二次驗證電話是否全數字
+    if (!/^\d+$/.test(formData.contactPhone)) {
+      alert("❌ 聯絡電話格式錯誤：請僅輸入數字。");
+      return;
+    }
+
+    setUploadStatus('uploading');
+    setUploadProgress(1);
+    
     try {
-      const submissionData = { ...formData, type: role, timestamp: new Date().toISOString() };
-      await dataService.submitTrade(submissionData);
-      setLoading(false);
-      alert('✅ 數據已成功存入 JD Morgan 核心雲端節點。');
-      onSuccess(formData);
+      await dataService.ensureAuthenticated();
+      
+      await dataService.submitTrade(
+        { ...formData, type: role }, 
+        selectedFile || undefined, 
+        (percent) => setUploadProgress(percent === 0 ? 1 : percent)
+      );
+      
+      setUploadStatus('success');
+      setUploadProgress(100);
+      
+      setTimeout(() => {
+        onSuccess(formData);
+      }, 1500);
     } catch (err: any) {
-      setLoading(false);
-      alert(`提交失敗: ${err.message}`);
+      setUploadStatus('idle');
+      setUploadProgress(0);
+      console.error("Submission error details:", err);
+      
+      let msg = `❌ 提交中斷 (${err.code || 'UNKNOWN'}): ${err.message}`;
+      
+      if (err.code === 'auth/admin-restricted-operation') {
+        msg = "⚠️ 核心功能受限 (Admin Restricted)\n\n原因：您尚未在 Firebase Console 開啟「匿名登入 (Anonymous)」功能。\n\n修復方式：\n1. 登入 Firebase Console\n2. 前往 Authentication -> Sign-in method\n3. 啟用 'Anonymous' 提供業者。";
+      } else if (err.code === 'storage/unauthorized') {
+        msg = "⚠️ 存儲權限錯誤 (Storage Unauthorized)\n\n請確保您已登入，或聯繫管理員檢查 Firebase Storage Rules。";
+      }
+      
+      alert(msg);
     }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    
+    // 特殊處理：聯絡電話不可用文字
+    if (name === 'contactPhone') {
+      const numericValue = value.replace(/\D/g, ''); // 強制移除所有非數字字符
+      setFormData(prev => ({ ...prev, [name]: numericValue }));
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
   };
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-32">
-      {(loading || fileProcessing) && (
-        <div className="fixed inset-0 bg-jd-dark/95 z-[200] flex flex-col items-center justify-center space-y-6">
-          <div className="relative w-24 h-24">
-            <div className="absolute inset-0 border-4 border-jd-gold/20 rounded-full"></div>
-            <div className="absolute inset-0 border-4 border-t-jd-gold rounded-full animate-spin"></div>
+      {uploadStatus !== 'idle' && (
+        <div className="fixed inset-0 bg-jd-dark/95 z-[250] flex flex-col items-center justify-center p-6 text-center animate-in fade-in duration-500 backdrop-blur-md">
+          <div className="relative w-48 h-48 mb-12 flex items-center justify-center">
+            <div className={`absolute inset-0 border-b-4 border-l-4 border-jd-gold/10 rounded-full animate-spin-slow ${uploadStatus === 'success' ? 'hidden' : ''}`}></div>
+            <div className="relative flex flex-col items-center">
+              {uploadStatus === 'success' ? (
+                <i className="fa-solid fa-check-double text-green-500 text-7xl animate-in zoom-in"></i>
+              ) : (
+                <>
+                  <span className="text-5xl font-black text-jd-gold font-mono tracking-tighter">{uploadProgress}%</span>
+                  <span className="text-[10px] text-gray-500 font-black uppercase tracking-widest mt-2">Syncing Data</span>
+                </>
+              )}
+            </div>
           </div>
-          <p className="text-jd-gold font-black tracking-widest uppercase animate-pulse text-center px-6">
-            {fileProcessing ? 'Processing High-Capacity Attachment...' : 'Synchronizing with Global Node...'}
-          </p>
+          
+          <div className="space-y-6 max-w-md w-full">
+            <div className="space-y-2">
+              <h3 className="text-3xl font-black text-white italic uppercase tracking-tighter">
+                {uploadStatus === 'uploading' ? 'Node Synchronizing' : 
+                 uploadStatus === 'syncing' ? 'Indexing Metadata' : 'Broadcast Completed'}
+              </h3>
+              <p className="text-jd-gold text-[10px] font-black uppercase tracking-[0.4em] animate-pulse">
+                {uploadStatus === 'uploading' ? '正在將大容量文件同步至全球分發節點...' : 
+                 uploadStatus === 'syncing' ? '正在為交易建立加密索引...' : '全球廣播已成功，資料已入庫'}
+              </p>
+            </div>
+
+            <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden border border-white/10 shadow-[0_0_20px_rgba(0,0,0,0.5)]">
+              <div 
+                className="h-full bg-gradient-to-r from-jd-gold to-yellow-300 transition-all duration-300 shadow-[0_0_15px_rgba(251,191,36,0.5)]"
+                style={{ width: `${uploadProgress}%` }}
+              ></div>
+            </div>
+          </div>
         </div>
       )}
 
-      <div className="bg-jd-light/40 backdrop-blur-lg border border-jd-gold/10 rounded-3xl overflow-hidden shadow-2xl">
+      <div className="bg-jd-light/40 backdrop-blur-lg border border-jd-gold/10 rounded-3xl overflow-hidden shadow-2xl relative">
         <div className={`h-2 w-full bg-gradient-to-r ${isBuyer ? 'from-blue-600 to-transparent' : 'from-green-600 to-transparent'}`}></div>
         
         <div className="p-10">
@@ -99,10 +156,50 @@ const TradeForm: React.FC<TradeFormProps> = ({ role, config, currentUser, onBack
             </button>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-10">
-            <section className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-12">
+            <section className="space-y-8">
               <h3 className="text-jd-gold text-sm font-black uppercase tracking-[0.2em] flex items-center">
-                <span className="w-8 h-px bg-jd-gold/30 mr-3"></span> 交易細節
+                <span className="w-8 h-px bg-jd-gold/30 mr-3"></span> 聯絡資訊 (Contact Details)
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                  <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">您的姓名 / 企業名稱</label>
+                  <input name="clientName" type="text" className="w-full bg-jd-dark/60 border border-gray-800 rounded-xl p-4 text-white focus:border-jd-gold outline-none" placeholder="Enter Full Name" required value={formData.clientName} onChange={handleInputChange} />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">電子郵箱</label>
+                  <input name="contactEmail" type="email" className="w-full bg-jd-dark/60 border border-gray-800 rounded-xl p-4 text-white focus:border-jd-gold outline-none" placeholder="example@email.com" required value={formData.contactEmail} onChange={handleInputChange} />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">聯絡電話 (僅限數字)</label>
+                  <input name="contactPhone" type="tel" inputMode="numeric" className="w-full bg-jd-dark/60 border border-gray-800 rounded-xl p-4 text-white focus:border-jd-gold outline-none" placeholder="Phone Number (Digits only)" required value={formData.contactPhone} onChange={handleInputChange} />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">所在地 / 地區</label>
+                  <select name="contactRegion" className="w-full bg-jd-dark/60 border border-gray-800 rounded-xl p-4 text-white focus:border-jd-gold outline-none cursor-pointer" required value={formData.contactRegion} onChange={handleInputChange}>
+                    {COUNTRIES.map(c => <option key={c} value={c}>{c}</option>)}
+                  </select>
+                </div>
+                <div className="col-span-full">
+                  <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">社交帳號 (Rapid Communication)</label>
+                  <div className="flex gap-4">
+                    <select name="socialType" className="bg-jd-dark/80 border border-gray-800 rounded-xl p-4 text-white focus:border-jd-gold outline-none cursor-pointer w-48" value={formData.socialType} onChange={handleInputChange}>
+                      <option value="WeChat">WeChat</option>
+                      <option value="WhatsApp">WhatsApp</option>
+                      <option value="Telegram">Telegram</option>
+                      <option value="Line">Line</option>
+                      <option value="Instagram">Instagram</option>
+                      <option value="Facebook">Facebook</option>
+                    </select>
+                    <input name="socialAccount" type="text" className="flex-grow bg-jd-dark/60 border border-gray-800 rounded-xl p-4 text-white focus:border-jd-gold outline-none" placeholder="Account ID / Username" required value={formData.socialAccount} onChange={handleInputChange} />
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section className="space-y-8">
+              <h3 className="text-jd-gold text-sm font-black uppercase tracking-[0.2em] flex items-center">
+                <span className="w-8 h-px bg-jd-gold/30 mr-3"></span> 交易細節 (Trade Specifics)
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="col-span-full">
@@ -118,27 +215,34 @@ const TradeForm: React.FC<TradeFormProps> = ({ role, config, currentUser, onBack
                 </div>
                 <div>
                   <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">目標價格 (USD)</label>
-                  <input name="price" type="number" className="w-full bg-jd-dark/60 border border-gray-800 rounded-xl p-4 text-white focus:border-jd-gold outline-none" placeholder="每單位價格" required value={formData.price} onChange={handleInputChange} />
+                  <input name="price" type="number" className="w-full bg-jd-dark/60 border border-gray-800 rounded-xl p-4 text-white focus:border-jd-gold outline-none" placeholder="每單位報價" required value={formData.price} onChange={handleInputChange} />
                 </div>
               </div>
             </section>
 
-            <section className="space-y-6">
+            <section className="space-y-8">
               <h3 className="text-jd-gold text-sm font-black uppercase tracking-[0.2em] flex items-center">
-                <span className="w-8 h-px bg-jd-gold/30 mr-3"></span> 文件上傳( 500K 限制)
+                <span className="w-8 h-px bg-jd-gold/30 mr-3"></span> 證明文件 (Documentation)
               </h3>
               <div className="relative group">
                 <input type="file" onChange={handleFileChange} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
-                <div className={`border-2 border-dashed rounded-2xl p-10 text-center transition-all ${formData.fileName ? 'border-jd-gold bg-jd-gold/5' : 'border-gray-800 group-hover:border-jd-gold bg-jd-dark/20 group-hover:bg-jd-gold/5'}`}>
-                  <i className={`fa-solid ${formData.fileName ? 'fa-file-circle-check text-jd-gold' : 'fa-file-shield text-gray-700'} text-4xl mb-4`}></i>
-                  <p className="text-gray-500 font-medium text-sm">{formData.fileName || '點擊上傳關鍵文件 (PDF, JPG, DOCX)'}</p>
+                <div className={`border-2 border-dashed rounded-2xl p-10 text-center transition-all ${selectedFile ? 'border-jd-gold bg-jd-gold/5' : 'border-gray-800 group-hover:border-jd-gold bg-jd-dark/20 group-hover:bg-jd-gold/5'}`}>
+                  <i className={`fa-solid ${selectedFile ? 'fa-file-circle-check text-jd-gold' : 'fa-clapperboard text-gray-700'} text-4xl mb-4`}></i>
+                  <p className="text-gray-500 font-medium text-sm">
+                    {selectedFile ? `已選擇：${selectedFile.name} (${(selectedFile.size/1024/1024).toFixed(2)}MB)` : '點擊或拖曳上傳證明文件、POP 影片或 LOI (PDF, MP4, JPG)'}
+                  </p>
                 </div>
               </div>
             </section>
 
             <div className="pt-6">
-              <button type="submit" disabled={loading || fileProcessing} className={`w-full ${isBuyer ? 'bg-blue-600 hover:bg-blue-500' : 'bg-green-600 hover:bg-green-500'} text-white font-black py-6 rounded-2xl transition-all shadow-xl uppercase tracking-[0.2em] flex items-center justify-center text-3xl disabled:opacity-50 leading-none`}>
-                <i className="fa-solid fa-paper-plane mr-4"></i> 提交加密交易申請
+              <button 
+                type="submit" 
+                disabled={uploadStatus !== 'idle'} 
+                className={`w-full ${isBuyer ? 'bg-blue-600 hover:bg-blue-500 shadow-blue-500/20' : 'bg-green-600 hover:bg-green-500 shadow-green-500/20'} text-white font-black py-6 rounded-2xl transition-all shadow-xl uppercase tracking-[0.2em] flex items-center justify-center text-3xl disabled:opacity-50 leading-none group`}
+              >
+                <i className="fa-solid fa-cloud-arrow-up mr-4 group-hover:-translate-y-1 transition-transform"></i> 
+                提交並廣播交易意向
               </button>
             </div>
           </form>
