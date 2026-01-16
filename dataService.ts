@@ -1,15 +1,17 @@
-import { db, auth, isConfigured, firebaseConfig, storage } from './firebase';
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInAnonymously as firebaseSignInAnonymously } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { db, auth, isConfigured, storage } from './firebase';
 import { 
-  collection, addDoc, getDocs, doc, setDoc, getDoc, deleteDoc, updateDoc, query, orderBy, limit, writeBatch, where
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+  signInAnonymously as firebaseSignInAnonymously,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  sendEmailVerification
+} from "firebase/auth";
 import { 
-  ref, uploadBytesResumable, getDownloadURL, deleteObject
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+  collection, addDoc, getDocs, doc, setDoc, getDoc, deleteDoc, updateDoc, query, orderBy, limit, writeBatch,
+  QueryDocumentSnapshot, DocumentData
+} from "firebase/firestore";
 import { 
-  signInWithEmailAndPassword, sendEmailVerification
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+  ref, uploadBytesResumable, getDownloadURL, StorageTaskSnapshot
+} from "firebase/storage";
 import { INITIAL_APP_CONFIG, INITIAL_SUBMISSIONS, MOCK_USERS } from './constants';
 import { TradeSubmission, AppConfig, User, MemberType, HeroSlide } from './types';
 
@@ -20,7 +22,6 @@ const generateMemberId = (uid: string) => {
 export const dataService = {
   async ensureDb() { return isConfigured; },
 
-  // 確保使用者已獲得 Auth 身份
   async ensureAuthenticated() {
     if (!isConfigured) return;
     if (!auth.currentUser) {
@@ -28,7 +29,7 @@ export const dataService = {
         await firebaseSignInAnonymously(auth);
       } catch (e: any) {
         if (e.code === 'auth/admin-restricted-operation') {
-          console.error("CRITICAL: Anonymous Auth is DISABLED in Firebase Console. Go to Auth -> Sign-in method -> Enable Anonymous.");
+          console.error("CRITICAL: Anonymous Auth is DISABLED in Firebase Console.");
         }
         throw e;
       }
@@ -41,17 +42,12 @@ export const dataService = {
       const cred = await firebaseSignInAnonymously(auth);
       return cred.user;
     } catch (e: any) {
-      if (e.code === 'auth/admin-restricted-operation') {
-        console.error("FATAL: Please enable 'Anonymous' sign-in provider in your Firebase project settings.");
-      }
       throw e;
     }
   },
 
   async uploadFile(file: File | Blob, path: string, onProgress?: (percent: number) => void): Promise<string> {
     if (!isConfigured) return URL.createObjectURL(file);
-    
-    // 上傳前強制同步 Auth，這對 Storage 權限至關重要
     await this.ensureAuthenticated();
 
     return new Promise((resolve, reject) => {
@@ -59,11 +55,11 @@ export const dataService = {
       const uploadTask = uploadBytesResumable(storageRef, file);
 
       uploadTask.on('state_changed', 
-        (snapshot) => {
+        (snapshot: StorageTaskSnapshot) => {
           const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           if (onProgress) onProgress(Math.round(progress));
         }, 
-        (error) => {
+        (error: Error) => {
           reject(error);
         }, 
         async () => {
@@ -87,7 +83,7 @@ export const dataService = {
         baseConfig = { ...INITIAL_APP_CONFIG, ...docSnap.data() };
       }
       const slidesSnap = await getDocs(query(collection(db, "hero_slides"), orderBy("order", "asc")));
-      const heroSlides = slidesSnap.docs.map(doc => ({ ...doc.data(), id: doc.id } as HeroSlide));
+      const heroSlides = slidesSnap.docs.map((doc: QueryDocumentSnapshot<DocumentData>) => ({ ...doc.data(), id: doc.id } as HeroSlide));
       if (heroSlides.length > 0) baseConfig.heroSlides = heroSlides;
       return baseConfig;
     } catch (e) {
@@ -121,7 +117,7 @@ export const dataService = {
       const path = `submissions/${Date.now()}_${file.name}`;
       fileUrl = await this.uploadFile(file, path, onProgress);
     }
-    const { fileData, ...rest } = data;
+    const { ...rest } = data;
     await addDoc(collection(db, "submissions"), { 
       ...rest, 
       fileUrl, 
@@ -160,7 +156,7 @@ export const dataService = {
   async getAllUsers(): Promise<User[]> {
     if (!isConfigured) return MOCK_USERS;
     const querySnapshot = await getDocs(collection(db, "users"));
-    return querySnapshot.docs.map(doc => ({ ...doc.data(), uid: doc.id } as User));
+    return querySnapshot.docs.map((doc: QueryDocumentSnapshot<DocumentData>) => ({ ...doc.data(), uid: doc.id } as User));
   },
 
   async toggleUserApproval(userId: string, status: boolean) {
@@ -173,7 +169,7 @@ export const dataService = {
     if (!isConfigured) return INITIAL_SUBMISSIONS;
     const q = query(collection(db, "submissions"), orderBy("timestamp", "desc"), limit(limitCount));
     const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as TradeSubmission));
+    return querySnapshot.docs.map((doc: QueryDocumentSnapshot<DocumentData>) => ({ id: doc.id, ...doc.data() } as TradeSubmission));
   },
 
   async deleteUser(userId: string) {
@@ -196,10 +192,7 @@ export const dataService = {
 
   async runDiagnostic() {
     if (!isConfigured) return "SANDBOX";
-    
-    // 診斷前確保身份驗證，避免 Firestore 規則阻擋寫入
     await this.ensureAuthenticated();
-    
     const docRef = await addDoc(collection(db, "diagnostics"), {
       testTime: new Date().toISOString(),
       status: "HEALTHY"
@@ -215,10 +208,7 @@ export const dataService = {
 
   async resendVerificationEmail() {
     if (!isConfigured) return true;
-    
-    // 發送前嘗試獲取/修復身份
     await this.ensureAuthenticated();
-    
     const user = auth.currentUser;
     if (!user) throw new Error("USER_NOT_LOGGED_IN");
     await sendEmailVerification(user);
