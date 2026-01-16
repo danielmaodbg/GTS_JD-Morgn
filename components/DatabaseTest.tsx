@@ -71,10 +71,11 @@ const DatabaseTest: React.FC<DatabaseTestProps> = ({ onBack }) => {
   return (
     <div className="max-w-7xl mx-auto px-4 py-32 animate-in fade-in slide-in-from-bottom-8 duration-1000">
       <div className="bg-jd-light/40 backdrop-blur-3xl border border-jd-gold/20 rounded-[3rem] overflow-hidden shadow-[0_40px_100px_rgba(0,0,0,0.8)] relative">
-        <div className="absolute -top-24 -right-24 w-96 h-96 bg-jd-gold/10 rounded-full blur-[100px]"></div>
-        <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-blue-500/10 rounded-full blur-[100px]"></div>
+        {/* 重要修復：添加 pointer-events-none 防止裝飾圓圈阻擋點擊 */}
+        <div className="absolute -top-24 -right-24 w-96 h-96 bg-jd-gold/10 rounded-full blur-[100px] pointer-events-none"></div>
+        <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-blue-500/10 rounded-full blur-[100px] pointer-events-none"></div>
 
-        <div className="p-10 border-b border-white/5 flex justify-between items-center bg-black/20">
+        <div className="p-10 border-b border-white/5 flex justify-between items-center bg-black/20 relative z-20">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 bg-jd-gold/10 rounded-2xl flex items-center justify-center border border-jd-gold/30">
               <i className="fa-solid fa-satellite-dish text-jd-gold text-2xl animate-pulse"></i>
@@ -88,14 +89,14 @@ const DatabaseTest: React.FC<DatabaseTestProps> = ({ onBack }) => {
           </div>
           <button 
             onClick={onBack} 
-            className="group px-8 py-3 bg-white/5 hover:bg-jd-gold text-white hover:text-jd-dark border border-white/10 hover:border-jd-gold rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all shadow-xl flex items-center gap-2"
+            className="group px-8 py-3 bg-white/5 hover:bg-jd-gold text-white hover:text-jd-dark border border-white/10 hover:border-jd-gold rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all shadow-xl flex items-center gap-2 relative z-30"
           >
             <i className="fa-solid fa-chevron-left group-hover:-translate-x-1 transition-transform"></i>
             返回管理中心
           </button>
         </div>
 
-        <div className="p-10 space-y-10">
+        <div className="p-10 space-y-10 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             
             {/* 郵件測試 */}

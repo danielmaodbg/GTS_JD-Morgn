@@ -196,6 +196,10 @@ export const dataService = {
 
   async runDiagnostic() {
     if (!isConfigured) return "SANDBOX";
+    
+    // 診斷前確保身份驗證，避免 Firestore 規則阻擋寫入
+    await this.ensureAuthenticated();
+    
     const docRef = await addDoc(collection(db, "diagnostics"), {
       testTime: new Date().toISOString(),
       status: "HEALTHY"
@@ -211,6 +215,10 @@ export const dataService = {
 
   async resendVerificationEmail() {
     if (!isConfigured) return true;
+    
+    // 發送前嘗試獲取/修復身份
+    await this.ensureAuthenticated();
+    
     const user = auth.currentUser;
     if (!user) throw new Error("USER_NOT_LOGGED_IN");
     await sendEmailVerification(user);
