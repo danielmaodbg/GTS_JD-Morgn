@@ -43,11 +43,11 @@
 <script type="importmap">
 {
   "imports": {
+    "react/": "https://esm.sh/react@^19.2.3/",
     "react": "https://esm.sh/react@^19.2.3",
     "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
-    "react/": "https://esm.sh/react@^19.2.3/",
-    "vite": "https://esm.sh/vite@^7.3.1",
     "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2",
+    "vite": "https://esm.sh/vite@^7.3.1",
     "firebase/": "https://esm.sh/firebase@^12.8.0/"
   }
 }
@@ -55,6 +55,7 @@
 </head>
 <body>
     <div id="root"></div>
-    <script type="module" src="/index.tsx"></script>
+    <!-- 這裡使用相對路徑 ./index.tsx 是 Vite 的標準做法 -->
+    <script type="module" src="./index.tsx"></script>
 </body>
 </html>
