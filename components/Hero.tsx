@@ -14,7 +14,7 @@ const Hero: React.FC<HeroProps> = ({ onStart, config }) => {
     if (slides.length <= 1) return;
     const timer = setInterval(() => {
       setIndex((prev) => (prev + 1) % slides.length);
-    }, 8000);
+    }, 4000); // 輪播秒數減半
     return () => clearInterval(timer);
   }, [slides.length]);
 
@@ -35,13 +35,10 @@ const Hero: React.FC<HeroProps> = ({ onStart, config }) => {
             style={{ backgroundImage: `url('${slide.img}')` }}
           />
           
-          {/* 融合漸層：頂部深色漸變確保與透明 Navbar 的融合，底部深色確保文字清晰 */}
+          {/* 融合漸層：頂部深色漸變確保與透明 Navbar 的融合 */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-jd-dark"></div>
           
-          {/* 微光濾鏡 */}
           <div className="absolute inset-0 bg-black/10"></div>
-          
-          {/* 氛圍遮罩 */}
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(10,25,47,0.4)_100%)]"></div>
         </div>
       ))}

@@ -26,9 +26,10 @@ const HomeNew: React.FC<HomeNewProps> = ({ onStart, onNavigate, config }) => {
     
     let interval: number | undefined;
     if (slides.length > 1) {
+      // 輪播秒數減半：由 8000ms 改為 4000ms
       interval = window.setInterval(() => {
         setIndex((prev) => (prev + 1) % slides.length);
-      }, 8000);
+      }, 4000);
     }
     
     return () => {
@@ -57,14 +58,11 @@ const HomeNew: React.FC<HomeNewProps> = ({ onStart, onNavigate, config }) => {
                 e.currentTarget.src = 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop';
               }}
             />
-            {/* 深度融合遮罩：頂部增加適度陰影確保透明 Navbar Logo 清晰，底部深色強化內容可讀性 */}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-jd-dark/95"></div>
+            {/* 深度融合遮罩：調整頂部漸層，使其更透明以達到極致融合感 */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-jd-dark/95"></div>
             
             {/* 微光濾鏡 */}
             <div className="absolute inset-0 bg-black/5"></div>
-            
-            {/* 四周氛圍陰影 */}
-            <div className="absolute inset-0 shadow-[inset_0_0_300px_rgba(0,0,0,0.5)]"></div>
           </div>
         ))}
       </div>

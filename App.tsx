@@ -13,6 +13,8 @@ import MemberDashboard from './components/MemberDashboard';
 import DatabaseTest from './components/DatabaseTest';
 import EmailVerification from './components/EmailVerification';
 import News from './components/News';
+import Disclaimer from './components/Disclaimer';
+import LegalGate from './components/LegalGate';
 import { dataService } from './dataService';
 
 const App: React.FC = () => {
@@ -25,10 +27,15 @@ const App: React.FC = () => {
   const [members, setMembers] = useState<User[]>(MOCK_USERS);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isEntryModalOpen, setIsEntryModalOpen] = useState(false);
+  const [isLegalAgreed, setIsLegalAgreed] = useState<boolean | null>(null);
 
   const ADMIN_EMAIL = "info@jdmorgan.ca";
 
   useEffect(() => {
+    // Check legal agreement status
+    const agreed = localStorage.getItem('jd_morgan_legal_agreed');
+    setIsLegalAgreed(agreed === 'true');
+
     const loadConfig = async () => {
       try {
         const savedConfig = await dataService.getSettings();
@@ -49,6 +56,11 @@ const App: React.FC = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const handleLegalAgree = () => {
+    localStorage.setItem('jd_morgan_legal_agreed', 'true');
+    setIsLegalAgreed(true);
+  };
 
   const handleLogin = (user: User) => {
     setCurrentUser(user);
@@ -83,7 +95,6 @@ const App: React.FC = () => {
 
   const handleSelectGuest = async () => {
     setIsEntryModalOpen(false);
-    // 背景觸發匿名登入，確保後續上傳有權限
     try {
       await dataService.signInAnonymously();
     } catch (e) {
@@ -159,13 +170,20 @@ const App: React.FC = () => {
         return <DatabaseTest onBack={() => setCurrentView(View.ADMIN)} />;
       case View.NEWS:
         return <News onBack={() => setCurrentView(View.HOME)} />;
+      case View.DISCLAIMER:
+        return <Disclaimer onBack={() => setCurrentView(View.HOME)} />;
       default:
         return <HomeNew onStart={startTrading} onNavigate={setCurrentView} config={appConfig} />;
     }
   };
 
+  // Do not show LegalGate if it's currently null (checking state) or already agreed
+  const showLegalGate = isLegalAgreed === false;
+
   return (
     <div className="min-h-screen flex flex-col font-sans bg-jd-dark text-jd-text">
+      {showLegalGate && <LegalGate onAgree={handleLegalAgree} />}
+      
       <Navbar 
         currentUser={currentUser} 
         onNavigate={(view) => {
@@ -180,19 +198,39 @@ const App: React.FC = () => {
         {renderContent()}
       </main>
 
-      <footer className="bg-jd-dark border-t border-gray-800 py-12">
-        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
-          <div className="text-left">
-            <h3 className="text-white font-black text-lg tracking-widest">{appConfig.logoText}</h3>
-            <p className="text-xs text-gray-500 mt-2">© 2025 JD Morgan Global Trading System. Secure Asset Allocation Node.</p>
+      <footer className="bg-jd-dark border-t border-gray-800 py-16">
+        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-12">
+          <div className="text-left space-y-3">
+            <h3 className="text-white font-black text-2xl tracking-tighter uppercase leading-none">
+              JD MORGAN <span className="text-jd-gold font-light">GLOBAL TRADING</span>
+            </h3>
+            <p className="text-[10px] text-gray-600 font-bold uppercase tracking-[0.2em] leading-relaxed">
+              Copyright © 2026 JD MORGAN GLOBAL TRADING LTD. <br className="md:hidden" /> All Rights Reserved.
+            </p>
           </div>
-          <div className="flex gap-8 text-[10px] text-gray-400 font-bold uppercase tracking-widest">
-            <a href="#" className="hover:text-jd-gold transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-jd-gold transition-colors">Terms of Service</a>
-            <a href="#" className="hover:text-jd-gold transition-colors">Compliance</a>
+          
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 md:gap-12 text-[10px] text-gray-400 font-black uppercase tracking-widest">
+            <button 
+              onClick={() => { setCurrentView(View.DISCLAIMER); setTimeout(() => document.getElementById('privacy')?.scrollIntoView({behavior: 'smooth'}), 100); }} 
+              className="hover:text-jd-gold transition-colors text-left"
+            >
+              Privacy Policy
+            </button>
+            <button 
+              onClick={() => { setCurrentView(View.DISCLAIMER); setTimeout(() => document.getElementById('tos')?.scrollIntoView({behavior: 'smooth'}), 100); }} 
+              className="hover:text-jd-gold transition-colors text-left"
+            >
+              Terms of Service
+            </button>
+            <button 
+              onClick={() => { setCurrentView(View.DISCLAIMER); setTimeout(() => document.getElementById('disclaimer')?.scrollIntoView({behavior: 'smooth'}), 100); }} 
+              className="hover:text-jd-gold transition-colors text-left"
+            >
+              LEGAL DISCLAIMER
+            </button>
             <button 
               onClick={() => setCurrentView(View.HOME_LEGACY)}
-              className="text-[8px] opacity-30 hover:opacity-100 transition-opacity"
+              className="text-[8px] opacity-20 hover:opacity-100 transition-opacity text-left"
             >
               LEGACY UI
             </button>

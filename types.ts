@@ -9,7 +9,8 @@ export enum View {
   MEMBER_DASHBOARD = 'member-dashboard',
   DATABASE_TEST = 'database-test',
   VERIFY_EMAIL = 'verify-email',
-  NEWS = 'news'
+  NEWS = 'news',
+  DISCLAIMER = 'disclaimer'
 }
 
 export enum MemberType {
@@ -92,5 +93,6 @@ export interface TradeSubmission {
   socialType?: string;
   socialAccount?: string;
   fileName?: string;
+  fileUrl?: string;
   fileData?: string; 
 }

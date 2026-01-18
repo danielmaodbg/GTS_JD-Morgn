@@ -14,7 +14,7 @@ const HomeLegacy: React.FC<HomeLegacyProps> = ({ onStart, config }) => {
     if (slides.length <= 1) return;
     const timer = setInterval(() => {
       setIndex((prev) => (prev + 1) % slides.length);
-    }, 8000);
+    }, 4000); // 輪播秒數減半
     return () => clearInterval(timer);
   }, [slides.length]);
 
