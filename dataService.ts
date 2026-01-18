@@ -10,7 +10,7 @@ import {
   QueryDocumentSnapshot, DocumentData
 } from "firebase/firestore";
 import { 
-  ref, uploadBytesResumable, getDownloadURL, StorageTaskSnapshot
+  ref, uploadBytesResumable, getDownloadURL, UploadTaskSnapshot
 } from "firebase/storage";
 import { INITIAL_APP_CONFIG, INITIAL_SUBMISSIONS, MOCK_USERS } from './constants';
 import { TradeSubmission, AppConfig, User, MemberType, HeroSlide } from './types';
@@ -55,7 +55,7 @@ export const dataService = {
       const uploadTask = uploadBytesResumable(storageRef, file);
 
       uploadTask.on('state_changed', 
-        (snapshot: StorageTaskSnapshot) => {
+        (snapshot: UploadTaskSnapshot) => {
           const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           if (onProgress) onProgress(Math.round(progress));
         }, 
