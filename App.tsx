@@ -204,32 +204,29 @@ const App: React.FC = () => {
             </p>
           </div>
           
-          {/* 右側連結盒 - 優化換行與間距 */}
-          <div className="flex flex-col lg:flex-row items-center gap-12">
-            <div className="flex flex-wrap justify-center border border-blue-500/40 rounded-sm overflow-hidden text-[11px] font-black uppercase tracking-[0.2em] max-w-full">
-              <button 
-                onClick={() => { setCurrentView(View.DISCLAIMER); setTimeout(() => document.getElementById('privacy')?.scrollIntoView({behavior: 'smooth'}), 100); }} 
-                className="px-6 py-4 border-r border-blue-500/40 hover:bg-blue-500/10 hover:text-white text-gray-400 transition-all text-center whitespace-normal min-w-[120px]"
-              >
-                PRIVACY POLICY
-              </button>
-              <button 
-                onClick={() => { setCurrentView(View.DISCLAIMER); setTimeout(() => document.getElementById('tos')?.scrollIntoView({behavior: 'smooth'}), 100); }} 
-                className="px-6 py-4 border-r border-blue-500/40 hover:bg-blue-500/10 hover:text-white text-gray-400 transition-all text-center whitespace-normal min-w-[120px]"
-              >
-                TERMS OF SERVICE
-              </button>
-              <button 
-                onClick={() => { setCurrentView(View.DISCLAIMER); setTimeout(() => document.getElementById('disclaimer')?.scrollIntoView({behavior: 'smooth'}), 100); }} 
-                className="px-6 py-4 hover:bg-blue-500/10 hover:text-white text-gray-400 transition-all text-center whitespace-normal min-w-[120px]"
-              >
-                LEGAL DISCLAIMER
-              </button>
-            </div>
-            
+          {/* 右側連結盒 - 四個連結並排顯示，移除框線並進一步縮小字體 */}
+          <div className="flex flex-wrap justify-center items-center gap-x-10 gap-y-4 text-[7px] font-black uppercase tracking-[0.3em] max-w-full">
+            <button 
+              onClick={() => { setCurrentView(View.DISCLAIMER); setTimeout(() => document.getElementById('privacy')?.scrollIntoView({behavior: 'smooth'}), 100); }} 
+              className="hover:text-white text-gray-600 transition-all text-center whitespace-nowrap"
+            >
+              PRIVACY POLICY
+            </button>
+            <button 
+              onClick={() => { setCurrentView(View.DISCLAIMER); setTimeout(() => document.getElementById('tos')?.scrollIntoView({behavior: 'smooth'}), 100); }} 
+              className="hover:text-white text-gray-600 transition-all text-center whitespace-nowrap"
+            >
+              TERMS OF SERVICE
+            </button>
+            <button 
+              onClick={() => { setCurrentView(View.DISCLAIMER); setTimeout(() => document.getElementById('disclaimer')?.scrollIntoView({behavior: 'smooth'}), 100); }} 
+              className="hover:text-white text-gray-600 transition-all text-center whitespace-nowrap"
+            >
+              LEGAL DISCLAIMER
+            </button>
             <button 
               onClick={() => setCurrentView(View.HOME_LEGACY)}
-              className="text-[9px] text-gray-700 hover:text-jd-gold font-black uppercase tracking-widest transition-colors whitespace-nowrap"
+              className="hover:text-jd-gold text-gray-800 transition-all text-center whitespace-nowrap"
             >
               LEGACY UI
             </button>
