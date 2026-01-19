@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 interface LegalGateProps {
   onAgree: () => void;
@@ -6,9 +6,36 @@ interface LegalGateProps {
 
 const LegalGate: React.FC<LegalGateProps> = ({ onAgree }) => {
   const [hasScrolled, setHasScrolled] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  // 檢查是否需要捲動。如果內容本身就很短，直接允許同意。
+  useEffect(() => {
+    const checkScroll = () => {
+      if (scrollRef.current) {
+        const { scrollHeight, clientHeight } = scrollRef.current;
+        // 如果內容高度小於或等於顯示高度，代表不需要捲動
+        if (scrollHeight <= clientHeight + 10) {
+          setHasScrolled(true);
+        }
+      }
+    };
+
+    // 初始檢查與視窗縮放檢查
+    checkScroll();
+    window.addEventListener('resize', checkScroll);
+    
+    // 額外延遲檢查，確保動態內容渲染完成
+    const timer = setTimeout(checkScroll, 500);
+    
+    return () => {
+      window.removeEventListener('resize', checkScroll);
+      clearTimeout(timer);
+    };
+  }, []);
 
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
+    // 只要接近底部 20px 就算閱讀完成
     if (scrollTop + clientHeight >= scrollHeight - 20) {
       setHasScrolled(true);
     }
@@ -20,7 +47,7 @@ const LegalGate: React.FC<LegalGateProps> = ({ onAgree }) => {
       
       <div className="relative w-full max-w-3xl bg-jd-light border border-jd-gold/30 rounded-[2.5rem] shadow-[0_0_100px_rgba(0,0,0,0.8)] overflow-hidden animate-in fade-in zoom-in duration-500 flex flex-col max-h-[90vh]">
         {/* Header */}
-        <div className="p-8 border-b border-white/5 bg-black/20 text-center">
+        <div className="p-8 border-b border-white/5 bg-black/20 text-center flex-shrink-0">
           <div className="flex justify-center mb-4">
             <div className="w-16 h-16 rounded-2xl bg-jd-gold/10 border border-jd-gold/30 flex items-center justify-center">
               <i className="fa-solid fa-gavel text-jd-gold text-3xl"></i>
@@ -34,8 +61,10 @@ const LegalGate: React.FC<LegalGateProps> = ({ onAgree }) => {
 
         {/* Legal Summary Content */}
         <div 
+          ref={scrollRef}
           onScroll={handleScroll}
           className="p-8 md:p-12 overflow-y-auto custom-scrollbar space-y-10 flex-grow"
+          style={{ WebkitOverflowScrolling: 'touch' }}
         >
           <div className="space-y-4">
             <h3 className="text-jd-gold text-xs font-black uppercase tracking-widest flex items-center gap-3">
@@ -65,19 +94,19 @@ const LegalGate: React.FC<LegalGateProps> = ({ onAgree }) => {
           </div>
 
           <div className="pt-6 border-t border-white/5 text-[10px] text-gray-500 text-center uppercase tracking-widest font-bold">
-            請向下滾動以確認您已閱讀並同意以上所有法律條款
+            {!hasScrolled ? "請向下滾動以確認您已閱讀並同意以上所有法律條款" : "條款已閱讀完畢，請點擊下方按鈕確認"}
           </div>
         </div>
 
         {/* Footer Actions */}
-        <div className="p-8 border-t border-white/5 bg-black/40 flex flex-col gap-4">
+        <div className="p-8 border-t border-white/5 bg-black/40 flex flex-col gap-4 flex-shrink-0">
           <button 
             onClick={onAgree}
             disabled={!hasScrolled}
             className={`w-full md:w-1/3 mx-auto py-5 rounded-2xl font-black text-xl uppercase tracking-widest transition-all shadow-2xl flex items-center justify-center gap-4 whitespace-nowrap ${
               hasScrolled 
                 ? 'bg-jd-gold text-jd-dark hover:scale-[1.02] shadow-[0_20px_50px_rgba(251,191,36,0.3)]' 
-                : 'bg-gray-800 text-gray-600 cursor-not-allowed'
+                : 'bg-gray-800 text-gray-600 cursor-not-allowed opacity-50'
             }`}
           >
             {hasScrolled ? <i className="fa-solid fa-check-double"></i> : <i className="fa-solid fa-lock"></i>}
