@@ -58,12 +58,12 @@ const Hero: React.FC<HeroProps> = ({ onStart, config }) => {
           <div className="pt-10 flex flex-wrap justify-center gap-10 animate-in fade-in zoom-in duration-1000 delay-500">
             <button 
               onClick={onStart}
-              className="group relative bg-jd-gold text-jd-dark font-black w-80 h-24 rounded-xl shadow-[0_20px_60px_rgba(251,191,36,0.3)] transition-all duration-500 hover:scale-105 active:scale-95 flex items-center justify-center"
+              className="group relative bg-jd-gold text-jd-dark font-black w-40 h-12 rounded-lg shadow-[0_10px_30px_rgba(251,191,36,0.3)] transition-all duration-500 hover:scale-105 active:scale-95 flex items-center justify-center"
             >
-              <span className="relative z-10 tracking-[0.05em] text-4xl uppercase leading-none mt-1">進入交易大廳</span>
+              <span className="relative z-10 tracking-[0.05em] text-lg uppercase leading-none mt-0.5">我想提供交易情報</span>
             </button>
-            <button className="bg-white/5 hover:bg-white/10 text-white border border-white/20 backdrop-blur-2xl font-black w-80 h-24 rounded-xl transition-all duration-500 tracking-[0.05em] text-4xl uppercase shadow-2xl flex items-center justify-center">
-              <span className="leading-none mt-1">關於我們</span>
+            <button className="bg-white/5 hover:bg-white/10 text-white border border-white/20 backdrop-blur-2xl font-black w-40 h-12 rounded-lg transition-all duration-500 tracking-[0.05em] text-lg uppercase shadow-2xl flex items-center justify-center">
+              <span className="leading-none mt-0.5">關於我們</span>
             </button>
           </div>
         </div>

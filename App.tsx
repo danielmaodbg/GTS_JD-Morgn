@@ -32,7 +32,6 @@ const App: React.FC = () => {
   const ADMIN_EMAIL = "info@jdmorgan.ca";
 
   useEffect(() => {
-    // Check legal agreement status
     const agreed = localStorage.getItem('jd_morgan_legal_agreed');
     setIsLegalAgreed(agreed === 'true');
 
@@ -65,13 +64,11 @@ const App: React.FC = () => {
   const handleLogin = (user: User) => {
     setCurrentUser(user);
     setIsEntryModalOpen(false);
-
     const isAdmin = (
       user.role?.toLowerCase() === 'admin' || 
       user.email?.toLowerCase() === ADMIN_EMAIL.toLowerCase() ||
       user.username?.toLowerCase() === ADMIN_EMAIL.toLowerCase()
     );
-
     if (isAdmin) {
       setCurrentView(View.ADMIN);
     } else {
@@ -98,7 +95,7 @@ const App: React.FC = () => {
     try {
       await dataService.signInAnonymously();
     } catch (e) {
-      console.warn("Guest session initialization failed, but proceeding...");
+      console.warn("Guest session failed, but proceeding...");
     }
     setCurrentView(View.ROLE_SELECT);
   };
@@ -177,7 +174,6 @@ const App: React.FC = () => {
     }
   };
 
-  // Do not show LegalGate if it's currently null (checking state) or already agreed
   const showLegalGate = isLegalAgreed === false;
 
   return (
@@ -186,9 +182,7 @@ const App: React.FC = () => {
       
       <Navbar 
         currentUser={currentUser} 
-        onNavigate={(view) => {
-          setCurrentView(view);
-        }} 
+        onNavigate={(view) => setCurrentView(view)} 
         onLogout={handleLogout}
         isScrolled={isScrolled}
         config={appConfig}
@@ -198,39 +192,44 @@ const App: React.FC = () => {
         {renderContent()}
       </main>
 
-      <footer className="bg-jd-dark border-t border-gray-800 py-16">
-        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-12">
-          <div className="text-left space-y-3">
-            <h3 className="text-white font-black text-2xl tracking-tighter uppercase leading-none">
+      <footer className="bg-jd-dark border-t border-gray-900 py-20">
+        <div className="max-w-7xl mx-auto px-8 flex flex-col md:flex-row justify-between items-center gap-12">
+          {/* 左側品牌資訊 */}
+          <div className="text-left space-y-4">
+            <h3 className="text-white font-black text-4xl tracking-tighter uppercase leading-none">
               JD MORGAN <span className="text-jd-gold font-light">GLOBAL TRADING</span>
             </h3>
-            <p className="text-[10px] text-gray-600 font-bold uppercase tracking-[0.2em] leading-relaxed">
-              Copyright © 2026 JD MORGAN GLOBAL TRADING LTD. <br className="md:hidden" /> All Rights Reserved.
+            <p className="text-[11px] text-gray-500 font-bold uppercase tracking-[0.25em] leading-relaxed">
+              COPYRIGHT © 2026 JD MORGAN GLOBAL TRADING LTD. ALL RIGHTS RESERVED.
             </p>
           </div>
           
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 md:gap-12 text-[10px] text-gray-400 font-black uppercase tracking-widest">
-            <button 
-              onClick={() => { setCurrentView(View.DISCLAIMER); setTimeout(() => document.getElementById('privacy')?.scrollIntoView({behavior: 'smooth'}), 100); }} 
-              className="hover:text-jd-gold transition-colors text-left"
-            >
-              Privacy Policy
-            </button>
-            <button 
-              onClick={() => { setCurrentView(View.DISCLAIMER); setTimeout(() => document.getElementById('tos')?.scrollIntoView({behavior: 'smooth'}), 100); }} 
-              className="hover:text-jd-gold transition-colors text-left"
-            >
-              Terms of Service
-            </button>
-            <button 
-              onClick={() => { setCurrentView(View.DISCLAIMER); setTimeout(() => document.getElementById('disclaimer')?.scrollIntoView({behavior: 'smooth'}), 100); }} 
-              className="hover:text-jd-gold transition-colors text-left"
-            >
-              LEGAL DISCLAIMER
-            </button>
+          {/* 右側連結盒 - 優化換行與間距 */}
+          <div className="flex flex-col lg:flex-row items-center gap-12">
+            <div className="flex flex-wrap justify-center border border-blue-500/40 rounded-sm overflow-hidden text-[11px] font-black uppercase tracking-[0.2em] max-w-full">
+              <button 
+                onClick={() => { setCurrentView(View.DISCLAIMER); setTimeout(() => document.getElementById('privacy')?.scrollIntoView({behavior: 'smooth'}), 100); }} 
+                className="px-6 py-4 border-r border-blue-500/40 hover:bg-blue-500/10 hover:text-white text-gray-400 transition-all text-center whitespace-normal min-w-[120px]"
+              >
+                PRIVACY POLICY
+              </button>
+              <button 
+                onClick={() => { setCurrentView(View.DISCLAIMER); setTimeout(() => document.getElementById('tos')?.scrollIntoView({behavior: 'smooth'}), 100); }} 
+                className="px-6 py-4 border-r border-blue-500/40 hover:bg-blue-500/10 hover:text-white text-gray-400 transition-all text-center whitespace-normal min-w-[120px]"
+              >
+                TERMS OF SERVICE
+              </button>
+              <button 
+                onClick={() => { setCurrentView(View.DISCLAIMER); setTimeout(() => document.getElementById('disclaimer')?.scrollIntoView({behavior: 'smooth'}), 100); }} 
+                className="px-6 py-4 hover:bg-blue-500/10 hover:text-white text-gray-400 transition-all text-center whitespace-normal min-w-[120px]"
+              >
+                LEGAL DISCLAIMER
+              </button>
+            </div>
+            
             <button 
               onClick={() => setCurrentView(View.HOME_LEGACY)}
-              className="text-[8px] opacity-20 hover:opacity-100 transition-opacity text-left"
+              className="text-[9px] text-gray-700 hover:text-jd-gold font-black uppercase tracking-widest transition-colors whitespace-nowrap"
             >
               LEGACY UI
             </button>

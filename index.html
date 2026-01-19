@@ -12,11 +12,11 @@
                 extend: {
                     colors: {
                         jd: {
-                            dark: '#0a192f',
-                            light: '#112240',
-                            gold: '#fbbf24',
-                            text: '#8892b0',
-                            white: '#e6f1ff'
+                            dark: '#010409', // Deep dark background
+                            light: 'rgba(255, 255, 255, 0.03)', // Subtle translucent card background
+                            gold: '#fbbf24', // Premium gold
+                            text: '#94a3b8', // Muted slate text
+                            white: '#ffffff' // Pure white
                         }
                     },
                     fontFamily: {
@@ -30,14 +30,14 @@
         }
     </script>
     <style>
-        body { background-color: #0a192f; color: #8892b0; margin: 0; padding: 0; }
+        body { background-color: #010409; color: #94a3b8; margin: 0; padding: 0; }
         .custom-scrollbar::-webkit-scrollbar { width: 5px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(251, 191, 36, 0.2); border-radius: 10px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(251, 191, 36, 0.5); }
         ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #0a192f; }
-        ::-webkit-scrollbar-thumb { background: #112240; border-radius: 4px; }
+        ::-webkit-scrollbar-track { background: #010409; }
+        ::-webkit-scrollbar-thumb { background: #1f2937; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #fbbf24; }
     </style>
 <script type="importmap">

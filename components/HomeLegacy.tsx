@@ -46,8 +46,8 @@ const HomeLegacy: React.FC<HomeLegacyProps> = ({ onStart, config }) => {
             {slides[index]?.title}
           </h1>
           <div className="pt-12 flex justify-center gap-8">
-            <button onClick={onStart} className="bg-jd-gold text-jd-dark font-black px-12 py-5 rounded-lg text-sm uppercase tracking-widest">
-              進入交易終端
+            <button onClick={onStart} className="bg-jd-gold text-jd-dark font-black px-6 py-2.5 rounded-lg text-[10px] uppercase tracking-widest">
+              我想提供交易情報
             </button>
           </div>
         </div>
