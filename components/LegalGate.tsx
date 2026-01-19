@@ -74,14 +74,14 @@ const LegalGate: React.FC<LegalGateProps> = ({ onAgree }) => {
           <button 
             onClick={onAgree}
             disabled={!hasScrolled}
-            className={`w-full py-5 rounded-2xl font-black text-xl uppercase tracking-widest transition-all shadow-2xl flex items-center justify-center gap-4 ${
+            className={`w-full md:w-1/3 mx-auto py-5 rounded-2xl font-black text-xl uppercase tracking-widest transition-all shadow-2xl flex items-center justify-center gap-4 whitespace-nowrap ${
               hasScrolled 
                 ? 'bg-jd-gold text-jd-dark hover:scale-[1.02] shadow-[0_20px_50px_rgba(251,191,36,0.3)]' 
                 : 'bg-gray-800 text-gray-600 cursor-not-allowed'
             }`}
           >
             {hasScrolled ? <i className="fa-solid fa-check-double"></i> : <i className="fa-solid fa-lock"></i>}
-            我已閱讀並同意法律協議
+            我已閱讀並同意
           </button>
           <div className="text-[9px] text-gray-600 text-center uppercase tracking-widest font-bold">
             Governed by the laws of British Columbia, Canada

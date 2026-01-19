@@ -12,8 +12,8 @@
                 extend: {
                     colors: {
                         jd: {
-                            dark: '#010409', // Deep dark background
-                            light: 'rgba(255, 255, 255, 0.03)', // Subtle translucent card background
+                            dark: '#010411', // 極致深邃黑藍 (Background)
+                            light: '#0f172a', // 明顯區隔的金融深藍 (Cards/Containers)
                             gold: '#fbbf24', // Premium gold
                             text: '#94a3b8', // Muted slate text
                             white: '#ffffff' // Pure white
@@ -30,15 +30,22 @@
         }
     </script>
     <style>
-        body { background-color: #010409; color: #94a3b8; margin: 0; padding: 0; }
+        body { background-color: #010411; color: #94a3b8; margin: 0; padding: 0; }
         .custom-scrollbar::-webkit-scrollbar { width: 5px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(251, 191, 36, 0.2); border-radius: 10px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(251, 191, 36, 0.5); }
         ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #010409; }
-        ::-webkit-scrollbar-thumb { background: #1f2937; border-radius: 4px; }
+        ::-webkit-scrollbar-track { background: #010411; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #fbbf24; }
+        
+        /* 增加全局卡片的高級感：微光邊框效果 */
+        .glass-card {
+            background: #0f172a;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
     </style>
 <script type="importmap">
 {

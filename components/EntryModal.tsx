@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 interface EntryModalProps {
@@ -15,7 +14,7 @@ const EntryModal: React.FC<EntryModalProps> = ({ isOpen, onClose, onSelectGuest,
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-jd-dark/80 backdrop-blur-md" onClick={onClose}></div>
       
-      <div className="relative w-full max-w-2xl bg-jd-light border border-jd-gold/20 rounded-[40px] overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.6)] animate-in fade-in zoom-in duration-300">
+      <div className="relative w-full max-w-2xl bg-jd-light border border-jd-gold/30 rounded-[40px] overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.6)] animate-in fade-in zoom-in duration-300">
         <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-transparent via-jd-gold to-transparent"></div>
         
         <div className="p-14 text-center">
@@ -32,7 +31,7 @@ const EntryModal: React.FC<EntryModalProps> = ({ isOpen, onClose, onSelectGuest,
             {/* Non-Member Button */}
             <button 
               onClick={onSelectGuest}
-              className="group relative flex flex-col items-center justify-center p-14 bg-jd-dark/50 border border-gray-800 hover:border-blue-500/50 rounded-3xl transition-all hover:shadow-[0_0_50px_rgba(59,130,246,0.2)]"
+              className="group relative flex flex-col items-center justify-center p-14 bg-jd-dark border border-white/5 hover:border-blue-500/50 rounded-3xl transition-all hover:shadow-[0_0_50px_rgba(59,130,246,0.2)]"
             >
               <div className="w-24 h-24 rounded-2xl bg-blue-500/10 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform border border-blue-500/20">
                 <i className="fa-solid fa-user-secret text-4xl text-blue-400"></i>
@@ -44,7 +43,7 @@ const EntryModal: React.FC<EntryModalProps> = ({ isOpen, onClose, onSelectGuest,
             {/* Member Button */}
             <button 
               onClick={onSelectMember}
-              className="group relative flex flex-col items-center justify-center p-14 bg-jd-dark/50 border border-gray-800 hover:border-jd-gold/50 rounded-3xl transition-all hover:shadow-[0_0_50px_rgba(251,191,36,0.2)]"
+              className="group relative flex flex-col items-center justify-center p-14 bg-jd-dark border border-white/5 hover:border-jd-gold/50 rounded-3xl transition-all hover:shadow-[0_0_50px_rgba(251,191,36,0.2)]"
             >
               <div className="w-24 h-24 rounded-2xl bg-jd-gold/10 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform border border-jd-gold/20">
                 <i className="fa-solid fa-id-card text-4xl text-jd-gold"></i>

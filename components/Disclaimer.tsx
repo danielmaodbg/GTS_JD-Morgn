@@ -33,11 +33,11 @@ const Disclaimer: React.FC<DisclaimerProps> = ({ onBack }) => {
           </button>
         </div>
 
-        {/* Content Container */}
+        {/* Content Container - 全部區塊改為深藍底色 */}
         <div className="space-y-12">
           
           {/* Section 1: TERMS OF SERVICE */}
-          <section id="tos" className="bg-jd-light/40 backdrop-blur-xl border border-white/5 rounded-[3rem] p-10 md:p-16 shadow-2xl relative overflow-hidden group">
+          <section id="tos" className="bg-jd-light/95 backdrop-blur-xl border border-white/5 rounded-[3rem] p-10 md:p-16 shadow-2xl relative overflow-hidden group">
             <div className="absolute top-0 right-0 p-12 opacity-[0.03] pointer-events-none group-hover:opacity-[0.07] transition-opacity">
               <i className="fa-solid fa-file-contract text-[15rem] text-white"></i>
             </div>
@@ -71,7 +71,7 @@ const Disclaimer: React.FC<DisclaimerProps> = ({ onBack }) => {
           </section>
 
           {/* Section 2: LEGAL DISCLAIMER */}
-          <section id="disclaimer" className="bg-jd-light/40 backdrop-blur-xl border border-white/5 rounded-[3rem] p-10 md:p-16 shadow-2xl relative overflow-hidden group">
+          <section id="disclaimer" className="bg-jd-light/95 backdrop-blur-xl border border-white/5 rounded-[3rem] p-10 md:p-16 shadow-2xl relative overflow-hidden group">
             <div className="absolute top-0 right-0 p-12 opacity-[0.03] pointer-events-none group-hover:opacity-[0.07] transition-opacity">
               <i className="fa-solid fa-shield-halved text-[15rem] text-white"></i>
             </div>
@@ -103,7 +103,7 @@ const Disclaimer: React.FC<DisclaimerProps> = ({ onBack }) => {
           </section>
 
           {/* Section 3: PRIVACY POLICY */}
-          <section id="privacy" className="bg-jd-light/40 backdrop-blur-xl border border-white/5 rounded-[3rem] p-10 md:p-16 shadow-2xl relative overflow-hidden group">
+          <section id="privacy" className="bg-jd-light/95 backdrop-blur-xl border border-white/5 rounded-[3rem] p-10 md:p-16 shadow-2xl relative overflow-hidden group">
             <div className="absolute top-0 right-0 p-12 opacity-[0.03] pointer-events-none group-hover:opacity-[0.07] transition-opacity">
               <i className="fa-solid fa-fingerprint text-[15rem] text-white"></i>
             </div>
@@ -148,11 +148,6 @@ const Disclaimer: React.FC<DisclaimerProps> = ({ onBack }) => {
             <p className="text-[10px] text-gray-600 font-black uppercase tracking-[0.5em]">
               Copyright © 2026 JD MORGAN GLOBAL TRADING LTD. All Rights Reserved.
             </p>
-            <div className="flex justify-center gap-6">
-               <button className="text-gray-500 hover:text-jd-gold transition-colors flex items-center gap-2 text-[9px] font-black uppercase tracking-widest border border-white/10 px-4 py-2 rounded-lg">
-                 <i className="fa-solid fa-file-pdf"></i> 下載 PDF 存根
-               </button>
-            </div>
           </div>
         </div>
       </div>

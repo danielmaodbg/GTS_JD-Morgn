@@ -47,7 +47,6 @@ const TradeForm: React.FC<TradeFormProps> = ({ role, config, currentUser, onBack
     e.preventDefault();
     if (!formData.commodity) { alert("請選擇商品品名"); return; }
     
-    // 二次驗證電話是否全數字
     if (!/^\d+$/.test(formData.contactPhone)) {
       alert("❌ 聯絡電話格式錯誤：請僅輸入數字。");
       return;
@@ -74,26 +73,14 @@ const TradeForm: React.FC<TradeFormProps> = ({ role, config, currentUser, onBack
     } catch (err: any) {
       setUploadStatus('idle');
       setUploadProgress(0);
-      console.error("Submission error details:", err);
-      
-      let msg = `❌ 提交中斷 (${err.code || 'UNKNOWN'}): ${err.message}`;
-      
-      if (err.code === 'auth/admin-restricted-operation') {
-        msg = "⚠️ 核心功能受限 (Admin Restricted)\n\n原因：您尚未在 Firebase Console 開啟「匿名登入 (Anonymous)」功能。\n\n修復方式：\n1. 登入 Firebase Console\n2. 前往 Authentication -> Sign-in method\n3. 啟用 'Anonymous' 提供業者。";
-      } else if (err.code === 'storage/unauthorized') {
-        msg = "⚠️ 存儲權限錯誤 (Storage Unauthorized)\n\n請確保您已登入，或聯繫管理員檢查 Firebase Storage Rules。";
-      }
-      
-      alert(msg);
+      alert(`❌ 提交失敗: ${err.message}`);
     }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    
-    // 特殊處理：聯絡電話不可用文字
     if (name === 'contactPhone') {
-      const numericValue = value.replace(/\D/g, ''); // 強制移除所有非數字字符
+      const numericValue = value.replace(/\D/g, ''); 
       setFormData(prev => ({ ...prev, [name]: numericValue }));
     } else {
       setFormData(prev => ({ ...prev, [name]: value }));
@@ -101,7 +88,7 @@ const TradeForm: React.FC<TradeFormProps> = ({ role, config, currentUser, onBack
   };
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-32">
+    <div className="max-w-5xl mx-auto px-4 py-32 bg-jd-dark">
       {uploadStatus !== 'idle' && (
         <div className="fixed inset-0 bg-jd-dark/95 z-[250] flex flex-col items-center justify-center p-6 text-center animate-in fade-in duration-500 backdrop-blur-md">
           <div className="relative w-48 h-48 mb-12 flex items-center justify-center">
@@ -140,7 +127,7 @@ const TradeForm: React.FC<TradeFormProps> = ({ role, config, currentUser, onBack
         </div>
       )}
 
-      <div className="bg-jd-light/40 backdrop-blur-lg border border-jd-gold/10 rounded-3xl overflow-hidden shadow-2xl relative">
+      <div className="bg-jd-light border border-white/5 rounded-3xl overflow-hidden shadow-2xl relative">
         <div className={`h-2 w-full bg-gradient-to-r ${isBuyer ? 'from-blue-600 to-transparent' : 'from-green-600 to-transparent'}`}></div>
         
         <div className="p-10">
@@ -188,8 +175,6 @@ const TradeForm: React.FC<TradeFormProps> = ({ role, config, currentUser, onBack
                       <option value="WhatsApp">WhatsApp</option>
                       <option value="Telegram">Telegram</option>
                       <option value="Line">Line</option>
-                      <option value="Instagram">Instagram</option>
-                      <option value="Facebook">Facebook</option>
                     </select>
                     <input name="socialAccount" type="text" className="flex-grow bg-jd-dark/60 border border-gray-800 rounded-xl p-4 text-white focus:border-jd-gold outline-none" placeholder="Account ID / Username" required value={formData.socialAccount} onChange={handleInputChange} />
                   </div>
@@ -241,7 +226,7 @@ const TradeForm: React.FC<TradeFormProps> = ({ role, config, currentUser, onBack
                 disabled={uploadStatus !== 'idle'} 
                 className={`w-full ${isBuyer ? 'bg-blue-600 hover:bg-blue-500 shadow-blue-500/20' : 'bg-green-600 hover:bg-green-500 shadow-green-500/20'} text-white font-black py-6 rounded-2xl transition-all shadow-xl uppercase tracking-[0.2em] flex items-center justify-center text-3xl disabled:opacity-50 leading-none group`}
               >
-                <i className="fa-solid fa-cloud-arrow-up mr-4 group-hover:-translate-y-1 transition-transform"></i> 
+                <i className="fa-solid fa-cloud-arrow-up mr-4 group-hover:-translate-x-1 transition-transform"></i> 
                 提交並廣播交易意向
               </button>
             </div>

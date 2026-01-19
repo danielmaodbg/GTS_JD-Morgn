@@ -30,13 +30,13 @@ const News: React.FC<NewsProps> = ({ onBack }) => {
           {NEWS_ITEMS.map((item) => (
             <div 
               key={item.id} 
-              className="bg-jd-light/30 backdrop-blur-xl border border-white/5 p-8 rounded-3xl hover:border-jd-gold/30 transition-all group cursor-pointer shadow-2xl flex flex-col h-full"
+              className="bg-jd-light border border-white/10 p-8 rounded-3xl hover:border-jd-gold/40 transition-all group cursor-pointer shadow-2xl flex flex-col h-full hover:shadow-jd-gold/5"
             >
               <div className="flex justify-between items-start mb-6">
                 <span className="px-3 py-1 bg-jd-gold/10 text-jd-gold rounded-lg text-[10px] font-black uppercase tracking-widest border border-jd-gold/20">
                   {item.category}
                 </span>
-                <span className="text-white/20 font-mono text-xs">{item.time}</span>
+                <span className="text-white/30 font-mono text-xs">{item.time}</span>
               </div>
               
               <h3 className="text-2xl font-black text-white leading-tight mb-6 group-hover:text-jd-gold transition-colors flex-grow">
@@ -51,7 +51,7 @@ const News: React.FC<NewsProps> = ({ onBack }) => {
           ))}
 
           {/* Featured Notice Card */}
-          <div className="lg:col-span-3 bg-gradient-to-br from-jd-gold/10 via-jd-light/40 to-jd-dark p-12 rounded-[2.5rem] border border-jd-gold/20 relative overflow-hidden group shadow-2xl mt-8">
+          <div className="lg:col-span-3 bg-gradient-to-br from-jd-light to-jd-dark p-12 rounded-[2.5rem] border border-white/10 relative overflow-hidden group shadow-2xl mt-8">
              <div className="absolute -right-20 -bottom-20 text-jd-gold/5 text-[15rem] font-black italic select-none pointer-events-none group-hover:text-jd-gold/10 transition-all duration-1000">JD</div>
              <div className="relative z-10 max-w-3xl">
                <div className="flex items-center gap-4 mb-8">
