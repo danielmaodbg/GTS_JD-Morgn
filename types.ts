@@ -10,7 +10,8 @@ export enum View {
   DATABASE_TEST = 'database-test',
   VERIFY_EMAIL = 'verify-email',
   NEWS = 'news',
-  DISCLAIMER = 'disclaimer'
+  DISCLAIMER = 'disclaimer',
+  FRAUD_REPORT = 'fraud-report'
 }
 
 export enum MemberType {

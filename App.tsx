@@ -15,6 +15,7 @@ import EmailVerification from './components/EmailVerification';
 import News from './components/News';
 import Disclaimer from './components/Disclaimer';
 import LegalGate from './components/LegalGate';
+import FraudReport from './components/FraudReport';
 import { dataService } from './dataService';
 
 const App: React.FC = () => {
@@ -169,6 +170,8 @@ const App: React.FC = () => {
         return <News onBack={() => setCurrentView(View.HOME)} />;
       case View.DISCLAIMER:
         return <Disclaimer onBack={() => setCurrentView(View.HOME)} />;
+      case View.FRAUD_REPORT:
+        return <FraudReport onBack={() => setCurrentView(View.HOME)} />;
       default:
         return <HomeNew onStart={startTrading} onNavigate={setCurrentView} config={appConfig} />;
     }
@@ -208,27 +211,27 @@ const App: React.FC = () => {
           <div className="flex flex-wrap justify-center items-center gap-x-10 gap-y-4 text-[7px] font-black uppercase tracking-[0.3em] max-w-full">
             <button 
               onClick={() => { setCurrentView(View.DISCLAIMER); setTimeout(() => document.getElementById('privacy')?.scrollIntoView({behavior: 'smooth'}), 100); }} 
-              className="hover:text-white text-gray-600 transition-all text-center whitespace-nowrap"
+              className="glow-text hover:text-white transition-all text-center whitespace-nowrap"
             >
               PRIVACY POLICY
             </button>
             <button 
               onClick={() => { setCurrentView(View.DISCLAIMER); setTimeout(() => document.getElementById('tos')?.scrollIntoView({behavior: 'smooth'}), 100); }} 
-              className="hover:text-white text-gray-600 transition-all text-center whitespace-nowrap"
+              className="glow-text hover:text-white transition-all text-center whitespace-nowrap"
             >
               TERMS OF SERVICE
             </button>
             <button 
               onClick={() => { setCurrentView(View.DISCLAIMER); setTimeout(() => document.getElementById('disclaimer')?.scrollIntoView({behavior: 'smooth'}), 100); }} 
-              className="hover:text-white text-gray-600 transition-all text-center whitespace-nowrap"
+              className="glow-text hover:text-white transition-all text-center whitespace-nowrap"
             >
               LEGAL DISCLAIMER
             </button>
             <button 
-              onClick={() => setCurrentView(View.HOME_LEGACY)}
-              className="hover:text-jd-gold text-gray-800 transition-all text-center whitespace-nowrap"
+              onClick={() => setCurrentView(View.FRAUD_REPORT)}
+              className="glow-text hover:text-white transition-all text-center whitespace-nowrap px-4 py-1.5 border border-jd-gold/30 rounded-lg"
             >
-              LEGACY UI
+              詐欺舉報
             </button>
           </div>
         </div>
