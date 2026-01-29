@@ -17,7 +17,7 @@ const FraudReport: React.FC<FraudReportProps> = ({ onBack }) => {
             <h2 className="text-red-500 text-sm font-black uppercase tracking-[0.5em] flex items-center">
               <span className="w-12 h-px bg-red-500/30 mr-4"></span> COMPLIANCE & SECURITY
             </h2>
-            <h1 className="text-5xl md:text-7xl font-black text-white italic tracking-tighter uppercase leading-none">
+            <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter uppercase leading-none">
               詐欺舉報 <span className="text-red-500 font-light not-italic">與風險預警</span>
             </h1>
             <p className="text-xs text-gray-500 font-bold uppercase tracking-widest">

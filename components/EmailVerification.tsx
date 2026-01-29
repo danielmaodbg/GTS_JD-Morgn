@@ -66,7 +66,7 @@ const EmailVerification: React.FC<EmailVerificationProps> = ({ email, onContinue
         <div className="text-center space-y-6">
           <div className="space-y-2">
             <p className="text-jd-gold text-[10px] font-black uppercase tracking-[0.6em]">Awaiting Identity Confirmation</p>
-            <h2 className="text-5xl md:text-6xl font-black text-white italic tracking-tighter uppercase leading-none">
+            <h2 className="text-5xl md:text-6xl font-black text-white tracking-tighter uppercase leading-none">
               {status === 'success' ? 'DISPATCHED' : 'VERIFICATION'} <br />
               <span className="text-jd-gold font-light not-italic">REQUIRED</span>
             </h2>

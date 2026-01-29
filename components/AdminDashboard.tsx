@@ -362,7 +362,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
            <div className="absolute inset-0 bg-jd-dark/90 backdrop-blur-md" onClick={() => setIsAddMemberModalOpen(false)}></div>
            <div className="relative w-full max-w-lg bg-jd-light border border-jd-gold/20 rounded-3xl overflow-hidden shadow-2xl animate-in zoom-in duration-300">
              <div className="p-8 space-y-6">
-                <div className="text-center"><h3 className="text-2xl font-black text-white italic uppercase">新增核心會員</h3></div>
+                <div className="text-center"><h3 className="text-2xl font-black text-white uppercase">新增核心會員</h3></div>
                 <form onSubmit={handleQuickAddMember} className="space-y-4">
                   <div><label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">姓名</label><input type="text" required value={newMemberData.name} onChange={(e) => setNewMemberData({...newMemberData, name: e.target.value})} className="w-full bg-jd-dark border border-gray-800 rounded-xl p-3 text-white focus:border-jd-gold outline-none" /></div>
                   <div><label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">郵箱</label><input type="email" required value={newMemberData.email} onChange={(e) => setNewMemberData({...newMemberData, email: e.target.value})} className="w-full bg-jd-dark border border-gray-800 rounded-xl p-3 text-white focus:border-jd-gold outline-none" /></div>
@@ -376,7 +376,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
       )}
 
       <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
-        <div><h2 className="text-4xl font-black text-white italic tracking-tighter">JD MORGAN <span className="text-jd-gold font-light not-italic ml-2">ADMINISTRATION</span></h2><p className="text-gray-500 text-[10px] uppercase tracking-[0.4em] font-bold mt-2">最後同步: {lastRefreshed.toLocaleTimeString()}</p></div>
+        <div><h2 className="text-4xl font-black text-white tracking-tighter">JD MORGAN <span className="text-jd-gold font-light not-italic ml-2">ADMINISTRATION</span></h2><p className="text-gray-500 text-[10px] uppercase tracking-[0.4em] font-bold mt-2">最後同步: {lastRefreshed.toLocaleTimeString()}</p></div>
         <button onClick={() => fetchData(true)} disabled={isFetching} className="flex items-center gap-2 text-jd-gold hover:text-white transition-colors px-4 py-2 rounded-lg border border-jd-gold/20 hover:border-jd-gold/50 bg-jd-gold/5 text-[10px] font-black uppercase tracking-widest"><i className={`fa-solid fa-arrows-rotate ${isFetching ? 'animate-spin' : ''}`}></i> 強制刷新</button>
       </div>
 

@@ -94,7 +94,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onRegisterSuccess }) => {
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-jd-gold via-transparent to-jd-gold opacity-50"></div>
         
         <div className="text-center mb-10">
-          <h2 className="text-4xl font-black text-white tracking-tighter italic uppercase">
+          <h2 className="text-4xl font-black text-white tracking-tighter uppercase">
             JD MORGAN <span className="text-jd-gold font-light not-italic ml-1">{isRegister ? 'REGISTER' : 'LOGIN'}</span>
           </h2>
           <p className="text-gray-500 text-[10px] mt-2 font-black tracking-[0.4em] uppercase">Identity Verification Required</p>

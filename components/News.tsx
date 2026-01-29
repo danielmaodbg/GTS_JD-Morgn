@@ -13,7 +13,7 @@ const News: React.FC<NewsProps> = ({ onBack }) => {
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
           <div>
             <h2 className="text-jd-gold text-sm font-black uppercase tracking-[0.4em] mb-3">Global Information Terminal</h2>
-            <h1 className="text-5xl md:text-7xl font-black text-white italic tracking-tighter leading-none">
+            <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter leading-none">
               LATEST <span className="text-jd-gold font-light not-italic">INTELLIGENCE</span>
             </h1>
           </div>
@@ -63,6 +63,9 @@ const News: React.FC<NewsProps> = ({ onBack }) => {
                <h3 className="text-3xl md:text-5xl font-black text-white mb-6 leading-tight">
                  JD Morgan 全球節點升級：引入 AI 智能物資分配演算法 V3.0
                </h3>
+               <p className="text-gray-400 text-lg leading-relaxed mb-10">
+                 我們已在所有核心交易終端部署了最新的量化分配系統，該更新將顯著提升 LOI 與 SCO 的自動對接效率，平均減少 40% 的審核等待時間。
+               </p>
                <p className="text-gray-400 text-lg leading-relaxed mb-10">
                  我們已在所有核心交易終端部署了最新的量化分配系統，該更新將顯著提升 LOI 與 SCO 的自動對接效率，平均減少 40% 的審核等待時間。
                </p>

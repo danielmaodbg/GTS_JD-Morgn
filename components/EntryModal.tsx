@@ -22,7 +22,7 @@ const EntryModal: React.FC<EntryModalProps> = ({ isOpen, onClose, onSelectGuest,
             <i className="fa-solid fa-xmark text-3xl"></i>
           </button>
 
-          <h2 className="text-5xl font-black text-white mb-3 italic tracking-tighter leading-[1.1]">
+          <h2 className="text-5xl font-black text-white mb-3 tracking-tighter leading-[1.1]">
             WELCOME TO <br /> JD MORGAN
           </h2>
           <p className="text-jd-gold text-sm font-black uppercase tracking-[0.5em] mb-14">Security Access Protocol</p>

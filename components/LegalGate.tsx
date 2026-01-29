@@ -53,7 +53,7 @@ const LegalGate: React.FC<LegalGateProps> = ({ onAgree }) => {
               <i className="fa-solid fa-gavel text-jd-gold text-3xl"></i>
             </div>
           </div>
-          <h2 className="text-2xl md:text-3xl font-black text-white italic tracking-tighter uppercase leading-none">
+          <h2 className="text-2xl md:text-3xl font-black text-white tracking-tighter uppercase leading-none">
             LEGAL ACCESS <span className="text-jd-gold font-light not-italic">PROTOCOL</span>
           </h2>
           <p className="text-[10px] text-gray-500 font-black uppercase tracking-[0.4em] mt-2">JD MORGAN GLOBAL TRADING LTD.</p>
@@ -80,7 +80,7 @@ const LegalGate: React.FC<LegalGateProps> = ({ onAgree }) => {
               <span className="w-6 h-px bg-jd-gold/30"></span> 優先順序 02: 服務條款 (Terms of Service)
             </h3>
             <p className="text-sm text-gray-300 leading-relaxed font-medium">
-              本服務條款構成法律約束力的協議。訪問我們的貿易情報與協調服務，即表示您確認已閱讀、理解並同意受本條款之約束。客戶同意自初次介紹後 24 個月內，不得繞過本公司。
+              本服務條款構成法律約束力的協議。訪問我們的貿易情報與協調服務，即表示您確認已閱讀、理解並同意受本條款之約束。客戶同意自本公司初次介紹後 24 個月內，不得繞過本公司。
             </p>
           </div>
 

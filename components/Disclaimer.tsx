@@ -18,7 +18,7 @@ const Disclaimer: React.FC<DisclaimerProps> = ({ onBack }) => {
             <h2 className="text-jd-gold text-sm font-black uppercase tracking-[0.5em] flex items-center">
               <span className="w-12 h-px bg-jd-gold/30 mr-4"></span> LEGAL AGREEMENTS AND POLICIES
             </h2>
-            <h1 className="text-5xl md:text-7xl font-black text-white italic tracking-tighter uppercase leading-none">
+            <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter uppercase leading-none">
               隱私權政策與 <span className="text-jd-gold font-light not-italic">免責聲明</span>
             </h1>
             <p className="text-xs text-gray-500 font-bold uppercase tracking-widest">

@@ -81,7 +81,7 @@ const DatabaseTest: React.FC<DatabaseTestProps> = ({ onBack }) => {
               <i className="fa-solid fa-satellite-dish text-jd-gold text-2xl animate-pulse"></i>
             </div>
             <div>
-              <h2 className="text-3xl font-black text-white italic tracking-tighter uppercase leading-none">
+              <h2 className="text-3xl font-black text-white tracking-tighter uppercase leading-none">
                 JD-SYNC <span className="text-jd-gold font-light not-italic">Diagnostic Center</span>
               </h2>
               <p className="text-[10px] text-gray-500 uppercase tracking-[0.4em] font-bold mt-1">Global Node Data Integrity Monitor</p>
@@ -108,7 +108,7 @@ const DatabaseTest: React.FC<DatabaseTestProps> = ({ onBack }) => {
                   </div>
                   <span className="text-[9px] text-blue-500 font-black uppercase tracking-widest">Protocol Check</span>
                 </div>
-                <h3 className="text-xl font-black text-white italic uppercase">郵件信道測試</h3>
+                <h3 className="text-xl font-black text-white uppercase">郵件信道測試</h3>
                 <p className="text-xs text-gray-500 leading-relaxed font-medium">測試 Firebase SMTP 節點的信號轉發狀態，確保會員驗證系統運作正常。</p>
               </div>
               <button 
@@ -166,7 +166,7 @@ const DatabaseTest: React.FC<DatabaseTestProps> = ({ onBack }) => {
                   </div>
                   <span className="text-[9px] text-jd-gold font-black uppercase tracking-widest">Storage Node</span>
                 </div>
-                <h3 className="text-xl font-black text-white italic uppercase">數據通路診斷</h3>
+                <h3 className="text-xl font-black text-white uppercase">數據通路診斷</h3>
                 <p className="text-xs text-gray-500 leading-relaxed font-medium">執行一次原子性讀寫測試，確保 JD-LINK 全球雲端數據存根可即時被調用。</p>
               </div>
               <button 

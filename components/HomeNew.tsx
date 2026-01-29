@@ -79,8 +79,8 @@ const HomeNew: React.FC<HomeNewProps> = ({ onStart, onNavigate, config }) => {
             </p>
             
             <div className="relative inline-block mt-4">
-              {/* 主標題：優化字距與行高，避免擁擠感 */}
-              <h1 className="text-3xl md:text-5xl lg:text-[4.2rem] font-black text-white leading-[1.3] tracking-tight drop-shadow-[0_20px_50px_rgba(0,0,0,0.9)] select-none uppercase italic transition-all duration-1000">
+              {/* 主標題：優化字距與行高，移除斜體樣式 */}
+              <h1 className="text-3xl md:text-5xl lg:text-[4.2rem] font-black text-white leading-[1.3] tracking-tight drop-shadow-[0_20px_50px_rgba(0,0,0,0.9)] select-none uppercase transition-all duration-1000">
                 {renderTitle(currentSlide?.title || "JD MORGAN\nGLOBAL TRADING")}
               </h1>
               {/* 裝飾線條 */}
