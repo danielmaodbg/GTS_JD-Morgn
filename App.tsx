@@ -1,5 +1,7 @@
+
 import React, { useState, useEffect } from 'react';
-import { View, User, TradeConfig, AppConfig, TradeSubmission } from './types';
+// Fix: Added MemberType to imports to resolve errors on lines 72-73
+import { View, User, TradeConfig, AppConfig, TradeSubmission, MemberType } from './types';
 import { INITIAL_CONFIG, INITIAL_APP_CONFIG, INITIAL_SUBMISSIONS, MOCK_USERS } from './constants';
 import Navbar from './components/Navbar';
 import HomeNew from './components/HomeNew';
@@ -68,7 +70,9 @@ const App: React.FC = () => {
     const isAdmin = (
       user.role?.toLowerCase() === 'admin' || 
       user.email?.toLowerCase() === ADMIN_EMAIL.toLowerCase() ||
-      user.username?.toLowerCase() === ADMIN_EMAIL.toLowerCase()
+      user.username?.toLowerCase() === ADMIN_EMAIL.toLowerCase() ||
+      user.memberType === MemberType.ADMIN ||
+      user.memberType === MemberType.PROJECT_MANAGER
     );
     if (isAdmin) {
       setCurrentView(View.ADMIN);
@@ -195,44 +199,22 @@ const App: React.FC = () => {
         {renderContent()}
       </main>
 
-      <footer className="bg-jd-dark border-t border-gray-900 py-20">
-        <div className="max-w-7xl mx-auto px-8 flex flex-col md:flex-row justify-between items-center gap-12">
-          {/* 左側品牌資訊 */}
-          <div className="text-left space-y-4">
-            <h3 className="text-white font-black text-4xl tracking-tighter uppercase leading-none">
+      <footer className="bg-jd-dark border-t border-gray-900 py-32">
+        <div className="max-w-[1600px] mx-auto px-10 flex flex-col md:flex-row justify-between items-center gap-20">
+          <div className="text-left space-y-6">
+            <h3 className="text-white font-black text-6xl tracking-tighter uppercase leading-none">
               JD MORGAN <span className="text-jd-gold font-light">GLOBAL TRADING</span>
             </h3>
-            <p className="text-[11px] text-gray-500 font-bold uppercase tracking-[0.25em] leading-relaxed">
+            <p className="text-sm text-gray-500 font-bold uppercase tracking-[0.4em] leading-relaxed">
               COPYRIGHT © 2026 JD MORGAN GLOBAL TRADING LTD. ALL RIGHTS RESERVED.
             </p>
           </div>
           
-          {/* 右側連結盒 - 四個連結並排顯示，移除框線並進一步縮小字體 */}
-          <div className="flex flex-wrap justify-center items-center gap-x-10 gap-y-4 text-[7px] font-black uppercase tracking-[0.3em] max-w-full">
-            <button 
-              onClick={() => { setCurrentView(View.DISCLAIMER); setTimeout(() => document.getElementById('privacy')?.scrollIntoView({behavior: 'smooth'}), 100); }} 
-              className="glow-text hover:text-white transition-all text-center whitespace-nowrap"
-            >
-              PRIVACY POLICY
-            </button>
-            <button 
-              onClick={() => { setCurrentView(View.DISCLAIMER); setTimeout(() => document.getElementById('tos')?.scrollIntoView({behavior: 'smooth'}), 100); }} 
-              className="glow-text hover:text-white transition-all text-center whitespace-nowrap"
-            >
-              TERMS OF SERVICE
-            </button>
-            <button 
-              onClick={() => { setCurrentView(View.DISCLAIMER); setTimeout(() => document.getElementById('disclaimer')?.scrollIntoView({behavior: 'smooth'}), 100); }} 
-              className="glow-text hover:text-white transition-all text-center whitespace-nowrap"
-            >
-              LEGAL DISCLAIMER
-            </button>
-            <button 
-              onClick={() => setCurrentView(View.FRAUD_REPORT)}
-              className="glow-text hover:text-white transition-all text-center whitespace-nowrap px-4 py-1.5 border border-jd-gold/30 rounded-lg"
-            >
-              詐欺舉報
-            </button>
+          <div className="flex flex-wrap justify-center items-center gap-x-16 gap-y-8 text-xs font-black uppercase tracking-[0.4em]">
+            <button onClick={() => setCurrentView(View.DISCLAIMER)} className="glow-text hover:text-white transition-all">PRIVACY POLICY</button>
+            <button onClick={() => setCurrentView(View.DISCLAIMER)} className="glow-text hover:text-white transition-all">TERMS OF SERVICE</button>
+            <button onClick={() => setCurrentView(View.DISCLAIMER)} className="glow-text hover:text-white transition-all">LEGAL DISCLAIMER</button>
+            <button onClick={() => setCurrentView(View.FRAUD_REPORT)} className="glow-text hover:text-white transition-all px-8 py-3 border border-jd-gold/30 rounded-2xl">詐欺舉報</button>
           </div>
         </div>
       </footer>
