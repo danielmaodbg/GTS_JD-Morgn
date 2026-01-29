@@ -24,7 +24,7 @@ export enum MemberType {
 export interface User {
   id?: string | number;
   uid?: string;
-  memberId?: string; // 新增：JD-XXXXX 格式編號
+  memberId?: string;
   username: string;
   role: 'admin' | 'client' | 'guest';
   name: string;
@@ -45,38 +45,45 @@ export interface HeroSlide {
   order: number;
 }
 
-export interface TradeConfig {
-  commodities: string[];
-  paymentTerms: string[];
-  incoterms: string[];
-}
-
-export interface MarketData {
+export interface MarketQuote {
+  id: string;
   symbol: string;
   price: string;
   change: string;
   isUp: boolean;
+  sourceUrl?: string;
 }
 
-export interface NewsItem {
-  id: number;
+export interface IndustryNews {
+  id: string;
   title: string;
   time: string;
   category: string;
+  sourceUrl?: string;
   summary?: string;
 }
 
-export interface ButtonConfig {
+export interface SystemAnnouncement {
   id: string;
-  text: string;
-  link: string;
+  title: string;
+  content: string;
+  date: string;
+  isPriority: boolean;
 }
 
 export interface AppConfig {
   logoText: string;
   logoIcon: string;
   heroSlides: HeroSlide[];
-  buttons: ButtonConfig[];
+  announcements: SystemAnnouncement[];
+  quotes: MarketQuote[];
+  industryNews: IndustryNews[];
+}
+
+export interface TradeConfig {
+  commodities: string[];
+  paymentTerms: string[];
+  incoterms: string[];
 }
 
 export interface TradeSubmission {
@@ -95,5 +102,4 @@ export interface TradeSubmission {
   socialAccount?: string;
   fileName?: string;
   fileUrl?: string;
-  fileData?: string; 
 }
