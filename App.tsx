@@ -202,38 +202,33 @@ const App: React.FC = () => {
         {renderContent()}
       </main>
 
-      {/* Symmetric Modern Sitemap Footer - Fully Centered on Mobile */}
+      {/* Symmetric Modern Sitemap Footer - Fully Centered and Simplified */}
       <footer className="bg-jd-dark border-t border-white/5 pt-24 pb-12">
         <div className="max-w-[1600px] mx-auto px-10">
-          <div className="flex flex-col items-center text-center md:grid md:grid-cols-2 lg:grid-cols-4 md:items-start md:text-left gap-16 md:gap-12 mb-24">
+          <div className="flex flex-col items-center text-center md:grid md:grid-cols-2 lg:grid-cols-4 md:items-start md:text-left gap-16 md:gap-12 mb-20">
             
             {/* Column 1: Identity & Social */}
-            <div className="flex flex-col items-center md:items-start space-y-6">
-              <div className="flex flex-col items-center md:items-start space-y-4">
+            <div className="flex flex-col items-center md:items-start space-y-8">
+              <div className="flex flex-col items-center md:items-start space-y-5">
                 <h3 className="text-white font-black text-4xl tracking-tighter uppercase leading-none">
                   JD MORGAN
                 </h3>
-                <div className="inline-block px-4 py-1.5 border border-jd-gold/40 rounded-sm">
-                  <span className="text-jd-gold font-black text-xl tracking-[0.25em] uppercase leading-none">
+                <div className="inline-block px-4 py-2 border border-jd-gold/30 rounded-sm">
+                  <span className="text-jd-gold font-black text-xl tracking-[0.3em] uppercase leading-none">
                     GLOBAL TRADING
                   </span>
                 </div>
-                <div className="pt-2">
-                  <p className="text-[10px] text-gray-500 font-black uppercase tracking-[0.3em] leading-relaxed">
-                    {t.sitemap_reg}
-                  </p>
-                </div>
               </div>
-              <div className="flex items-center gap-6 pt-2">
-                 <a href="#" className="text-gray-600 hover:text-jd-gold transition-colors text-xl"><i className="fa-brands fa-linkedin-in"></i></a>
-                 <a href="#" className="text-gray-600 hover:text-jd-gold transition-colors text-xl"><i className="fa-brands fa-telegram"></i></a>
+              <div className="flex items-center gap-8 pt-4">
+                 <a href="#" className="text-gray-600 hover:text-jd-gold transition-all text-2xl"><i className="fa-brands fa-linkedin-in"></i></a>
+                 <a href="#" className="text-gray-600 hover:text-jd-gold transition-all text-2xl"><i className="fa-brands fa-telegram"></i></a>
               </div>
             </div>
 
-            {/* Column 2: Trade Terminal */}
+            {/* Column 2: Trade Terminal - Decorative Lines Removed */}
             <div className="flex flex-col items-center md:items-start space-y-8">
-              <h4 className="text-jd-gold text-[11px] font-black uppercase tracking-[0.5em] flex items-center gap-4">
-                 <span className="hidden md:block w-8 h-px bg-jd-gold/30"></span> {t.sitemap_platform} <span className="md:hidden w-8 h-px bg-jd-gold/30"></span>
+              <h4 className="text-jd-gold text-[11px] font-black uppercase tracking-[0.5em]">
+                 {t.sitemap_platform}
               </h4>
               <div className="flex flex-col items-center md:items-start gap-5 text-[11px] font-black uppercase tracking-[0.25em]">
                 <button onClick={() => setCurrentView(View.HOME)} className="text-gray-500 hover:text-jd-gold transition-all">{t.sitemap_home}</button>
@@ -243,10 +238,10 @@ const App: React.FC = () => {
               </div>
             </div>
 
-            {/* Column 3: Global Network */}
+            {/* Column 3: Global Network - Decorative Lines Removed */}
             <div className="flex flex-col items-center md:items-start space-y-8">
-              <h4 className="text-jd-gold text-[11px] font-black uppercase tracking-[0.5em] flex items-center gap-4">
-                 <span className="hidden md:block w-8 h-px bg-jd-gold/30"></span> {t.sitemap_network} <span className="md:hidden w-8 h-px bg-jd-gold/30"></span>
+              <h4 className="text-jd-gold text-[11px] font-black uppercase tracking-[0.5em]">
+                 {t.sitemap_network}
               </h4>
               <div className="flex flex-col items-center md:items-start gap-5 text-[11px] font-black uppercase tracking-[0.25em]">
                 <a href="https://gts-jd-morgn.vercel.app" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-jd-gold transition-all">{t.nav_north_america}</a>
@@ -259,28 +254,30 @@ const App: React.FC = () => {
               </div>
             </div>
 
-            {/* Column 4: Compliance & Security */}
-            <div className="flex flex-col items-center md:items-start space-y-8 w-full max-w-[240px]">
-              <div className="flex flex-col items-center md:items-start space-y-8 w-full">
-                <h4 className="text-jd-gold text-[11px] font-black uppercase tracking-[0.5em] flex items-center gap-4">
-                   <span className="hidden md:block w-8 h-px bg-jd-gold/30"></span> {t.sitemap_legal} <span className="md:hidden w-8 h-px bg-jd-gold/30"></span>
-                </h4>
-                <div className="flex flex-col items-center md:items-start gap-5 text-[11px] font-black uppercase tracking-[0.25em]">
-                  <button onClick={() => setCurrentView(View.DISCLAIMER)} className="text-gray-500 hover:text-jd-gold transition-all">{t.footer_privacy}</button>
-                  <button onClick={() => setCurrentView(View.DISCLAIMER)} className="text-gray-500 hover:text-jd-gold transition-all">{t.footer_terms}</button>
-                  <button onClick={() => setCurrentView(View.DISCLAIMER)} className="text-gray-500 hover:text-jd-gold transition-all">{t.footer_legal}</button>
-                </div>
+            {/* Column 4: Compliance & Security - Decorative Lines Removed */}
+            <div className="flex flex-col items-center md:items-start space-y-8">
+              <h4 className="text-jd-gold text-[11px] font-black uppercase tracking-[0.5em]">
+                 {t.sitemap_legal}
+              </h4>
+              <div className="flex flex-col items-center md:items-start gap-5 text-[11px] font-black uppercase tracking-[0.25em]">
+                <button onClick={() => setCurrentView(View.DISCLAIMER)} className="text-gray-500 hover:text-jd-gold transition-all">{t.footer_privacy}</button>
+                <button onClick={() => setCurrentView(View.DISCLAIMER)} className="text-gray-500 hover:text-jd-gold transition-all">{t.footer_terms}</button>
+                <button onClick={() => setCurrentView(View.DISCLAIMER)} className="text-gray-500 hover:text-jd-gold transition-all">{t.footer_legal}</button>
               </div>
-              <button 
-                onClick={() => setCurrentView(View.FRAUD_REPORT)} 
-                className="w-full py-4 border border-jd-gold/30 rounded-xl text-[10px] font-black text-jd-gold uppercase tracking-[0.4em] hover:bg-jd-gold hover:text-jd-dark transition-all shadow-xl flex items-center justify-center gap-3"
-              >
-                <i className="fa-solid fa-shield-halved"></i> {t.footer_fraud}
-              </button>
             </div>
           </div>
 
-          {/* Bottom Copyright Bar - Integrated Symmetry */}
+          {/* Centered Fraud Report Button - Moved above copyright */}
+          <div className="flex justify-center mb-12 animate-in fade-in slide-in-from-bottom-2">
+            <button 
+              onClick={() => setCurrentView(View.FRAUD_REPORT)} 
+              className="w-full max-w-sm py-4 border border-jd-gold/30 rounded-xl text-[10px] font-black text-jd-gold uppercase tracking-[0.4em] hover:bg-jd-gold hover:text-jd-dark transition-all shadow-xl flex items-center justify-center gap-3 group"
+            >
+              <i className="fa-solid fa-shield-halved group-hover:scale-110 transition-transform"></i> {t.footer_fraud}
+            </button>
+          </div>
+
+          {/* Bottom Copyright Bar */}
           <div className="pt-10 border-t border-white/5 text-center">
             <p className="text-[9px] text-gray-700 font-black uppercase tracking-[0.5em]">
               COPYRIGHT © 2026 JD MORGAN GROUP. ALL RIGHTS RESERVED.
