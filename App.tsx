@@ -1,8 +1,7 @@
-
 import React, { useState, useEffect } from 'react';
-// Fix: Added MemberType to imports to resolve errors on lines 72-73
-import { View, User, TradeConfig, AppConfig, TradeSubmission, MemberType } from './types';
+import { View, User, TradeConfig, AppConfig, TradeSubmission, MemberType, Language } from './types';
 import { INITIAL_CONFIG, INITIAL_APP_CONFIG, INITIAL_SUBMISSIONS, MOCK_USERS } from './constants';
+import { translations } from './translations';
 import Navbar from './components/Navbar';
 import HomeNew from './components/HomeNew';
 import HomeLegacy from './components/HomeLegacy';
@@ -23,6 +22,7 @@ import { dataService } from './dataService';
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<View>(View.HOME);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [language, setLanguage] = useState<Language>(Language.ZH);
   const [pendingEmail, setPendingEmail] = useState<string>('');
   const [config, setConfig] = useState<TradeConfig>(INITIAL_CONFIG);
   const [appConfig, setAppConfig] = useState<AppConfig>(INITIAL_APP_CONFIG);
@@ -32,6 +32,7 @@ const App: React.FC = () => {
   const [isEntryModalOpen, setIsEntryModalOpen] = useState(false);
   const [isLegalAgreed, setIsLegalAgreed] = useState<boolean | null>(null);
 
+  const t = translations[language];
   const ADMIN_EMAIL = "info@jdmorgan.ca";
 
   useEffect(() => {
@@ -123,7 +124,7 @@ const App: React.FC = () => {
   const renderContent = () => {
     switch (currentView) {
       case View.HOME:
-        return <HomeNew onStart={startTrading} onNavigate={setCurrentView} config={appConfig} />;
+        return <HomeNew onStart={startTrading} onNavigate={setCurrentView} config={appConfig} language={language} />;
       case View.HOME_LEGACY:
         return <HomeLegacy onStart={startTrading} config={appConfig} />;
       case View.LOGIN:
@@ -167,7 +168,7 @@ const App: React.FC = () => {
           onNavigate={setCurrentView}
         />;
       case View.MEMBER_DASHBOARD:
-        return currentUser ? <MemberDashboard user={currentUser} onNavigate={setCurrentView} /> : <HomeNew onStart={startTrading} onNavigate={setCurrentView} config={appConfig} />;
+        return currentUser ? <MemberDashboard user={currentUser} onNavigate={setCurrentView} language={language} /> : <HomeNew onStart={startTrading} onNavigate={setCurrentView} config={appConfig} language={language} />;
       case View.DATABASE_TEST:
         return <DatabaseTest onBack={() => setCurrentView(View.ADMIN)} />;
       case View.NEWS:
@@ -177,7 +178,7 @@ const App: React.FC = () => {
       case View.FRAUD_REPORT:
         return <FraudReport onBack={() => setCurrentView(View.HOME)} />;
       default:
-        return <HomeNew onStart={startTrading} onNavigate={setCurrentView} config={appConfig} />;
+        return <HomeNew onStart={startTrading} onNavigate={setCurrentView} config={appConfig} language={language} />;
     }
   };
 
@@ -193,6 +194,8 @@ const App: React.FC = () => {
         onLogout={handleLogout}
         isScrolled={isScrolled}
         config={appConfig}
+        language={language}
+        setLanguage={setLanguage}
       />
 
       <main className="flex-grow">
@@ -211,10 +214,10 @@ const App: React.FC = () => {
           </div>
           
           <div className="flex flex-wrap justify-center items-center gap-x-16 gap-y-8 text-xs font-black uppercase tracking-[0.4em]">
-            <button onClick={() => setCurrentView(View.DISCLAIMER)} className="glow-text hover:text-white transition-all">PRIVACY POLICY</button>
-            <button onClick={() => setCurrentView(View.DISCLAIMER)} className="glow-text hover:text-white transition-all">TERMS OF SERVICE</button>
-            <button onClick={() => setCurrentView(View.DISCLAIMER)} className="glow-text hover:text-white transition-all">LEGAL DISCLAIMER</button>
-            <button onClick={() => setCurrentView(View.FRAUD_REPORT)} className="glow-text hover:text-white transition-all px-8 py-3 border border-jd-gold/30 rounded-2xl">詐欺舉報</button>
+            <button onClick={() => setCurrentView(View.DISCLAIMER)} className="glow-text hover:text-white transition-all">{t.footer_privacy}</button>
+            <button onClick={() => setCurrentView(View.DISCLAIMER)} className="glow-text hover:text-white transition-all">{t.footer_terms}</button>
+            <button onClick={() => setCurrentView(View.DISCLAIMER)} className="glow-text hover:text-white transition-all">{t.footer_legal}</button>
+            <button onClick={() => setCurrentView(View.FRAUD_REPORT)} className="glow-text hover:text-white transition-all px-8 py-3 border border-jd-gold/30 rounded-2xl">{t.footer_fraud}</button>
           </div>
         </div>
       </footer>
@@ -224,6 +227,7 @@ const App: React.FC = () => {
         onClose={() => setIsEntryModalOpen(false)}
         onSelectGuest={handleSelectGuest}
         onSelectMember={handleSelectMember}
+        language={language}
       />
     </div>
   );

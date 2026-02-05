@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, User, AppConfig } from '../types';
+import { View, User, AppConfig, Language } from '../types';
+import { translations } from '../translations';
 
 interface NavbarProps {
   currentUser: User | null;
@@ -7,10 +8,13 @@ interface NavbarProps {
   onLogout: () => void;
   isScrolled: boolean;
   config: AppConfig;
+  language: Language;
+  setLanguage: (lang: Language) => void;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ currentUser, onNavigate, onLogout, isScrolled, config }) => {
+const Navbar: React.FC<NavbarProps> = ({ currentUser, onNavigate, onLogout, isScrolled, config, language, setLanguage }) => {
   const ADMIN_EMAIL = "info@jdmorgan.ca";
+  const t = translations[language];
 
   const isAdmin = currentUser && (
     currentUser.role?.toLowerCase() === 'admin' || 
@@ -35,7 +39,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentUser, onNavigate, onLogout, isSc
         : 'bg-transparent h-28 border-none'
     }`}>
       <div className="max-w-7xl mx-auto px-8 lg:px-12 w-full flex items-center justify-between">
-        {/* Logo Section - Seamless integration with Hero background */}
+        {/* Logo Section */}
         <div 
           className="flex items-center cursor-pointer group select-none bg-transparent" 
           onClick={() => onNavigate(View.HOME)}
@@ -56,13 +60,34 @@ const Navbar: React.FC<NavbarProps> = ({ currentUser, onNavigate, onLogout, isSc
 
         {/* Navigation & Language Switch Section */}
         <div className="flex items-center space-x-10 bg-transparent">
-          {/* Professional Language Switcher */}
-          <button className="flex items-center gap-2 group">
-            <span className="text-jd-gold font-black text-[10px] uppercase tracking-widest transition-colors group-hover:text-white">EN</span>
+          {/* External Link */}
+          <a 
+            href="https://jdmorgan.ca" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="text-white/60 hover:text-jd-gold text-[10px] font-black uppercase tracking-widest transition-all flex items-center gap-2"
+          >
+            {t.nav_asia}
+            <i className="fa-solid fa-arrow-up-right-from-square text-[8px]"></i>
+          </a>
+
+          {/* Language Switcher */}
+          <div className="flex items-center gap-2">
+            <button 
+              onClick={() => setLanguage(Language.EN)}
+              className={`font-black text-[10px] uppercase tracking-widest transition-all ${language === Language.EN ? 'text-jd-gold' : 'text-white/30 hover:text-white'}`}
+            >
+              EN
+            </button>
             <span className="w-px h-2.5 bg-white/20"></span>
-            <span className="text-white/40 font-black text-[10px] uppercase tracking-widest transition-colors group-hover:text-jd-gold">中</span>
-            <i className="fa-solid fa-globe text-white/20 text-[10px] ml-1 group-hover:text-jd-gold group-hover:rotate-12 transition-all"></i>
-          </button>
+            <button 
+              onClick={() => setLanguage(Language.ZH)}
+              className={`font-black text-[10px] uppercase tracking-widest transition-all ${language === Language.ZH ? 'text-jd-gold' : 'text-white/30 hover:text-white'}`}
+            >
+              中
+            </button>
+            <i className="fa-solid fa-globe text-white/20 text-[10px] ml-1"></i>
+          </div>
 
           {/* User Management State */}
           {currentUser ? (
@@ -75,7 +100,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentUser, onNavigate, onLogout, isSc
                     : 'bg-black/20 backdrop-blur-md border border-white/10 hover:border-jd-gold text-white hover:bg-black/40'
                 }`}
               >
-                {isAdmin ? '管理中心' : '市場觀察'}
+                {isAdmin ? t.nav_admin : t.nav_market}
               </button>
               <button 
                 onClick={onLogout} 
@@ -85,7 +110,14 @@ const Navbar: React.FC<NavbarProps> = ({ currentUser, onNavigate, onLogout, isSc
                 <i className="fa-solid fa-power-off text-lg"></i>
               </button>
             </div>
-          ) : null}
+          ) : (
+            <button 
+              onClick={() => onNavigate(View.LOGIN)}
+              className="text-jd-gold font-black text-[10px] uppercase tracking-widest hover:text-white transition-all"
+            >
+              LOGIN
+            </button>
+          )}
         </div>
       </div>
     </nav>

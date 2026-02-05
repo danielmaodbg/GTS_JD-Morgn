@@ -14,6 +14,11 @@ export enum View {
   FRAUD_REPORT = 'fraud-report'
 }
 
+export enum Language {
+  ZH = 'zh',
+  EN = 'en'
+}
+
 export enum MemberType {
   REGULAR = '一般會員',
   PREMIUM = '高級會員',

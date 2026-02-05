@@ -1,14 +1,18 @@
 import React from 'react';
+import { Language } from '../types';
+import { translations } from '../translations';
 
 interface EntryModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSelectGuest: () => void;
   onSelectMember: () => void;
+  language: Language;
 }
 
-const EntryModal: React.FC<EntryModalProps> = ({ isOpen, onClose, onSelectGuest, onSelectMember }) => {
+const EntryModal: React.FC<EntryModalProps> = ({ isOpen, onClose, onSelectGuest, onSelectMember, language }) => {
   if (!isOpen) return null;
+  const t = translations[language];
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
@@ -22,8 +26,8 @@ const EntryModal: React.FC<EntryModalProps> = ({ isOpen, onClose, onSelectGuest,
             <i className="fa-solid fa-xmark text-3xl"></i>
           </button>
 
-          <h2 className="text-5xl font-black text-white mb-3 tracking-tighter leading-[1.1]">
-            WELCOME TO <br /> JD MORGAN
+          <h2 className="text-5xl font-black text-white mb-3 tracking-tighter leading-[1.1] uppercase">
+            {t.entry_title.split(' TO ')[0]} <br /> {t.entry_title.split(' TO ')[1] || ''}
           </h2>
           <p className="text-jd-gold text-sm font-black uppercase tracking-[0.5em] mb-14">Security Access Protocol</p>
 
@@ -36,8 +40,8 @@ const EntryModal: React.FC<EntryModalProps> = ({ isOpen, onClose, onSelectGuest,
               <div className="w-24 h-24 rounded-2xl bg-blue-500/10 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform border border-blue-500/20">
                 <i className="fa-solid fa-user-secret text-4xl text-blue-400"></i>
               </div>
-              <span className="text-white font-black text-2xl mb-2 tracking-wider">非會員進入</span>
-              <span className="text-gray-500 text-xs uppercase tracking-widest font-bold">Quick Access</span>
+              <span className="text-white font-black text-2xl mb-2 tracking-wider">{t.entry_guest}</span>
+              <span className="text-gray-500 text-xs uppercase tracking-widest font-bold">{t.entry_quick}</span>
             </button>
 
             {/* Member Button */}
@@ -48,8 +52,8 @@ const EntryModal: React.FC<EntryModalProps> = ({ isOpen, onClose, onSelectGuest,
               <div className="w-24 h-24 rounded-2xl bg-jd-gold/10 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform border border-jd-gold/20">
                 <i className="fa-solid fa-id-card text-4xl text-jd-gold"></i>
               </div>
-              <span className="text-white font-black text-2xl mb-2 tracking-wider">會員驗證</span>
-              <span className="text-gray-500 text-xs uppercase tracking-widest font-bold">Priority Entry</span>
+              <span className="text-white font-black text-2xl mb-2 tracking-wider">{t.entry_member}</span>
+              <span className="text-gray-500 text-xs uppercase tracking-widest font-bold">{t.entry_priority}</span>
             </button>
           </div>
 
