@@ -202,22 +202,61 @@ const App: React.FC = () => {
         {renderContent()}
       </main>
 
-      <footer className="bg-jd-dark border-t border-gray-900 py-32">
-        <div className="max-w-[1600px] mx-auto px-10 flex flex-col md:flex-row justify-between items-center gap-20">
-          <div className="text-left space-y-6">
-            <h3 className="text-white font-black text-6xl tracking-tighter uppercase leading-none">
-              JD MORGAN <span className="text-jd-gold font-light">GLOBAL TRADING</span>
-            </h3>
-            <p className="text-sm text-gray-500 font-bold uppercase tracking-[0.4em] leading-relaxed">
-              COPYRIGHT © 2026 JD MORGAN GLOBAL TRADING LTD. ALL RIGHTS RESERVED.
+      <footer className="bg-jd-dark border-t border-gray-900 pt-24 pb-16">
+        <div className="max-w-[1600px] mx-auto px-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 md:gap-12">
+          {/* Column 1: Identity */}
+          <div className="space-y-8">
+            <div className="space-y-4">
+              <h3 className="text-white font-black text-4xl tracking-tighter uppercase leading-none">
+                JD MORGAN <br />
+                <span className="text-jd-gold font-light not-italic">GLOBAL TRADING</span>
+              </h3>
+              <p className="text-[10px] text-gray-500 font-bold uppercase tracking-[0.3em] leading-relaxed max-w-xs">
+                {t.sitemap_reg}
+              </p>
+            </div>
+            <p className="text-[10px] text-gray-600 font-bold uppercase tracking-[0.4em]">
+              COPYRIGHT © 2026 LTD. <br /> ALL RIGHTS RESERVED.
             </p>
           </div>
-          
-          <div className="flex flex-wrap justify-center items-center gap-x-16 gap-y-8 text-xs font-black uppercase tracking-[0.4em]">
-            <button onClick={() => setCurrentView(View.DISCLAIMER)} className="glow-text hover:text-white transition-all">{t.footer_privacy}</button>
-            <button onClick={() => setCurrentView(View.DISCLAIMER)} className="glow-text hover:text-white transition-all">{t.footer_terms}</button>
-            <button onClick={() => setCurrentView(View.DISCLAIMER)} className="glow-text hover:text-white transition-all">{t.footer_legal}</button>
-            <button onClick={() => setCurrentView(View.FRAUD_REPORT)} className="glow-text hover:text-white transition-all px-8 py-3 border border-jd-gold/30 rounded-2xl">{t.footer_fraud}</button>
+
+          {/* Column 2: Platform */}
+          <div className="space-y-6">
+            <h4 className="text-jd-gold text-[10px] font-black uppercase tracking-[0.5em]">{t.sitemap_platform}</h4>
+            <div className="flex flex-col gap-4 text-sm font-bold uppercase tracking-[0.2em]">
+              <button onClick={() => setCurrentView(View.HOME)} className="text-gray-500 hover:text-white transition-all text-left">{t.sitemap_home}</button>
+              <button onClick={startTrading} className="text-gray-500 hover:text-white transition-all text-left">{t.sitemap_intel}</button>
+              <button onClick={() => setCurrentView(View.NEWS)} className="text-gray-500 hover:text-white transition-all text-left">{t.nav_market}</button>
+            </div>
+          </div>
+
+          {/* Column 3: Ecosystem */}
+          <div className="space-y-6">
+            <h4 className="text-jd-gold text-[10px] font-black uppercase tracking-[0.5em]">{t.sitemap_resources}</h4>
+            <div className="flex flex-col gap-4 text-sm font-bold uppercase tracking-[0.2em]">
+              <button onClick={() => setCurrentView(View.NEWS)} className="text-gray-500 hover:text-white transition-all text-left">{t.sitemap_news}</button>
+              <a href="https://jdmorgan.ca" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-white transition-all text-left flex items-center gap-2">
+                {t.nav_asia} <i className="fa-solid fa-arrow-up-right-from-square text-[8px]"></i>
+              </a>
+            </div>
+          </div>
+
+          {/* Column 4: Legal & Fraud */}
+          <div className="space-y-8">
+            <div className="space-y-6">
+              <h4 className="text-jd-gold text-[10px] font-black uppercase tracking-[0.5em]">{t.sitemap_legal}</h4>
+              <div className="flex flex-col gap-4 text-xs font-black uppercase tracking-[0.3em]">
+                <button onClick={() => setCurrentView(View.DISCLAIMER)} className="text-gray-500 hover:text-white transition-all text-left">{t.footer_privacy}</button>
+                <button onClick={() => setCurrentView(View.DISCLAIMER)} className="text-gray-500 hover:text-white transition-all text-left">{t.footer_terms}</button>
+                <button onClick={() => setCurrentView(View.DISCLAIMER)} className="text-gray-500 hover:text-white transition-all text-left">{t.footer_legal}</button>
+              </div>
+            </div>
+            <button 
+              onClick={() => setCurrentView(View.FRAUD_REPORT)} 
+              className="w-full py-4 border border-jd-gold/30 rounded-2xl text-[10px] font-black text-jd-gold uppercase tracking-[0.3em] hover:bg-jd-gold hover:text-jd-dark transition-all shadow-xl shadow-jd-gold/5"
+            >
+              {t.footer_fraud}
+            </button>
           </div>
         </div>
       </footer>

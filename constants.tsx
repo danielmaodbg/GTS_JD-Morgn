@@ -47,7 +47,6 @@ export const INITIAL_APP_CONFIG: AppConfig = {
   ]
 };
 
-// Fix: Export missing members required by MemberDashboard.tsx
 export const MARKET_DATA = INITIAL_APP_CONFIG.quotes;
 export const NEWS_ITEMS = INITIAL_APP_CONFIG.industryNews;
 

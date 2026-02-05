@@ -22,6 +22,14 @@ export const translations = {
     entry_member: '會員驗證',
     entry_quick: '快速訪問',
     entry_priority: '優先進入',
+    // Sitemap labels
+    sitemap_platform: '平台服務',
+    sitemap_resources: '資源中心',
+    sitemap_legal: '法律與合規',
+    sitemap_home: '首頁終端',
+    sitemap_intel: '情報對接',
+    sitemap_news: '產業情報',
+    sitemap_reg: '卑詩省註冊實體：JD MORGAN GLOBAL TRADING LTD.'
   },
   [Language.EN]: {
     nav_asia: 'JD Morgan Asia',
@@ -44,5 +52,13 @@ export const translations = {
     entry_member: 'Member Login',
     entry_quick: 'Quick Access',
     entry_priority: 'Priority Entry',
+    // Sitemap labels
+    sitemap_platform: 'PLATFORM',
+    sitemap_resources: 'RESOURCES',
+    sitemap_legal: 'LEGAL & COMPLIANCE',
+    sitemap_home: 'Home Terminal',
+    sitemap_intel: 'Trade Intelligence',
+    sitemap_news: 'Industry News',
+    sitemap_reg: 'REGISTERED IN BC, CANADA: JD MORGAN GLOBAL TRADING LTD.'
   }
 };
