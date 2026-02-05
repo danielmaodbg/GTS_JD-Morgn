@@ -202,61 +202,100 @@ const App: React.FC = () => {
         {renderContent()}
       </main>
 
-      <footer className="bg-jd-dark border-t border-gray-900 pt-24 pb-16">
-        <div className="max-w-[1600px] mx-auto px-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 md:gap-12">
-          {/* Column 1: Identity */}
-          <div className="space-y-8">
-            <div className="space-y-4">
-              <h3 className="text-white font-black text-4xl tracking-tighter uppercase leading-none">
-                JD MORGAN <br />
-                <span className="text-jd-gold font-light not-italic">GLOBAL TRADING</span>
-              </h3>
-              <p className="text-[10px] text-gray-500 font-bold uppercase tracking-[0.3em] leading-relaxed max-w-xs">
-                {t.sitemap_reg}
-              </p>
-            </div>
-            <p className="text-[10px] text-gray-600 font-bold uppercase tracking-[0.4em]">
-              COPYRIGHT © 2026 LTD. <br /> ALL RIGHTS RESERVED.
-            </p>
-          </div>
-
-          {/* Column 2: Platform */}
-          <div className="space-y-6">
-            <h4 className="text-jd-gold text-[10px] font-black uppercase tracking-[0.5em]">{t.sitemap_platform}</h4>
-            <div className="flex flex-col gap-4 text-sm font-bold uppercase tracking-[0.2em]">
-              <button onClick={() => setCurrentView(View.HOME)} className="text-gray-500 hover:text-white transition-all text-left">{t.sitemap_home}</button>
-              <button onClick={startTrading} className="text-gray-500 hover:text-white transition-all text-left">{t.sitemap_intel}</button>
-              <button onClick={() => setCurrentView(View.NEWS)} className="text-gray-500 hover:text-white transition-all text-left">{t.nav_market}</button>
-            </div>
-          </div>
-
-          {/* Column 3: Ecosystem */}
-          <div className="space-y-6">
-            <h4 className="text-jd-gold text-[10px] font-black uppercase tracking-[0.5em]">{t.sitemap_resources}</h4>
-            <div className="flex flex-col gap-4 text-sm font-bold uppercase tracking-[0.2em]">
-              <button onClick={() => setCurrentView(View.NEWS)} className="text-gray-500 hover:text-white transition-all text-left">{t.sitemap_news}</button>
-              <a href="https://jdmorgan.ca" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-white transition-all text-left flex items-center gap-2">
-                {t.nav_asia} <i className="fa-solid fa-arrow-up-right-from-square text-[8px]"></i>
-              </a>
-            </div>
-          </div>
-
-          {/* Column 4: Legal & Fraud */}
-          <div className="space-y-8">
-            <div className="space-y-6">
-              <h4 className="text-jd-gold text-[10px] font-black uppercase tracking-[0.5em]">{t.sitemap_legal}</h4>
-              <div className="flex flex-col gap-4 text-xs font-black uppercase tracking-[0.3em]">
-                <button onClick={() => setCurrentView(View.DISCLAIMER)} className="text-gray-500 hover:text-white transition-all text-left">{t.footer_privacy}</button>
-                <button onClick={() => setCurrentView(View.DISCLAIMER)} className="text-gray-500 hover:text-white transition-all text-left">{t.footer_terms}</button>
-                <button onClick={() => setCurrentView(View.DISCLAIMER)} className="text-gray-500 hover:text-white transition-all text-left">{t.footer_legal}</button>
+      {/* Symmetric Modern Sitemap Footer */}
+      <footer className="bg-jd-dark border-t border-white/5 pt-24 pb-12">
+        <div className="max-w-[1600px] mx-auto px-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 md:gap-12 mb-20">
+            {/* Column 1: Identity & Social */}
+            <div className="space-y-8">
+              <div className="flex flex-col space-y-4 items-start">
+                <h3 className="text-white font-black text-4xl tracking-tighter uppercase leading-none">
+                  JD MORGAN
+                </h3>
+                <div className="inline-block px-4 py-1.5 border border-jd-gold/40 rounded-sm">
+                  <span className="text-jd-gold font-black text-xl tracking-[0.25em] uppercase leading-none">
+                    GLOBAL TRADING
+                  </span>
+                </div>
+                <div className="pt-2">
+                  <p className="text-[10px] text-gray-500 font-black uppercase tracking-[0.3em] leading-relaxed">
+                    {t.sitemap_reg}
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-6 pt-2">
+                 <a href="#" className="text-gray-600 hover:text-jd-gold transition-colors text-xl"><i className="fa-brands fa-linkedin-in"></i></a>
+                 <a href="#" className="text-gray-600 hover:text-jd-gold transition-colors text-xl"><i className="fa-brands fa-telegram"></i></a>
               </div>
             </div>
-            <button 
-              onClick={() => setCurrentView(View.FRAUD_REPORT)} 
-              className="w-full py-4 border border-jd-gold/30 rounded-2xl text-[10px] font-black text-jd-gold uppercase tracking-[0.3em] hover:bg-jd-gold hover:text-jd-dark transition-all shadow-xl shadow-jd-gold/5"
-            >
-              {t.footer_fraud}
-            </button>
+
+            {/* Column 2: Trade Terminal */}
+            <div className="space-y-8">
+              <h4 className="text-jd-gold text-[11px] font-black uppercase tracking-[0.5em] flex items-center gap-4">
+                 <span className="w-8 h-px bg-jd-gold/30"></span> {t.sitemap_platform}
+              </h4>
+              <div className="flex flex-col gap-5 text-[11px] font-black uppercase tracking-[0.25em]">
+                <button onClick={() => setCurrentView(View.HOME)} className="text-gray-500 hover:text-jd-gold transition-all text-left flex items-center gap-3 group">
+                   <i className="fa-solid fa-chevron-right text-[8px] opacity-0 group-hover:opacity-100 transition-opacity"></i> {t.sitemap_home}
+                </button>
+                <button onClick={startTrading} className="text-gray-500 hover:text-jd-gold transition-all text-left flex items-center gap-3 group">
+                   <i className="fa-solid fa-chevron-right text-[8px] opacity-0 group-hover:opacity-100 transition-opacity"></i> {t.sitemap_intel}
+                </button>
+                <button onClick={() => setCurrentView(View.NEWS)} className="text-gray-500 hover:text-jd-gold transition-all text-left flex items-center gap-3 group">
+                   <i className="fa-solid fa-chevron-right text-[8px] opacity-0 group-hover:opacity-100 transition-opacity"></i> {t.nav_market}
+                </button>
+                <button onClick={() => setCurrentView(View.NEWS)} className="text-gray-500 hover:text-jd-gold transition-all text-left flex items-center gap-3 group">
+                   <i className="fa-solid fa-chevron-right text-[8px] opacity-0 group-hover:opacity-100 transition-opacity"></i> {t.sitemap_news}
+                </button>
+              </div>
+            </div>
+
+            {/* Column 3: Global Network */}
+            <div className="space-y-8">
+              <h4 className="text-jd-gold text-[11px] font-black uppercase tracking-[0.5em] flex items-center gap-4">
+                 <span className="w-8 h-px bg-jd-gold/30"></span> {t.sitemap_network}
+              </h4>
+              <div className="flex flex-col gap-5 text-[11px] font-black uppercase tracking-[0.25em]">
+                <a href="https://gts-jd-morgn.vercel.app" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-jd-gold transition-all text-left flex items-center gap-3 group">
+                  <i className="fa-solid fa-location-dot text-[9px]"></i> {t.nav_north_america}
+                </a>
+                <a href="https://jdmorgan.ca" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-jd-gold transition-all text-left flex items-center gap-3 group">
+                  <i className="fa-solid fa-location-dot text-[9px]"></i> {t.nav_asia_pacific}
+                </a>
+                <div className="pt-4">
+                  <p className="text-[9px] text-gray-700 font-bold uppercase tracking-[0.2em] leading-loose">
+                    VANCOUVER HQ: SUITE 1500, WEST GEORGIA ST.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Column 4: Compliance & Security */}
+            <div className="space-y-8">
+              <div className="space-y-8">
+                <h4 className="text-jd-gold text-[11px] font-black uppercase tracking-[0.5em] flex items-center gap-4">
+                   <span className="w-8 h-px bg-jd-gold/30"></span> {t.sitemap_legal}
+                </h4>
+                <div className="flex flex-col gap-5 text-[11px] font-black uppercase tracking-[0.25em]">
+                  <button onClick={() => setCurrentView(View.DISCLAIMER)} className="text-gray-500 hover:text-jd-gold transition-all text-left">{t.footer_privacy}</button>
+                  <button onClick={() => setCurrentView(View.DISCLAIMER)} className="text-gray-500 hover:text-jd-gold transition-all text-left">{t.footer_terms}</button>
+                  <button onClick={() => setCurrentView(View.DISCLAIMER)} className="text-gray-500 hover:text-jd-gold transition-all text-left">{t.footer_legal}</button>
+                </div>
+              </div>
+              <button 
+                onClick={() => setCurrentView(View.FRAUD_REPORT)} 
+                className="w-full py-4 border border-jd-gold/30 rounded-xl text-[10px] font-black text-jd-gold uppercase tracking-[0.4em] hover:bg-jd-gold hover:text-jd-dark transition-all shadow-xl flex items-center justify-center gap-3"
+              >
+                <i className="fa-solid fa-shield-halved"></i> {t.footer_fraud}
+              </button>
+            </div>
+          </div>
+
+          {/* Bottom Copyright Bar */}
+          <div className="pt-10 border-t border-white/5 text-center">
+            <p className="text-[9px] text-gray-700 font-black uppercase tracking-[0.5em]">
+              COPYRIGHT © 2026 JD MORGAN GROUP. ALL RIGHTS RESERVED.
+            </p>
           </div>
         </div>
       </footer>
