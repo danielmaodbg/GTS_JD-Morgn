@@ -39,8 +39,8 @@ const Navbar: React.FC<NavbarProps> = ({ currentUser, onNavigate, onLogout, isSc
         : 'bg-transparent h-24 border-none'
     }`}>
       <div className="max-w-7xl mx-auto px-8 lg:px-12 w-full flex items-center justify-between">
-        {/* Logo Section - With Enhanced Regional Sub-Links */}
-        <div className="flex items-center cursor-pointer group select-none bg-transparent">
+        {/* Logo Section - Completely Transparent Background */}
+        <div className="flex items-center cursor-pointer group select-none">
           <div 
             className="relative flex items-center justify-center w-12 h-12 mr-4 shrink-0"
             onClick={() => onNavigate(View.HOME)}
@@ -48,7 +48,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentUser, onNavigate, onLogout, isSc
             <div className={`absolute inset-0 bg-jd-gold/10 rounded-full blur-2xl transition-all duration-1000 ${isScrolled ? 'opacity-0' : 'opacity-100 animate-pulse'}`}></div>
             <i className={`fa-solid ${config.logoIcon} text-jd-gold text-3xl relative z-10 group-hover:rotate-[360deg] transition-all duration-1000 drop-shadow-[0_0_15px_rgba(251,191,36,0.4)]`}></i>
           </div>
-          <div className="flex flex-col bg-transparent">
+          <div className="flex flex-col">
             <span 
               className="text-white font-black text-2xl tracking-tighter uppercase leading-none drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]"
               onClick={() => onNavigate(View.HOME)}
@@ -56,7 +56,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentUser, onNavigate, onLogout, isSc
               JD<span className="text-jd-gold">MORGAN</span>
             </span>
             
-            {/* Regional Links Container with Border Box */}
+            {/* Regional Links Container */}
             <div className="flex items-center gap-1.5 mt-2.5 p-1 px-2 border border-white/10 rounded-lg bg-white/5 backdrop-blur-sm">
               <a 
                 href="https://gts-jd-morgn.vercel.app" 
@@ -84,23 +84,23 @@ const Navbar: React.FC<NavbarProps> = ({ currentUser, onNavigate, onLogout, isSc
         </div>
 
         {/* Navigation & Language Switch Section */}
-        <div className="flex items-center space-x-10 bg-transparent">
-          {/* Language Switcher */}
+        <div className="flex items-center space-x-10">
+          {/* Language Switcher - High Contrast Pure White for Active State */}
           <div className="flex items-center gap-2">
             <button 
               onClick={() => setLanguage(Language.EN)}
-              className={`font-black text-[10px] uppercase tracking-widest transition-all ${language === Language.EN ? 'text-jd-gold' : 'text-white/30 hover:text-white'}`}
+              className={`font-black text-[10px] uppercase tracking-widest transition-all ${language === Language.EN ? 'text-white' : 'text-white/30 hover:text-white'}`}
             >
               EN
             </button>
             <span className="w-px h-2.5 bg-white/20"></span>
             <button 
               onClick={() => setLanguage(Language.ZH)}
-              className={`font-black text-[10px] uppercase tracking-widest transition-all ${language === Language.ZH ? 'text-jd-gold' : 'text-white/30 hover:text-white'}`}
+              className={`font-black text-[10px] uppercase tracking-widest transition-all ${language === Language.ZH ? 'text-white' : 'text-white/30 hover:text-white'}`}
             >
               中
             </button>
-            <i className="fa-solid fa-globe text-white/20 text-[10px] ml-1"></i>
+            <i className="fa-solid fa-globe text-white text-[10px] ml-1 opacity-80"></i>
           </div>
 
           {/* User Management State */}
@@ -127,7 +127,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentUser, onNavigate, onLogout, isSc
           ) : (
             <button 
               onClick={() => onNavigate(View.LOGIN)}
-              className="text-jd-gold font-black text-[10px] uppercase tracking-widest hover:text-white transition-all"
+              className="text-white font-black text-[10px] uppercase tracking-widest hover:text-jd-gold transition-all"
             >
               LOGIN
             </button>
