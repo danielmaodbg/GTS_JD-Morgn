@@ -107,7 +107,7 @@ const TradeForm: React.FC<TradeFormProps> = ({ role, config, currentUser, onBack
           
           <div className="space-y-6 max-w-md w-full">
             <div className="space-y-2">
-              <h3 className="text-3xl font-black text-white italic uppercase tracking-tighter">
+              <h3 className="text-2xl font-black text-white italic uppercase tracking-tighter">
                 {uploadStatus === 'uploading' ? 'Node Synchronizing' : 
                  uploadStatus === 'syncing' ? 'Indexing Metadata' : 'Broadcast Completed'}
               </h3>
@@ -133,7 +133,7 @@ const TradeForm: React.FC<TradeFormProps> = ({ role, config, currentUser, onBack
         <div className="p-10">
           <div className="flex justify-between items-center mb-10">
             <div>
-              <h2 className="text-3xl font-black text-white">{isBuyer ? '採購需求清單' : '供貨資源清單'}</h2>
+              <h2 className="text-2xl font-black text-white">{isBuyer ? '採購需求清單' : '供貨資源清單'}</h2>
               <p className="text-gray-500 mt-1 uppercase text-xs tracking-widest font-bold">
                 {isBuyer ? 'Buyer Letter of Intent (LOI)' : 'Seller Soft Offer (SCO)'}
               </p>
@@ -151,32 +151,32 @@ const TradeForm: React.FC<TradeFormProps> = ({ role, config, currentUser, onBack
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div>
                   <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">您的姓名 / 企業名稱</label>
-                  <input name="clientName" type="text" className="w-full bg-jd-dark/60 border border-gray-800 rounded-xl p-4 text-white focus:border-jd-gold outline-none" placeholder="Enter Full Name" required value={formData.clientName} onChange={handleInputChange} />
+                  <input name="clientName" type="text" className="w-full bg-jd-dark/60 border border-gray-800 rounded-xl p-4 text-sm text-white focus:border-jd-gold outline-none" placeholder="Enter Full Name" required value={formData.clientName} onChange={handleInputChange} />
                 </div>
                 <div>
                   <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">電子郵箱</label>
-                  <input name="contactEmail" type="email" className="w-full bg-jd-dark/60 border border-gray-800 rounded-xl p-4 text-white focus:border-jd-gold outline-none" placeholder="example@email.com" required value={formData.contactEmail} onChange={handleInputChange} />
+                  <input name="contactEmail" type="email" className="w-full bg-jd-dark/60 border border-gray-800 rounded-xl p-4 text-sm text-white focus:border-jd-gold outline-none" placeholder="example@email.com" required value={formData.contactEmail} onChange={handleInputChange} />
                 </div>
                 <div>
                   <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">聯絡電話 (僅限數字)</label>
-                  <input name="contactPhone" type="tel" inputMode="numeric" className="w-full bg-jd-dark/60 border border-gray-800 rounded-xl p-4 text-white focus:border-jd-gold outline-none" placeholder="Phone Number (Digits only)" required value={formData.contactPhone} onChange={handleInputChange} />
+                  <input name="contactPhone" type="tel" inputMode="numeric" className="w-full bg-jd-dark/60 border border-gray-800 rounded-xl p-4 text-sm text-white focus:border-jd-gold outline-none" placeholder="Phone Number (Digits only)" required value={formData.contactPhone} onChange={handleInputChange} />
                 </div>
                 <div>
                   <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">所在地 / 地區</label>
-                  <select name="contactRegion" className="w-full bg-jd-dark/60 border border-gray-800 rounded-xl p-4 text-white focus:border-jd-gold outline-none cursor-pointer" required value={formData.contactRegion} onChange={handleInputChange}>
+                  <select name="contactRegion" className="w-full bg-jd-dark/60 border border-gray-800 rounded-xl p-4 text-sm text-white focus:border-jd-gold outline-none cursor-pointer" required value={formData.contactRegion} onChange={handleInputChange}>
                     {COUNTRIES.map(c => <option key={c} value={c}>{c}</option>)}
                   </select>
                 </div>
                 <div className="col-span-full">
                   <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">社交帳號 (Rapid Communication)</label>
                   <div className="flex gap-4">
-                    <select name="socialType" className="bg-jd-dark/80 border border-gray-800 rounded-xl p-4 text-white focus:border-jd-gold outline-none cursor-pointer w-48" value={formData.socialType} onChange={handleInputChange}>
+                    <select name="socialType" className="bg-jd-dark/80 border border-gray-800 rounded-xl p-4 text-sm text-white focus:border-jd-gold outline-none cursor-pointer w-48" value={formData.socialType} onChange={handleInputChange}>
                       <option value="WeChat">WeChat</option>
                       <option value="WhatsApp">WhatsApp</option>
                       <option value="Telegram">Telegram</option>
                       <option value="Line">Line</option>
                     </select>
-                    <input name="socialAccount" type="text" className="flex-grow bg-jd-dark/60 border border-gray-800 rounded-xl p-4 text-white focus:border-jd-gold outline-none" placeholder="Account ID / Username" required value={formData.socialAccount} onChange={handleInputChange} />
+                    <input name="socialAccount" type="text" className="flex-grow bg-jd-dark/60 border border-gray-800 rounded-xl p-4 text-sm text-white focus:border-jd-gold outline-none" placeholder="Account ID / Username" required value={formData.socialAccount} onChange={handleInputChange} />
                   </div>
                 </div>
               </div>
@@ -189,18 +189,18 @@ const TradeForm: React.FC<TradeFormProps> = ({ role, config, currentUser, onBack
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="col-span-full">
                   <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">商品品名</label>
-                  <select name="commodity" className="w-full bg-jd-dark/60 border border-gray-800 rounded-xl p-4 text-white focus:border-jd-gold outline-none cursor-pointer" required value={formData.commodity} onChange={handleInputChange}>
+                  <select name="commodity" className="w-full bg-jd-dark/60 border border-gray-800 rounded-xl p-4 text-sm text-white focus:border-jd-gold outline-none cursor-pointer" required value={formData.commodity} onChange={handleInputChange}>
                     <option value="">請選擇商品...</option>
                     {config.commodities.map(c => <option key={c} value={c}>{c}</option>)}
                   </select>
                 </div>
                 <div>
                   <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">目標數量</label>
-                  <input name="quantity" type="text" className="w-full bg-jd-dark/60 border border-gray-800 rounded-xl p-4 text-white focus:border-jd-gold outline-none" placeholder="例如: 100,000 MT" required value={formData.quantity} onChange={handleInputChange} />
+                  <input name="quantity" type="text" className="w-full bg-jd-dark/60 border border-gray-800 rounded-xl p-4 text-sm text-white focus:border-jd-gold outline-none" placeholder="例如: 100,000 MT" required value={formData.quantity} onChange={handleInputChange} />
                 </div>
                 <div>
                   <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">目標價格 (USD)</label>
-                  <input name="price" type="number" className="w-full bg-jd-dark/60 border border-gray-800 rounded-xl p-4 text-white focus:border-jd-gold outline-none" placeholder="每單位報價" required value={formData.price} onChange={handleInputChange} />
+                  <input name="price" type="number" className="w-full bg-jd-dark/60 border border-gray-800 rounded-xl p-4 text-sm text-white focus:border-jd-gold outline-none" placeholder="每單位報價" required value={formData.price} onChange={handleInputChange} />
                 </div>
               </div>
             </section>
@@ -213,7 +213,7 @@ const TradeForm: React.FC<TradeFormProps> = ({ role, config, currentUser, onBack
                 <input type="file" onChange={handleFileChange} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
                 <div className={`border-2 border-dashed rounded-2xl p-10 text-center transition-all ${selectedFile ? 'border-jd-gold bg-jd-gold/5' : 'border-gray-800 group-hover:border-jd-gold bg-jd-dark/20 group-hover:bg-jd-gold/5'}`}>
                   <i className={`fa-solid ${selectedFile ? 'fa-file-circle-check text-jd-gold' : 'fa-clapperboard text-gray-700'} text-4xl mb-4`}></i>
-                  <p className="text-gray-500 font-medium text-sm">
+                  <p className="text-gray-500 font-medium text-xs">
                     {selectedFile ? `已選擇：${selectedFile.name} (${(selectedFile.size/1024/1024).toFixed(2)}MB)` : '點擊或拖曳上傳證明文件、POP 影片或 LOI (PDF, MP4, JPG)'}
                   </p>
                 </div>
@@ -224,9 +224,9 @@ const TradeForm: React.FC<TradeFormProps> = ({ role, config, currentUser, onBack
               <button 
                 type="submit" 
                 disabled={uploadStatus !== 'idle'} 
-                className={`w-full ${isBuyer ? 'bg-blue-600 hover:bg-blue-500 shadow-blue-500/20' : 'bg-green-600 hover:bg-green-500 shadow-green-500/20'} text-white font-black py-6 rounded-2xl transition-all shadow-xl uppercase tracking-[0.2em] flex items-center justify-center text-3xl disabled:opacity-50 leading-none group`}
+                className={`w-full ${isBuyer ? 'bg-blue-600 hover:bg-blue-500 shadow-blue-500/20' : 'bg-green-600 hover:bg-green-500 shadow-green-500/20'} text-white font-black py-4 rounded-xl transition-all shadow-xl uppercase tracking-[0.2em] flex items-center justify-center text-xl disabled:opacity-50 leading-none group`}
               >
-                <i className="fa-solid fa-cloud-arrow-up mr-4 group-hover:-translate-x-1 transition-transform"></i> 
+                <i className="fa-solid fa-cloud-arrow-up mr-3 group-hover:-translate-x-1 transition-transform"></i> 
                 提交並廣播交易意向
               </button>
             </div>
