@@ -72,7 +72,9 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
       id: `slide_${Date.now()}`,
       img: 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?q=80&w=2070&auto=format&fit=crop',
       title: '新交易標題',
+      titleEn: 'NEW TRADE TITLE',
       subtitle: '新交易副標題',
+      subtitleEn: 'NEW TRADE SUBTITLE',
       order: (appConfig.heroSlides?.length || 0) + 1
     };
     updateAppConfig({ heroSlides: [...(appConfig.heroSlides || []), newSlide] });
@@ -223,7 +225,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                     <div className="flex-grow space-y-6">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-2">
-                          <label className="text-[10px] font-black text-gray-600 uppercase tracking-widest">主標題</label>
+                          <label className="text-[10px] font-black text-gray-600 uppercase tracking-widest">主標題 (中)</label>
                           <input 
                             type="text" 
                             value={slide.title} 
@@ -232,12 +234,32 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                           />
                         </div>
                         <div className="space-y-2">
-                          <label className="text-[10px] font-black text-gray-600 uppercase tracking-widest">副標題</label>
+                          <label className="text-[10px] font-black text-jd-gold uppercase tracking-widest">主標題 (EN)</label>
+                          <input 
+                            type="text" 
+                            value={slide.titleEn || ''} 
+                            onChange={(e) => handleUpdateSlide(slide.id, { titleEn: e.target.value })} 
+                            className="w-full bg-jd-dark border border-jd-gold/20 rounded-xl p-4 text-white font-black text-xl"
+                            placeholder="English Title"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-[10px] font-black text-gray-600 uppercase tracking-widest">副標題 (中)</label>
                           <input 
                             type="text" 
                             value={slide.subtitle} 
                             onChange={(e) => handleUpdateSlide(slide.id, { subtitle: e.target.value })} 
                             className="w-full bg-jd-dark border border-white/5 rounded-xl p-4 text-white font-medium text-lg"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-[10px] font-black text-jd-gold uppercase tracking-widest">副標題 (EN)</label>
+                          <input 
+                            type="text" 
+                            value={slide.subtitleEn || ''} 
+                            onChange={(e) => handleUpdateSlide(slide.id, { subtitleEn: e.target.value })} 
+                            className="w-full bg-jd-dark border border-jd-gold/20 rounded-xl p-4 text-white font-medium text-lg"
+                            placeholder="English Subtitle"
                           />
                         </div>
                       </div>

@@ -4,9 +4,33 @@ export const INITIAL_APP_CONFIG: AppConfig = {
   logoText: 'JD MORGAN',
   logoIcon: 'fa-earth-americas',
   heroSlides: [
-    { id: '1', img: 'https://40072.jdmorgan.ca/pictures/hero-gold.jpg', title: '黃金現貨交易', subtitle: 'Gold Spot Trading & Wealth Management', order: 1 },
-    { id: '2', img: 'https://images.unsplash.com/photo-1532601224476-15c79f2f7a51?q=80&w=2070&auto=format&fit=crop', title: '全球能源配置', subtitle: 'Global Energy Allocation Network', order: 2 },
-    { id: '3', img: 'https://images.unsplash.com/photo-1566433311776-e7843431637c?q=80&w=2070&auto=format&fit=crop', title: '大宗物資貿易', subtitle: 'Bulk Commodity Trading & Logistics', order: 3 }
+    { 
+      id: '1', 
+      img: 'https://40072.jdmorgan.ca/pictures/hero-gold.jpg', 
+      title: '黃金現貨交易', 
+      titleEn: 'GOLD SPOT TRADING',
+      subtitle: 'Gold Spot Trading & Wealth Management', 
+      subtitleEn: 'Wealth Management Terminal',
+      order: 1 
+    },
+    { 
+      id: '2', 
+      img: 'https://images.unsplash.com/photo-1532601224476-15c79f2f7a51?q=80&w=2070&auto=format&fit=crop', 
+      title: '全球能源配置', 
+      titleEn: 'GLOBAL ENERGY ALLOCATION',
+      subtitle: 'Global Energy Allocation Network', 
+      subtitleEn: 'Sustainable Resource Terminal',
+      order: 2 
+    },
+    { 
+      id: '3', 
+      img: 'https://images.unsplash.com/photo-1566433311776-e7843431637c?q=80&w=2070&auto=format&fit=crop', 
+      title: '大宗物資貿易', 
+      titleEn: 'BULK COMMODITY TRADING',
+      subtitle: 'Bulk Commodity Trading & Logistics', 
+      subtitleEn: 'Global Logistics Network',
+      order: 3 
+    }
   ],
   announcements: [
     { id: 'ann_1', title: '系統安全升級：引入 AI 智能物資分配演算法 V3.0', content: '我們已在所有核心交易終端部署了最新的量化分配系統，顯著提升 LOI 與 SCO 的自動對接效率。', date: '2026-05-12', isPriority: true }

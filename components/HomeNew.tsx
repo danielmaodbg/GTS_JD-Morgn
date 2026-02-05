@@ -20,7 +20,9 @@ const HomeNew: React.FC<HomeNewProps> = ({ onStart, onNavigate, config, language
         id: 'default-slide',
         img: 'https://images.unsplash.com/photo-1518186239751-2467ef7f1979?q=80&w=2070&auto=format&fit=crop',
         title: 'JD MORGAN\nGLOBAL TRADING',
-        subtitle: 'SECURE GLOBAL TERMINAL',
+        titleEn: 'JD MORGAN\nGLOBAL TRADING',
+        subtitle: '安全全球終端',
+        subtitleEn: 'SECURE GLOBAL TERMINAL',
         order: 0
       }];
 
@@ -47,6 +49,9 @@ const HomeNew: React.FC<HomeNewProps> = ({ onStart, onNavigate, config, language
       <span key={i} className="block">{line}</span>
     ));
   };
+
+  const displayTitle = (language === Language.EN && currentSlide.titleEn) ? currentSlide.titleEn : currentSlide.title;
+  const displaySubtitle = (language === Language.EN && currentSlide.subtitleEn) ? currentSlide.subtitleEn : currentSlide.subtitle;
 
   return (
     <div className="relative w-full h-screen overflow-hidden bg-jd-dark">
@@ -76,12 +81,12 @@ const HomeNew: React.FC<HomeNewProps> = ({ onStart, onNavigate, config, language
         <div className="max-w-5xl space-y-8 md:space-y-10 mt-16">
           <div className="space-y-6">
             <p className="text-jd-gold text-[11px] md:text-sm font-black tracking-[0.8em] uppercase drop-shadow-lg animate-in fade-in slide-in-from-top-4 duration-1000">
-              {currentSlide?.subtitle?.toUpperCase() || t.home_subtitle}
+              {displaySubtitle?.toUpperCase()}
             </p>
             
             <div className="relative inline-block mt-4">
               <h1 className="text-3xl md:text-5xl lg:text-[4.2rem] font-black text-white leading-[1.3] tracking-tight drop-shadow-[0_20px_50px_rgba(0,0,0,0.9)] select-none uppercase transition-all duration-1000">
-                {renderTitle(currentSlide?.title || "JD MORGAN\nGLOBAL TRADING")}
+                {renderTitle(displayTitle)}
               </h1>
               <div className="w-20 h-1 bg-jd-gold mx-auto rounded-full shadow-[0_0_15px_rgba(251,191,36,1)] mt-8"></div>
             </div>

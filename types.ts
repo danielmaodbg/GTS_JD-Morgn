@@ -46,7 +46,9 @@ export interface HeroSlide {
   id: string;
   img: string;
   title: string;
+  titleEn?: string;
   subtitle: string;
+  subtitleEn?: string;
   order: number;
 }
 
