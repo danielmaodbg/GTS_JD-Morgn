@@ -33,44 +33,58 @@ const Navbar: React.FC<NavbarProps> = ({ currentUser, onNavigate, onLogout, isSc
   };
 
   return (
-    <nav className={`fixed top-0 left-0 w-full z-[100] transition-all duration-1000 flex items-center ${
+    <nav className={`fixed top-0 left-0 w-full z-[100] transition-all duration-700 flex items-center ${
       isScrolled 
-        ? 'bg-jd-dark/95 backdrop-blur-3xl border-b border-white/5 shadow-2xl h-16' 
-        : 'bg-transparent h-28 border-none'
+        ? 'bg-jd-dark/90 backdrop-blur-2xl border-b border-white/5 shadow-2xl h-16' 
+        : 'bg-transparent h-24 border-none'
     }`}>
       <div className="max-w-7xl mx-auto px-8 lg:px-12 w-full flex items-center justify-between">
-        {/* Logo Section */}
-        <div 
-          className="flex items-center cursor-pointer group select-none bg-transparent" 
-          onClick={() => onNavigate(View.HOME)}
-        >
-          <div className="relative flex items-center justify-center w-12 h-12 mr-4">
+        {/* Logo Section - With Enhanced Regional Sub-Links */}
+        <div className="flex items-center cursor-pointer group select-none bg-transparent">
+          <div 
+            className="relative flex items-center justify-center w-12 h-12 mr-4 shrink-0"
+            onClick={() => onNavigate(View.HOME)}
+          >
             <div className={`absolute inset-0 bg-jd-gold/10 rounded-full blur-2xl transition-all duration-1000 ${isScrolled ? 'opacity-0' : 'opacity-100 animate-pulse'}`}></div>
-            <i className={`fa-solid ${config.logoIcon} text-jd-gold text-3xl relative z-10 group-hover:scale-110 transition-all duration-700 drop-shadow-[0_0_15px_rgba(251,191,36,0.4)]`}></i>
+            <i className={`fa-solid ${config.logoIcon} text-jd-gold text-3xl relative z-10 group-hover:rotate-[360deg] transition-all duration-1000 drop-shadow-[0_0_15px_rgba(251,191,36,0.4)]`}></i>
           </div>
           <div className="flex flex-col bg-transparent">
-            <span className="text-white font-black text-2xl tracking-tighter uppercase leading-none drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
-              {config.logoText.split(' ')[0]}<span className="text-jd-gold">{config.logoText.split(' ')[1] || ''}</span>
+            <span 
+              className="text-white font-black text-2xl tracking-tighter uppercase leading-none drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]"
+              onClick={() => onNavigate(View.HOME)}
+            >
+              JD<span className="text-jd-gold">MORGAN</span>
             </span>
-            <span className="text-[8px] text-jd-gold/80 font-black uppercase mt-1 tracking-[0.4em] drop-shadow-sm">
-              Global Trading System
-            </span>
+            
+            {/* Regional Links Container with Border Box */}
+            <div className="flex items-center gap-1.5 mt-2.5 p-1 px-2 border border-white/10 rounded-lg bg-white/5 backdrop-blur-sm">
+              <a 
+                href="https://gts-jd-morgn.vercel.app" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="flex items-center gap-1.5 text-[10px] text-white/50 hover:text-jd-gold transition-all font-black uppercase tracking-[0.1em] whitespace-nowrap"
+              >
+                <i className="fa-solid fa-arrow-right text-[11px] text-jd-gold/60"></i>
+                {(t as any).nav_north_america}
+              </a>
+              <span className="w-px h-2.5 bg-white/10 mx-0.5"></span>
+              <a 
+                href="https://jdmorgan.ca" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="flex items-center gap-1.5 text-[10px] text-white/50 hover:text-jd-gold transition-all font-black uppercase tracking-[0.1em] whitespace-nowrap"
+              >
+                <i className="fa-solid fa-arrow-right text-[11px] text-jd-gold/60"></i>
+                {(t as any).nav_asia_pacific}
+              </a>
+            </div>
           </div>
         </div>
 
         {/* Navigation & Language Switch Section */}
         <div className="flex items-center space-x-10 bg-transparent">
-          {/* External Link */}
-          <a 
-            href="https://jdmorgan.ca" 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            className="text-white/60 hover:text-jd-gold text-[10px] font-black uppercase tracking-widest transition-all flex items-center gap-2"
-          >
-            {t.nav_asia}
-            <i className="fa-solid fa-arrow-up-right-from-square text-[8px]"></i>
-          </a>
-
           {/* Language Switcher */}
           <div className="flex items-center gap-2">
             <button 
