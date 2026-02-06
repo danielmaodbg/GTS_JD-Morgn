@@ -12,14 +12,15 @@ const FraudReport: React.FC<FraudReportProps> = ({ onBack }) => {
   return (
     <div className="min-h-screen pt-32 pb-24 px-6 md:px-12 bg-jd-dark selection:bg-red-500/20 selection:text-white font-sans">
       <div className="max-w-4xl mx-auto">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
-          <div className="space-y-4">
-            <h2 className="text-jd-gold text-sm font-black uppercase tracking-[0.5em] flex items-center">
+        <div className="flex flex-col md:flex-row md:items-center justify-between mb-16 gap-8">
+          {/* 對齊中央的標題區塊 */}
+          <div className="space-y-4 flex flex-col items-center text-center md:items-start md:text-left w-full md:w-auto">
+            <h2 className="text-jd-gold text-sm font-black uppercase tracking-[0.5em] flex items-center justify-center md:justify-start">
                COMPLIANCE & SECURITY
             </h2>
-            <h1 className="text-4xl font-black text-white tracking-tighter uppercase leading-none">
+            <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter uppercase leading-none">
               <span className="block">詐欺舉報</span> 
-              <span className="block text-jd-gold font-light not-italic">與風險預警</span>
+              <span className="block text-jd-gold font-light not-italic mt-2">與風險預警</span>
             </h1>
             <div className="space-y-1">
               <p className="text-xs text-white/60 font-bold uppercase tracking-widest">
@@ -30,9 +31,10 @@ const FraudReport: React.FC<FraudReportProps> = ({ onBack }) => {
               </p>
             </div>
           </div>
+          
           <button 
             onClick={onBack}
-            className="px-10 py-4 bg-white/5 hover:bg-jd-gold text-white border border-white/10 hover:border-red-500 rounded-2xl text-xs font-black uppercase tracking-widest transition-all flex items-center gap-3 shadow-md"
+            className="px-10 py-4 bg-white/5 hover:bg-jd-gold text-white hover:text-jd-dark border border-white/10 hover:border-red-500 rounded-2xl text-xs font-black uppercase tracking-widest transition-all flex items-center gap-3 shadow-md h-fit whitespace-nowrap"
           >
             <i className="fa-solid fa-arrow-left"></i> 返回系統
           </button>
