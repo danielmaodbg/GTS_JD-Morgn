@@ -35,7 +35,7 @@ export const translations = {
   },
   [Language.EN]: {
     nav_asia: 'JD Morgan Asia',
-    nav_market: 'Marketing Careers',
+    nav_market: 'Careers Center',
     nav_admin: 'Admin Center',
     nav_north_america: 'North American',
     nav_asia_pacific: 'Asia Pacific',

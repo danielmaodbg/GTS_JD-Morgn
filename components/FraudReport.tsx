@@ -15,24 +15,24 @@ const FraudReport: React.FC<FraudReportProps> = ({ onBack }) => {
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
           <div className="space-y-4">
             <h2 className="text-red-500 text-sm font-black uppercase tracking-[0.5em] flex items-center">
-              <span className="w-12 h-px bg-red-500/30 mr-4"></span> COMPLIANCE & SECURITY
+              <span className="w-12 h-px bg-jd-gold/30 mr-4"></span> COMPLIANCE & SECURITY
             </h2>
             <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter uppercase leading-none">
-              詐欺舉報 <span className="text-red-500 font-light not-italic">與風險預警</span>
+              詐欺舉報 <span className="text-jd-gold font-light not-italic">與風險預警</span>
             </h1>
-            <p className="text-xs text-gray-500 font-bold uppercase tracking-widest">
+            <p className="text-xs text-white font-bold uppercase tracking-widest">
               Fraud Reporting Center - JD Morgan Global Trading Compliance
             </p>
           </div>
           <button 
             onClick={onBack}
-            className="px-10 py-4 bg-white/5 hover:bg-red-500 text-white border border-white/10 hover:border-red-500 rounded-2xl text-xs font-black uppercase tracking-widest transition-all flex items-center gap-3 shadow-md"
+            className="px-10 py-4 bg-white/5 hover:bg-jd-gold text-white border border-white/10 hover:border-red-500 rounded-2xl text-xs font-black uppercase tracking-widest transition-all flex items-center gap-3 shadow-md"
           >
             <i className="fa-solid fa-arrow-left"></i> 返回系統
           </button>
         </div>
 
-        <div className="bg-jd-light/95 backdrop-blur-xl border border-red-500/10 rounded-[3rem] p-10 md:p-16 shadow-2xl relative overflow-hidden group">
+        <div className="bg-jd-light/95 backdrop-blur-xl border border-jd-gold/10 rounded-[3rem] p-10 md:p-16 shadow-2xl relative overflow-hidden group">
           <div className="absolute top-0 right-0 p-12 opacity-[0.03] pointer-events-none group-hover:opacity-[0.07] transition-opacity">
             <i className="fa-solid fa-user-shield text-[15rem] text-white"></i>
           </div>
@@ -43,7 +43,7 @@ const FraudReport: React.FC<FraudReportProps> = ({ onBack }) => {
               <p className="text-red-500 text-[10px] font-black uppercase tracking-widest">Anti-Money Laundering & Fraud Prevention</p>
             </div>
 
-            <div className="space-y-8 text-gray-300 leading-relaxed">
+            <div className="space-y-8 text-white leading-relaxed">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                 <div className="p-8 bg-black/20 rounded-2xl border border-white/5">
                   <h3 className="text-white font-black uppercase tracking-widest mb-4">舉報對象</h3>
@@ -53,7 +53,7 @@ const FraudReport: React.FC<FraudReportProps> = ({ onBack }) => {
                 </div>
                 <div className="p-8 bg-black/20 rounded-2xl border border-white/5">
                   <h3 className="text-white font-black uppercase tracking-widest mb-4">匿名保證</h3>
-                  <p className="text-sm text-gray-400">
+                  <p className="text-sm text-white">
                     JD Morgan 對所有舉報人的身分嚴格保密。我們致力於維護全球貿易環境的真實性與安全性。
                   </p>
                 </div>
