@@ -71,8 +71,7 @@ const HomeNew: React.FC<HomeNewProps> = ({ onStart, onNavigate, config, language
                 e.currentTarget.src = 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop';
               }}
             />
-            {/* 強化頂部融合漸層，確保 Navbar 融合感 */}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-jd-dark/95"></div>
+            <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-jd-dark/95"></div>
             <div className="absolute inset-0 bg-black/5"></div>
           </div>
         ))}
@@ -105,10 +104,9 @@ const HomeNew: React.FC<HomeNewProps> = ({ onStart, onNavigate, config, language
               <span className="relative z-10 tracking-[0.1em] text-lg md:text-xl font-black uppercase leading-none inline-block">{t.home_btn_provide}</span>
             </button>
             
-            {/* 按鈕改為高對比純白邊框 */}
             <button 
               onClick={() => onNavigate(View.NEWS)}
-              className="bg-transparent hover:bg-white/10 text-white border border-white/40 backdrop-blur-xl font-black px-12 py-5 rounded-2xl transition-all duration-500 hover:scale-105 active:scale-95 text-lg md:text-xl tracking-[0.1em] uppercase leading-none inline-flex items-center justify-center shadow-2xl"
+              className="bg-transparent hover:bg-white/10 text-white border border-white/20 backdrop-blur-xl font-black px-12 py-5 rounded-2xl transition-all duration-500 hover:scale-105 active:scale-95 text-lg md:text-xl tracking-[0.1em] uppercase leading-none inline-flex items-center justify-center shadow-2xl"
             >
               {t.home_btn_observe}
             </button>

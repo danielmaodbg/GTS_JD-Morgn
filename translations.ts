@@ -5,10 +5,10 @@ export const translations = {
     nav_asia: 'JD Morgan Asia',
     nav_market: '市場觀察',
     nav_admin: '管理中心',
-    nav_north_america: '北美',
-    nav_asia_pacific: '亞太',
+    nav_north_america: '北美網站',
+    nav_asia_pacific: '亞太網站',
     home_subtitle: '安全全球終端',
-    home_btn_provide: '提供交易情報',
+    home_btn_provide: '買賣交易配對',
     home_btn_observe: '即時市場觀察',
     member_welcome: '歡迎回來，',
     member_buy: '我要採購',
@@ -28,10 +28,10 @@ export const translations = {
     sitemap_platform: '核心交易終端',
     sitemap_network: '全球區域門戶',
     sitemap_legal: '法律與合規安全',
-    sitemap_home: '首頁終端',
-    sitemap_intel: '情報對接',
-    sitemap_news: '產業情報',
-    sitemap_reg: '卑詩省註冊實體：JD MORGAN GLOBAL TRADING LTD.'
+    sitemap_home: '回到網站首頁',
+    sitemap_intel: '買賣情報配對',
+    sitemap_news: '產業即時動態',
+    sitemap_reg: '加拿大卑詩省註冊實體：JD MORGAN GLOBAL TRADING LTD.'
   },
   [Language.EN]: {
     nav_asia: 'JD Morgan Asia',
@@ -57,7 +57,7 @@ export const translations = {
     entry_quick: 'Quick Access',
     entry_priority: 'Priority Entry',
     // Sitemap labels
-    sitemap_platform: 'TRADE TERMINAL',
+    sitemap_platform: 'TRADING SYSTEM',
     sitemap_network: 'GLOBAL NETWORK',
     sitemap_legal: 'SECURITY & COMPLIANCE',
     sitemap_home: 'Home Terminal',
