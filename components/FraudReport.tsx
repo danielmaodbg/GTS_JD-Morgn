@@ -14,7 +14,7 @@ const FraudReport: React.FC<FraudReportProps> = ({ onBack }) => {
       <div className="max-w-5xl mx-auto">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
           <div className="space-y-4">
-            <h2 className="text-red-500 text-sm font-black uppercase tracking-[0.5em] flex items-center">
+            <h2 className="text-white text-sm font-black uppercase tracking-[0.5em] flex items-center">
               <span className="w-12 h-px bg-jd-gold/30 mr-4"></span> COMPLIANCE & SECURITY
             </h2>
             <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter uppercase leading-none">
@@ -40,7 +40,7 @@ const FraudReport: React.FC<FraudReportProps> = ({ onBack }) => {
           <div className="relative z-10 space-y-10">
             <div className="border-b border-white/5 pb-6">
               <h2 className="text-3xl font-black text-white mb-2 uppercase tracking-tighter">FRAUD PROTECTION PROTOCOL | 舉報協議</h2>
-              <p className="text-red-500 text-[10px] font-black uppercase tracking-widest">Anti-Money Laundering & Fraud Prevention</p>
+              <p className="text-white text-[10px] font-black uppercase tracking-widest">Anti-Money Laundering & Fraud Prevention</p>
             </div>
 
             <div className="space-y-8 text-white leading-relaxed">
