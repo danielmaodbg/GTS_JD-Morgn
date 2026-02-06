@@ -60,7 +60,7 @@ const FraudReport: React.FC<FraudReportProps> = ({ onBack }) => {
               </div>
 
               <div className="pt-8 border-t border-white/5">
-                <h3 className="text-red-500 text-lg font-black uppercase tracking-widest mb-6">聯繫合規部門 (Contact Compliance)</h3>
+                <h3 className="text-jd-gold text-lg font-black uppercase tracking-widest mb-6">聯繫合規部門 (Contact Compliance)</h3>
                 <p className="text-sm mb-6">
                   請將相關電子郵件、截圖、通話記錄及對方聯繫資訊發送至以下專屬地址：
                 </p>
