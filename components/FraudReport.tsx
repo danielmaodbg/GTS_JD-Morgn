@@ -17,15 +17,18 @@ const FraudReport: React.FC<FraudReportProps> = ({ onBack }) => {
             <h2 className="text-jd-gold text-sm font-black uppercase tracking-[0.5em] flex items-center">
                COMPLIANCE & SECURITY
             </h2>
-            <h1 className="text-4xl md:text-4xl font-black text-white tracking-tighter uppercase leading-none items-center">
+            <h1 className="text-4xl font-black text-white tracking-tighter uppercase leading-none">
               <span className="block">詐欺舉報</span> 
-    <span className="block text-jd-gold font-light not-italic">
-    與風險預警
-  </span>
+              <span className="block text-jd-gold font-light not-italic">與風險預警</span>
             </h1>
-            <p className="text-xs text-white font-bold uppercase tracking-widest items-center">
-              Fraud Reporting Center </p> <p className="Bolck items-center" JD Morgan Global Trading Compliance
-            </p>
+            <div className="space-y-1">
+              <p className="text-xs text-white/60 font-bold uppercase tracking-widest">
+                Fraud Reporting Center
+              </p>
+              <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">
+                JD Morgan Global Trading Compliance
+              </p>
+            </div>
           </div>
           <button 
             onClick={onBack}
@@ -56,7 +59,7 @@ const FraudReport: React.FC<FraudReportProps> = ({ onBack }) => {
                 </div>
                 <div className="p-8 bg-black/20 rounded-2xl border border-white/5">
                   <h3 className="text-white font-black uppercase tracking-widest mb-4">匿名保證</h3>
-                  <p className="text-sm text-white">
+                  <p className="text-sm text-gray-300">
                     JD Morgan 對所有舉報人的身分嚴格保密。我們致力於維護全球貿易環境的真實性與安全性。
                   </p>
                 </div>
@@ -64,7 +67,7 @@ const FraudReport: React.FC<FraudReportProps> = ({ onBack }) => {
 
               <div className="pt-8 border-t border-white/5">
                 <h3 className="text-jd-gold text-lg font-black uppercase tracking-widest mb-6">聯繫合規部門 (Contact Compliance)</h3>
-                <p className="text-sm mb-6">
+                <p className="text-sm mb-6 text-gray-400">
                   請將相關電子郵件、截圖、通話記錄及對方聯繫資訊發送至以下專屬地址：
                 </p>
                 <div className="flex flex-col md:flex-row gap-8">
@@ -83,7 +86,7 @@ const FraudReport: React.FC<FraudReportProps> = ({ onBack }) => {
         </div>
 
         <div className="text-center pt-16 pb-20 space-y-4">
-          <p className="text-[10px] text-gray-600 font-black uppercase tracking-[0.5em]">
+          <p className="text-[10px] text-gray-700 font-black uppercase tracking-[0.5em]">
             PROTECTING THE INTEGRITY OF GLOBAL COMMODITY TRADING
           </p>
         </div>

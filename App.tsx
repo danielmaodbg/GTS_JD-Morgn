@@ -4,7 +4,6 @@ import { INITIAL_CONFIG, INITIAL_APP_CONFIG, INITIAL_SUBMISSIONS, MOCK_USERS } f
 import { translations } from './translations';
 import Navbar from './components/Navbar';
 import HomeNew from './components/HomeNew';
-import HomeLegacy from './components/HomeLegacy';
 import Login from './components/Login';
 import RoleSelection from './components/RoleSelection';
 import TradeForm from './components/TradeForm';
@@ -33,7 +32,6 @@ const App: React.FC = () => {
   const [isLegalAgreed, setIsLegalAgreed] = useState<boolean | null>(null);
 
   const t = translations[language];
-  const ADMIN_EMAIL = "info@jdmorgan.ca";
 
   useEffect(() => {
     const agreed = localStorage.getItem('jd_morgan_legal_agreed');
@@ -42,20 +40,12 @@ const App: React.FC = () => {
     const loadConfig = async () => {
       try {
         const savedConfig = await dataService.getSettings();
-        if (savedConfig) {
-          setAppConfig(savedConfig);
-        }
-      } catch (err) {
-        console.error("Failed to load initial config", err);
-      }
+        if (savedConfig) setAppConfig(savedConfig);
+      } catch (err) { console.error("Config load failed", err); }
     };
     loadConfig();
-  }, []);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 80);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -65,132 +55,33 @@ const App: React.FC = () => {
     setIsLegalAgreed(true);
   };
 
-  const handleLogin = (user: User) => {
-    setCurrentUser(user);
-    setIsEntryModalOpen(false);
-    const isAdmin = (
-      user.role?.toLowerCase() === 'admin' || 
-      user.email?.toLowerCase() === ADMIN_EMAIL.toLowerCase() ||
-      user.username?.toLowerCase() === ADMIN_EMAIL.toLowerCase() ||
-      user.memberType === MemberType.ADMIN ||
-      user.memberType === MemberType.PROJECT_MANAGER
-    );
-    if (isAdmin) {
-      setCurrentView(View.ADMIN);
-    } else {
-      setCurrentView(View.MEMBER_DASHBOARD);
-    }
-  };
-
-  const handleRegisterSuccess = (email: string) => {
-    setPendingEmail(email);
-    setCurrentView(View.VERIFY_EMAIL);
-  };
-
   const handleLogout = () => {
     setCurrentUser(null);
     setCurrentView(View.HOME);
   };
 
-  const startTrading = () => {
-    setIsEntryModalOpen(true);
-  };
-
-  const handleSelectGuest = async () => {
-    setIsEntryModalOpen(false);
-    try {
-      await dataService.signInAnonymously();
-    } catch (e) {
-      console.warn("Guest session failed, but proceeding...");
-    }
-    setCurrentView(View.ROLE_SELECT);
-  };
-
-  const handleSelectMember = () => {
-    setIsEntryModalOpen(false);
-    setCurrentView(View.LOGIN);
-  };
-
-  const handleAddSubmission = (sub: Omit<TradeSubmission, 'id' | 'timestamp' | 'status'>) => {
-    const newSub: TradeSubmission = {
-      ...sub,
-      id: `sub_${Date.now()}`,
-      timestamp: new Date().toLocaleString(),
-      status: 'Pending'
-    };
-    setSubmissions([newSub, ...submissions]);
-  };
-
   const renderContent = () => {
     switch (currentView) {
-      case View.HOME:
-        return <HomeNew onStart={startTrading} onNavigate={setCurrentView} config={appConfig} language={language} />;
-      case View.HOME_LEGACY:
-        return <HomeLegacy onStart={startTrading} config={appConfig} />;
-      case View.LOGIN:
-        return <Login onLogin={handleLogin} onRegisterSuccess={handleRegisterSuccess} />;
-      case View.VERIFY_EMAIL:
-        return <EmailVerification email={pendingEmail} onContinue={() => setCurrentView(View.LOGIN)} />;
-      case View.ROLE_SELECT:
-        return <RoleSelection onSelect={(role) => setCurrentView(role === 'buyer' ? View.BUYER_FORM : View.SELLER_FORM)} />;
-      case View.BUYER_FORM:
-        return <TradeForm 
-          role="buyer" 
-          config={config} 
-          currentUser={currentUser}
-          onBack={() => currentUser ? setCurrentView(View.MEMBER_DASHBOARD) : setCurrentView(View.ROLE_SELECT)} 
-          onSuccess={(data) => {
-            handleAddSubmission({ ...data, type: 'buyer' });
-            setCurrentView(View.HOME);
-          }} 
-        />;
-      case View.SELLER_FORM:
-        return <TradeForm 
-          role="seller" 
-          config={config} 
-          currentUser={currentUser}
-          onBack={() => currentUser ? setCurrentView(View.MEMBER_DASHBOARD) : setCurrentView(View.ROLE_SELECT)} 
-          onSuccess={(data) => {
-            handleAddSubmission({ ...data, type: 'seller' });
-            setCurrentView(View.HOME);
-          }} 
-        />;
-      case View.ADMIN:
-        return <AdminDashboard 
-          config={config} 
-          setConfig={setConfig} 
-          appConfig={appConfig} 
-          setAppConfig={setAppConfig}
-          submissions={submissions}
-          setSubmissions={setSubmissions}
-          members={members}
-          setMembers={setMembers}
-          onNavigate={setCurrentView}
-        />;
-      case View.MEMBER_DASHBOARD:
-        return currentUser ? <MemberDashboard user={currentUser} onNavigate={setCurrentView} language={language} /> : <HomeNew onStart={startTrading} onNavigate={setCurrentView} config={appConfig} language={language} />;
-      case View.DATABASE_TEST:
-        return <DatabaseTest onBack={() => setCurrentView(View.ADMIN)} />;
-      case View.NEWS:
-        return <News onBack={() => setCurrentView(View.HOME)} />;
-      case View.DISCLAIMER:
-        return <Disclaimer onBack={() => setCurrentView(View.HOME)} />;
-      case View.FRAUD_REPORT:
-        return <FraudReport onBack={() => setCurrentView(View.HOME)} />;
-      default:
-        return <HomeNew onStart={startTrading} onNavigate={setCurrentView} config={appConfig} language={language} />;
+      case View.HOME: return <HomeNew onStart={() => setIsEntryModalOpen(true)} onNavigate={setCurrentView} config={appConfig} language={language} />;
+      case View.LOGIN: return <Login onLogin={setCurrentUser} onRegisterSuccess={setPendingEmail} />;
+      case View.NEWS: return <News onBack={() => setCurrentView(View.HOME)} />;
+      case View.MEMBER_DASHBOARD: return currentUser ? <MemberDashboard user={currentUser} onNavigate={setCurrentView} language={language} /> : <HomeNew onStart={() => setIsEntryModalOpen(true)} onNavigate={setCurrentView} config={appConfig} language={language} />;
+      case View.ADMIN: return <AdminDashboard config={config} setConfig={setConfig} appConfig={appConfig} setAppConfig={setAppConfig} submissions={submissions} setSubmissions={setSubmissions} members={members} setMembers={setMembers} onNavigate={setCurrentView} />;
+      case View.DISCLAIMER: return <Disclaimer onBack={() => setCurrentView(View.HOME)} />;
+      case View.FRAUD_REPORT: return <FraudReport onBack={() => setCurrentView(View.HOME)} />;
+      default: return <HomeNew onStart={() => setIsEntryModalOpen(true)} onNavigate={setCurrentView} config={appConfig} language={language} />;
     }
   };
 
-  const showLegalGate = isLegalAgreed === false;
+  const showLegalGate = isLegalAgreed !== true;
 
   return (
-    <div className="min-h-screen flex flex-col font-sans bg-jd-dark text-jd-text">
+    <div className="min-h-screen flex flex-col font-sans bg-jd-dark text-white">
       {showLegalGate && <LegalGate onAgree={handleLegalAgree} />}
       
       <Navbar 
         currentUser={currentUser} 
-        onNavigate={(view) => setCurrentView(view)} 
+        onNavigate={setCurrentView} 
         onLogout={handleLogout}
         isScrolled={isScrolled}
         config={appConfig}
@@ -202,86 +93,59 @@ const App: React.FC = () => {
         {renderContent()}
       </main>
 
-      {/* Symmetric Modern Sitemap Footer - Fully Centered and Simplified */}
-      <footer className="bg-jd-dark border-t border-white/5 pt-24 pb-12">
+      <footer className="bg-jd-dark border-t border-white/10 pt-32 pb-16 relative z-10">
         <div className="max-w-[1600px] mx-auto px-10">
-          <div className="flex flex-col items-center text-center md:grid md:grid-cols-2 lg:grid-cols-4 md:items-start md:text-left gap-16 md:gap-12 mb-20">
-            
-            {/* Column 1: Identity & Social */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-24 mb-24">
+            {/* Identity */}
             <div className="flex flex-col items-center md:items-start space-y-8">
-              <div className="flex flex-col items-center md:items-start space-y-5">
-                <h3 className="text-white font-black text-4xl tracking-tighter uppercase leading-none">
-                  JD MORGAN
-                </h3>
-                <div className="inline-block px-4 py-2 border border-jd-gold/30 rounded-sm">
-                  <span className="text-jd-gold font-black text-xl tracking-[0.3em] uppercase leading-none">
-                    GLOBAL TRADING
-                  </span>
+              <div className="flex items-center gap-6">
+                <div className="w-16 h-16 bg-jd-gold/10 rounded-full flex items-center justify-center border border-jd-gold/30">
+                  <i className="fa-solid fa-earth-americas text-jd-gold text-3xl"></i>
+                </div>
+                <h3 className="text-white font-black text-5xl tracking-tighter uppercase leading-none">JD MORGAN</h3>
+              </div>
+              <div className="flex items-center gap-3 p-2 px-4 border-2 border-white rounded-2xl bg-white/5 backdrop-blur-md">
+                <a href="#" className="text-xs text-white hover:text-jd-gold transition-all font-black uppercase tracking-widest">北美</a>
+                <span className="w-px h-4 bg-white/30"></span>
+                <a href="#" className="text-xs text-white hover:text-jd-gold transition-all font-black uppercase tracking-widest">亞太</a>
+              </div>
+              <p className="text-xs text-gray-500 font-bold uppercase tracking-[0.4em] pt-6">VANCOUVER HQ: SUITE 1500, WEST GEORGIA ST.</p>
+            </div>
+
+            {/* Sitemap */}
+            <div className="grid grid-cols-2 gap-12">
+              <div className="space-y-10">
+                <h4 className="text-jd-gold font-black text-sm uppercase tracking-[0.6em] border-b border-jd-gold/30 pb-4 inline-block">{t.sitemap_platform}</h4>
+                <div className="flex flex-col gap-6 text-sm font-black uppercase tracking-[0.3em] text-gray-500">
+                  <button onClick={() => setCurrentView(View.HOME)} className="hover:text-white transition-all text-left">情報對接</button>
+                  <button onClick={() => setCurrentView(View.NEWS)} className="hover:text-white transition-all text-left">市場觀察</button>
+                  <button onClick={() => setCurrentView(View.NEWS)} className="hover:text-white transition-all text-left">產業情報</button>
                 </div>
               </div>
-              <div className="flex items-center gap-8 pt-4">
-                 <a href="#" className="text-white hover:text-jd-gold transition-all text-2xl"><i className="fa-brands fa-linkedin-in"></i></a>
-                 <a href="#" className="text-white hover:text-jd-gold transition-all text-2xl"><i className="fa-brands fa-telegram"></i></a>
-              </div>
-            </div>
-
-            {/* Column 2: Trade Terminal - Decorative Lines Removed */}
-            <div className="flex flex-col items-center md:items-start space-y-8">
-              <h4 className="text-jd-gold text-[20px] font-black uppercase tracking-[0.5em]">
-                 {t.sitemap_platform}
-              </h4>
-              <div className="flex flex-col items-center md:items-start gap-5 text-[15px] font-black uppercase tracking-[0.25em]">
-                <button onClick={() => setCurrentView(View.HOME)} className="text-white hover:text-jd-gold transition-all">{t.sitemap_home}</button>
-                <button onClick={startTrading} className="text-white hover:text-jd-gold transition-all">{t.sitemap_intel}</button>
-                <button onClick={() => setCurrentView(View.NEWS)} className="text-white hover:text-jd-gold transition-all">{t.nav_market}</button>
-                <button onClick={() => setCurrentView(View.NEWS)} className="text-white hover:text-jd-gold transition-all">{t.sitemap_news}</button>
-              </div>
-            </div>
-
-            {/* Column 3: Global Network - Decorative Lines Removed */}
-            <div className="flex flex-col items-center md:items-start space-y-8">
-              <h4 className="text-jd-gold text-[20px] font-black uppercase tracking-[0.5em]">
-                 {t.sitemap_network}
-              </h4>
-              <div className="flex flex-col items-center md:items-start gap-5 text-[15px] font-black uppercase tracking-[0.25em]">
-                <a href="https://gts-jd-morgn.vercel.app" target="_blank" rel="noopener noreferrer" className="text-white hover:text-jd-gold transition-all">{t.nav_north_america}</a>
-                <a href="https://jdmorgan.ca" target="_blank" rel="noopener noreferrer" className="text-white hover:text-jd-gold transition-all">{t.nav_asia_pacific}</a>
-                <div className="pt-4">
-                  <p className="text-[9px] text-gray-700 font-bold uppercase tracking-[0.2em] leading-loose max-w-[200px]">
-                    VANCOUVER HQ: SUITE 1500, WEST GEORGIA ST.
-                  </p>
+              <div className="space-y-10">
+                <h4 className="text-jd-gold font-black text-sm uppercase tracking-[0.6em] border-b border-jd-gold/30 pb-4 inline-block">{t.sitemap_legal}</h4>
+                <div className="flex flex-col gap-6 text-sm font-black uppercase tracking-[0.3em] text-gray-500">
+                  <button onClick={() => setCurrentView(View.DISCLAIMER)} className="hover:text-white transition-all text-left">隱私政策</button>
+                  <button onClick={() => setCurrentView(View.DISCLAIMER)} className="hover:text-white transition-all text-left">服務條款</button>
+                  <button onClick={() => setCurrentView(View.DISCLAIMER)} className="hover:text-white transition-all text-left">法律免責</button>
                 </div>
-              </div>
-            </div>
-
-            {/* Column 4: Compliance & Security - Decorative Lines Removed */}
-            <div className="flex flex-col items-center md:items-start space-y-8">
-              <h4 className="text-jd-gold text-[20px] font-black uppercase tracking-[0.5em]">
-                 {t.sitemap_legal}
-              </h4>
-              <div className="flex flex-col items-center md:items-start gap-5 text-[15px] font-black uppercase tracking-[0.25em]">
-                <button onClick={() => setCurrentView(View.DISCLAIMER)} className="text-white hover:text-jd-gold transition-all">{t.footer_privacy}</button>
-                <button onClick={() => setCurrentView(View.DISCLAIMER)} className="text-white hover:text-jd-gold transition-all">{t.footer_terms}</button>
-                <button onClick={() => setCurrentView(View.DISCLAIMER)} className="text-white hover:text-jd-gold transition-all">{t.footer_legal}</button>
               </div>
             </div>
           </div>
 
-          {/* Centered Fraud Report Button - Moved above copyright */}
-          <div className="flex justify-center mb-12 animate-in fade-in slide-in-from-bottom-2">
+          {/* Restored Large Fraud Report Button - text-5xl */}
+          <div className="flex justify-center mb-24">
             <button 
               onClick={() => setCurrentView(View.FRAUD_REPORT)} 
-              className="w-full max-w-sm py-4 border border-jd-gold/30 rounded-xl text-[20px] font-black text-jd-gold uppercase tracking-[0.4em] hover:bg-jd-gold hover:text-jd-dark transition-all shadow-xl flex items-center justify-center gap-3 group"
+              className="w-full max-w-2xl py-12 border-4 border-jd-gold rounded-[3rem] text-5xl font-black text-white uppercase tracking-[0.5em] hover:bg-red-500 hover:text-white transition-all shadow-[0_0_100px_rgba(239,68,68,0.3)] flex items-center justify-center gap-10 group"
             >
-              <i className="fa-solid fa-shield-halved group-hover:scale-110 transition-transform"></i> {t.footer_fraud}
+              <i className="fa-solid fa-shield-halved group-hover:scale-110 transition-transform"></i> 
+              詐欺舉報
             </button>
           </div>
 
-          {/* Bottom Copyright Bar */}
-          <div className="pt-10 border-t border-white/5 text-center">
-            <p className="text-[9px] text-gray-700 font-black uppercase tracking-[0.5em]">
-              COPYRIGHT © 2026 JD MORGAN GROUP. ALL RIGHTS RESERVED.
-            </p>
+          <div className="pt-12 border-t border-white/10 text-center">
+            <p className="text-[10px] text-gray-700 font-black uppercase tracking-[0.8em]">COPYRIGHT © 2026 JD MORGAN GROUP. ALL RIGHTS RESERVED.</p>
           </div>
         </div>
       </footer>
@@ -289,8 +153,8 @@ const App: React.FC = () => {
       <EntryModal 
         isOpen={isEntryModalOpen}
         onClose={() => setIsEntryModalOpen(false)}
-        onSelectGuest={handleSelectGuest}
-        onSelectMember={handleSelectMember}
+        onSelectGuest={() => setCurrentView(View.ROLE_SELECT)}
+        onSelectMember={() => setCurrentView(View.LOGIN)}
         language={language}
       />
     </div>
