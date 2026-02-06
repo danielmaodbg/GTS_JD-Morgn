@@ -14,10 +14,10 @@ const FraudReport: React.FC<FraudReportProps> = ({ onBack }) => {
       <div className="max-w-5xl mx-auto">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
           <div className="space-y-4">
-            <h2 className="text-white text-sm font-black uppercase tracking-[0.5em] flex items-center">
+            <h2 className="text-jd-gold text-sm font-black uppercase tracking-[0.5em] flex items-center">
               <span className="w-12 h-px bg-jd-gold/30 mr-4"></span> COMPLIANCE & SECURITY
             </h2>
-            <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter uppercase leading-none">
+            <h1 className="text-5xl md:text-5xl font-black text-white tracking-tighter uppercase leading-none">
               詐欺舉報 <span className="text-jd-gold font-light not-italic">與風險預警</span>
             </h1>
             <p className="text-xs text-white font-bold uppercase tracking-widest">
