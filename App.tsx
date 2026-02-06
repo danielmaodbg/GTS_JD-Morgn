@@ -220,27 +220,27 @@ const App: React.FC = () => {
                 </div>
               </div>
               <div className="flex items-center gap-8 pt-4">
-                 <a href="#" className="text-gray-600 hover:text-jd-gold transition-all text-2xl"><i className="fa-brands fa-linkedin-in"></i></a>
-                 <a href="#" className="text-gray-600 hover:text-jd-gold transition-all text-2xl"><i className="fa-brands fa-telegram"></i></a>
+                 <a href="#" className="text-white hover:text-jd-gold transition-all text-2xl"><i className="fa-brands fa-linkedin-in"></i></a>
+                 <a href="#" className="text-white hover:text-jd-gold transition-all text-2xl"><i className="fa-brands fa-telegram"></i></a>
               </div>
             </div>
 
             {/* Column 2: Trade Terminal - Decorative Lines Removed */}
             <div className="flex flex-col items-center md:items-start space-y-8">
-              <h4 className="text-jd-gold text-[11px] font-black uppercase tracking-[0.5em]">
+              <h4 className="text-jd-gold text-[20px] font-black uppercase tracking-[0.5em]">
                  {t.sitemap_platform}
               </h4>
               <div className="flex flex-col items-center md:items-start gap-5 text-[15px] font-black uppercase tracking-[0.25em]">
-                <button onClick={() => setCurrentView(View.HOME)} className="text-gray-500 hover:text-jd-gold transition-all">{t.sitemap_home}</button>
+                <button onClick={() => setCurrentView(View.HOME)} className="text-white hover:text-jd-gold transition-all">{t.sitemap_home}</button>
                 <button onClick={startTrading} className="text-gray-500 hover:text-jd-gold transition-all">{t.sitemap_intel}</button>
-                <button onClick={() => setCurrentView(View.NEWS)} className="text-gray-500 hover:text-jd-gold transition-all">{t.nav_market}</button>
-                <button onClick={() => setCurrentView(View.NEWS)} className="text-gray-500 hover:text-jd-gold transition-all">{t.sitemap_news}</button>
+                <button onClick={() => setCurrentView(View.NEWS)} className="text-white hover:text-jd-gold transition-all">{t.nav_market}</button>
+                <button onClick={() => setCurrentView(View.NEWS)} className="text-white hover:text-jd-gold transition-all">{t.sitemap_news}</button>
               </div>
             </div>
 
             {/* Column 3: Global Network - Decorative Lines Removed */}
             <div className="flex flex-col items-center md:items-start space-y-8">
-              <h4 className="text-jd-gold text-[11px] font-black uppercase tracking-[0.5em]">
+              <h4 className="text-jd-gold text-[20px] font-black uppercase tracking-[0.5em]">
                  {t.sitemap_network}
               </h4>
               <div className="flex flex-col items-center md:items-start gap-5 text-[15px] font-black uppercase tracking-[0.25em]">
