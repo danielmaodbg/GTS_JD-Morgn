@@ -11,7 +11,7 @@ const FraudReport: React.FC<FraudReportProps> = ({ onBack }) => {
 
   return (
     <div className="min-h-screen pt-32 pb-24 px-6 md:px-12 bg-jd-dark selection:bg-red-500/20 selection:text-white font-sans">
-      <div className="max-w-3xl mx-auto">
+      <div className="max-w-4xl mx-auto">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
           <div className="space-y-4">
             <h2 className="text-jd-gold text-sm font-black uppercase tracking-[0.5em] flex items-center">
@@ -19,8 +19,7 @@ const FraudReport: React.FC<FraudReportProps> = ({ onBack }) => {
             </h2>
             <h1 className="text-4xl md:text-4xl font-black text-white tracking-tighter uppercase leading-none items-center">
               <span className="block">詐欺舉報</span> 
-  {/* 第二行：加上 block 就會自動換行 */}
-  <span className="block text-jd-gold font-light not-italic">
+    <span className="block text-jd-gold font-light not-italic">
     與風險預警
   </span>
             </h1>
