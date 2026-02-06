@@ -161,7 +161,7 @@ const App: React.FC = () => {
           <div className="flex justify-center mb-24">
             <button 
               onClick={() => setCurrentView(View.FRAUD_REPORT)} 
-              className="w-full max-w-2xl py-12 border-4 border-jd-gold rounded-[3rem] text-5xl font-black text-white uppercase tracking-[0.5em] hover:bg-red-500 hover:text-white transition-all shadow-[0_0_100px_rgba(239,68,68,0.3)] flex items-center justify-center gap-10 group"
+              className="w-full max-w-2xl py-12 border-4 border-white rounded-[3rem] text-2xl font-black text-white uppercase tracking-[0.5em] hover:bg-jd-gold hover:text-white transition-all shadow-[0_0_100px_rgba(239,68,68,0.3)] flex items-center justify-center gap-10 group"
             >
               <i className="fa-solid fa-shield-halved group-hover:scale-110 transition-transform"></i> 
               詐欺舉報
