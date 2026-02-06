@@ -17,8 +17,12 @@ const FraudReport: React.FC<FraudReportProps> = ({ onBack }) => {
             <h2 className="text-jd-gold text-sm font-black uppercase tracking-[0.5em] flex items-center">
                COMPLIANCE & SECURITY
             </h2>
-            <h1 className="text-5xl md:text-5xl font-black text-white tracking-tighter uppercase leading-none">
-              詐欺舉報 <span className="text-jd-gold font-light not-italic">與風險預警</span>
+            <h1 className="text-3xl md:text-3xl font-black text-white tracking-tighter uppercase leading-none">
+              <span className="block">詐欺舉報</span> 
+  {/* 第二行：加上 block 就會自動換行 */}
+  <span className="block text-jd-gold font-light not-italic">
+    與風險預警
+  </span>
             </h1>
             <p className="text-xs text-white font-bold uppercase tracking-widest">
               Fraud Reporting Center - JD Morgan Global Trading Compliance
