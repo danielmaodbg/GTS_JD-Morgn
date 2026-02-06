@@ -96,20 +96,44 @@ const App: React.FC = () => {
       <footer className="bg-jd-dark border-t border-white/10 pt-32 pb-16 relative z-10">
         <div className="max-w-[1600px] mx-auto px-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-24 mb-24">
-            {/* Identity */}
-            <div className="flex flex-col items-center md:items-start space-y-8">
-              <div className="flex items-center gap-6">
-                <div className="w-16 h-16 bg-jd-gold/10 rounded-full flex items-center justify-center border border-jd-gold/30">
-                  <i className="fa-solid fa-earth-americas text-jd-gold text-3xl"></i>
+            {/* Identity - Updated per Screenshot Request */}
+            <div className="flex flex-col items-center md:items-start space-y-10">
+              <div className="flex items-start gap-8">
+                {/* Logo Icon */}
+                <div className="w-20 h-20 bg-jd-gold/10 rounded-full flex items-center justify-center border border-jd-gold/30 shrink-0">
+                  <i className="fa-solid fa-earth-americas text-jd-gold text-4xl"></i>
                 </div>
-                <h3 className="text-white font-black text-5xl tracking-tighter uppercase leading-none">JD MORGAN</h3>
+                
+                {/* Text and Regional Links Stacked Vertically */}
+                <div className="flex flex-col gap-5">
+                  <h3 className="text-white font-black text-6xl tracking-tighter uppercase leading-none">JD MORGAN</h3>
+                  
+                  {/* Regional Switcher - Placed directly under JD MORGAN text */}
+                  <div className="flex items-center gap-3 p-2 px-4 border border-white/20 rounded-2xl bg-white/5 backdrop-blur-md w-fit">
+                    <a 
+                      href="https://gts-jd-morgn.vercel.app" 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="text-xs text-white hover:text-jd-gold transition-all font-black uppercase tracking-widest"
+                    >
+                      北美
+                    </a>
+                    <span className="w-px h-4 bg-white/30"></span>
+                    <a 
+                      href="https://jdmorgan.ca" 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="text-xs text-white hover:text-jd-gold transition-all font-black uppercase tracking-widest"
+                    >
+                      亞太
+                    </a>
+                  </div>
+                </div>
               </div>
-              <div className="flex items-center gap-3 p-2 px-4 border-2 border-white rounded-2xl bg-white/5 backdrop-blur-md">
-                <a href="#" className="text-xs text-white hover:text-jd-gold transition-all font-black uppercase tracking-widest">北美</a>
-                <span className="w-px h-4 bg-white/30"></span>
-                <a href="#" className="text-xs text-white hover:text-jd-gold transition-all font-black uppercase tracking-widest">亞太</a>
-              </div>
-              <p className="text-xs text-gray-500 font-bold uppercase tracking-[0.4em] pt-6">VANCOUVER HQ: SUITE 1500, WEST GEORGIA ST.</p>
+              
+              <p className="text-xs text-gray-500 font-bold uppercase tracking-[0.4em] pt-4">
+                VANCOUVER HQ: SUITE 1500, WEST GEORGIA ST.
+              </p>
             </div>
 
             {/* Sitemap */}
@@ -133,7 +157,7 @@ const App: React.FC = () => {
             </div>
           </div>
 
-          {/* Restored Large Fraud Report Button - text-5xl */}
+          {/* Large Fraud Report Button */}
           <div className="flex justify-center mb-24">
             <button 
               onClick={() => setCurrentView(View.FRAUD_REPORT)} 
