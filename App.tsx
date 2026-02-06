@@ -230,7 +230,7 @@ const App: React.FC = () => {
               <h4 className="text-jd-gold text-[11px] font-black uppercase tracking-[0.5em]">
                  {t.sitemap_platform}
               </h4>
-              <div className="flex flex-col items-center md:items-start gap-5 text-[11px] font-black uppercase tracking-[0.25em]">
+              <div className="flex flex-col items-center md:items-start gap-5 text-[15px] font-black uppercase tracking-[0.25em]">
                 <button onClick={() => setCurrentView(View.HOME)} className="text-gray-500 hover:text-jd-gold transition-all">{t.sitemap_home}</button>
                 <button onClick={startTrading} className="text-gray-500 hover:text-jd-gold transition-all">{t.sitemap_intel}</button>
                 <button onClick={() => setCurrentView(View.NEWS)} className="text-gray-500 hover:text-jd-gold transition-all">{t.nav_market}</button>
@@ -243,7 +243,7 @@ const App: React.FC = () => {
               <h4 className="text-jd-gold text-[11px] font-black uppercase tracking-[0.5em]">
                  {t.sitemap_network}
               </h4>
-              <div className="flex flex-col items-center md:items-start gap-5 text-[11px] font-black uppercase tracking-[0.25em]">
+              <div className="flex flex-col items-center md:items-start gap-5 text-[15px] font-black uppercase tracking-[0.25em]">
                 <a href="https://gts-jd-morgn.vercel.app" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-jd-gold transition-all">{t.nav_north_america}</a>
                 <a href="https://jdmorgan.ca" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-jd-gold transition-all">{t.nav_asia_pacific}</a>
                 <div className="pt-4">
@@ -259,7 +259,7 @@ const App: React.FC = () => {
               <h4 className="text-jd-gold text-[11px] font-black uppercase tracking-[0.5em]">
                  {t.sitemap_legal}
               </h4>
-              <div className="flex flex-col items-center md:items-start gap-5 text-[18px] font-black uppercase tracking-[0.25em]">
+              <div className="flex flex-col items-center md:items-start gap-5 text-[15px] font-black uppercase tracking-[0.25em]">
                 <button onClick={() => setCurrentView(View.DISCLAIMER)} className="text-gray-500 hover:text-jd-gold transition-all">{t.footer_privacy}</button>
                 <button onClick={() => setCurrentView(View.DISCLAIMER)} className="text-gray-500 hover:text-jd-gold transition-all">{t.footer_terms}</button>
                 <button onClick={() => setCurrentView(View.DISCLAIMER)} className="text-gray-500 hover:text-jd-gold transition-all">{t.footer_legal}</button>
