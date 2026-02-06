@@ -259,7 +259,7 @@ const App: React.FC = () => {
               <h4 className="text-jd-gold text-[11px] font-black uppercase tracking-[0.5em]">
                  {t.sitemap_legal}
               </h4>
-              <div className="flex flex-col items-center md:items-start gap-5 text-[11px] font-black uppercase tracking-[0.25em]">
+              <div className="flex flex-col items-center md:items-start gap-5 text-[18px] font-black uppercase tracking-[0.25em]">
                 <button onClick={() => setCurrentView(View.DISCLAIMER)} className="text-gray-500 hover:text-jd-gold transition-all">{t.footer_privacy}</button>
                 <button onClick={() => setCurrentView(View.DISCLAIMER)} className="text-gray-500 hover:text-jd-gold transition-all">{t.footer_terms}</button>
                 <button onClick={() => setCurrentView(View.DISCLAIMER)} className="text-gray-500 hover:text-jd-gold transition-all">{t.footer_legal}</button>
@@ -271,7 +271,7 @@ const App: React.FC = () => {
           <div className="flex justify-center mb-12 animate-in fade-in slide-in-from-bottom-2">
             <button 
               onClick={() => setCurrentView(View.FRAUD_REPORT)} 
-              className="w-full max-w-sm py-4 border border-jd-gold/30 rounded-xl text-[10px] font-black text-jd-gold uppercase tracking-[0.4em] hover:bg-jd-gold hover:text-jd-dark transition-all shadow-xl flex items-center justify-center gap-3 group"
+              className="w-full max-w-sm py-4 border border-jd-gold/30 rounded-xl text-[20px] font-black text-jd-gold uppercase tracking-[0.4em] hover:bg-jd-gold hover:text-jd-dark transition-all shadow-xl flex items-center justify-center gap-3 group"
             >
               <i className="fa-solid fa-shield-halved group-hover:scale-110 transition-transform"></i> {t.footer_fraud}
             </button>

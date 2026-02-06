@@ -3,7 +3,7 @@ import { Language } from './types';
 export const translations = {
   [Language.ZH]: {
     nav_asia: 'JD Morgan Asia',
-    nav_market: '市場觀察',
+    nav_market: '歡迎加入我們',
     nav_admin: '管理中心',
     nav_north_america: '北美網站',
     nav_asia_pacific: '亞太網站',
@@ -35,7 +35,7 @@ export const translations = {
   },
   [Language.EN]: {
     nav_asia: 'JD Morgan Asia',
-    nav_market: 'Market Observation',
+    nav_market: 'Marketing Careers',
     nav_admin: 'Admin Center',
     nav_north_america: 'North American',
     nav_asia_pacific: 'Asia Pacific',
